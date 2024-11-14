@@ -9,28 +9,32 @@ const quizData = [
     title: "Capital Cities",
     question: "What is the capital of France?",
     options: ["London", "Berlin", "Paris", "Madrid"],
-    correctAnswer: "Paris"
+    correctAnswer: "Paris",
+    feedback: "Paris is the capital and largest city of France, known for its iconic Eiffel Tower and rich cultural heritage."
   },
   {
     id: 2,
     title: "Solar System",
     question: "Which planet is known as the Red Planet?",
     options: ["Venus", "Mars", "Jupiter", "Saturn"],
-    correctAnswer: "Mars"
+    correctAnswer: "Mars",
+    feedback: "Mars appears red because of iron oxide (rust) on its surface, earning it the nickname 'The Red Planet'."
   },
   {
     id: 3,
     title: "Basic Math",
     question: "What is 2 + 2?",
     options: ["3", "4", "5", "6"],
-    correctAnswer: "4"
+    correctAnswer: "4",
+    feedback: "2 + 2 = 4 is one of the most basic arithmetic equations in mathematics."
   },
   {
     id: 4,
     title: "Programming",
     question: "Which language is React Native written in?",
     options: ["Python", "Java", "JavaScript", "C++"],
-    correctAnswer: "JavaScript"
+    correctAnswer: "JavaScript",
+    feedback: "React Native is written in JavaScript and allows developers to build mobile apps using JavaScript and React."
   },
 ];
 
@@ -84,10 +88,7 @@ export default function QuizPage() {
             >
               <Text style={styles.questionTitle}>{quiz.title}</Text>
               <View style={styles.iconContainer}>
-                <Text style={styles.icon}>🔖</Text>
-                <Text style={styles.icon}>
-                  {expandedQuestion === quiz.id ? '▲' : '▼'}
-                </Text>
+                <Bookmark size={20} color="#9ca3af" />
               </View>
             </Pressable>
             
@@ -121,6 +122,12 @@ export default function QuizPage() {
                     </Pressable>
                   ))}
                 </View>
+                
+                {selectedAnswers[quiz.id] && (
+                  <View style={styles.feedbackContainer}>
+                    <Text style={styles.feedbackText}>{quiz.feedback}</Text>
+                  </View>
+                )}
               </View>
             )}
           </View>
@@ -261,5 +268,18 @@ const styles = StyleSheet.create({
   incorrectIcon: {
     color: '#ef4444',
     fontWeight: 'bold',
+  },
+  feedbackContainer: {
+    marginTop: 16,
+    padding: 12,
+    backgroundColor: '#f8fafc',
+    borderRadius: 8,
+    borderLeftWidth: 4,
+    borderLeftColor: '#3b82f6',
+  },
+  feedbackText: {
+    color: '#1e293b',
+    fontSize: 14,
+    lineHeight: 20,
   },
 });
