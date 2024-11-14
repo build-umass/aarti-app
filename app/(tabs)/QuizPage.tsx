@@ -1,6 +1,6 @@
-import { StyleSheet } from 'react-native';
 import { useState } from 'react';
-import { ChevronDown, ChevronUp, Bookmark, ArrowLeft, CheckCircle, XCircle } from 'lucide-react';
+import { StyleSheet } from 'react-native';
+import { Bookmark } from 'lucide-react';
 import { Text, View, Pressable, ScrollView } from 'react-native';
 
 const quizData = [
