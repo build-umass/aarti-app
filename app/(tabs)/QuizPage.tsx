@@ -1,11 +1,12 @@
 import { useState } from 'react';
-import { StyleSheet } from 'react-native';
+import { StyleSheet, Animated } from 'react-native';
 import { Bookmark } from 'lucide-react';
 import { Text, View, Pressable, ScrollView } from 'react-native';
 
 const quizData = [
   {
     id: 1,
+    topic: "Geography",
     title: "Capital Cities",
     question: "What is the capital of France?",
     options: ["London", "Berlin", "Paris", "Madrid"],
@@ -14,6 +15,7 @@ const quizData = [
   },
   {
     id: 2,
+    topic: "Science",
     title: "Solar System",
     question: "Which planet is known as the Red Planet?",
     options: ["Venus", "Mars", "Jupiter", "Saturn"],
@@ -22,6 +24,7 @@ const quizData = [
   },
   {
     id: 3,
+    topic: "Mathematics",
     title: "Basic Math",
     question: "What is 2 + 2?",
     options: ["3", "4", "5", "6"],
@@ -30,6 +33,7 @@ const quizData = [
   },
   {
     id: 4,
+    topic: "Technology",
     title: "Programming",
     question: "Which language is React Native written in?",
     options: ["Python", "Java", "JavaScript", "C++"],
@@ -42,22 +46,51 @@ export default function QuizPage() {
   const [selectedAnswers, setSelectedAnswers] = useState({});
   const [expandedQuestion, setExpandedQuestion] = useState(null);
   const [hasStarted, setHasStarted] = useState(false);
+  const [selectedTopic, setSelectedTopic] = useState('All');
+  const [completedQuestions, setCompletedQuestions] = useState(new Set());
+
+  const topics = ['All', ...new Set(quizData.map(quiz => quiz.topic))];
+
+  const filteredQuizData = selectedTopic === 'All' 
+    ? quizData 
+    : quizData.filter(quiz => quiz.topic === selectedTopic);
 
   const calculateProgress = () => {
     if (!hasStarted) return 0;
-    const totalQuestions = quizData.length;
-    const correctAnswers = Object.values(selectedAnswers).filter(
-      (answer, index) => answer === quizData[index].correctAnswer
+    const relevantQuestions = filteredQuizData;
+    const totalQuestions = relevantQuestions.length;
+    const correctAnswers = relevantQuestions.filter(
+      quiz => selectedAnswers[quiz.id] === quiz.correctAnswer
     ).length;
     return Math.round((correctAnswers / totalQuestions) * 100);
   };
 
+  const calculateCompletion = () => {
+    const relevantQuestions = filteredQuizData;
+    const totalQuestions = relevantQuestions.length;
+    const completed = relevantQuestions.filter(quiz => completedQuestions.has(quiz.id)).length;
+    return Math.round((completed / totalQuestions) * 100);
+  };
+
+  const getCompletedCount = () => {
+    const relevantQuestions = filteredQuizData;
+    return relevantQuestions.filter(quiz => completedQuestions.has(quiz.id)).length;
+  };
+
   const handleAnswer = (questionId, selectedOption) => {
-    setHasStarted(true);
-    setSelectedAnswers(prev => ({
-      ...prev,
-      [questionId]: selectedOption
-    }));
+    if (!completedQuestions.has(questionId)) {
+      setHasStarted(true);
+      setSelectedAnswers(prev => ({
+        ...prev,
+        [questionId]: selectedOption
+      }));
+      setCompletedQuestions(prev => new Set([...prev, questionId]));
+    } else if (calculateCompletion() === 100) {
+      setSelectedAnswers(prev => ({
+        ...prev,
+        [questionId]: selectedOption
+      }));
+    }
   };
 
   const toggleQuestion = (questionId) => {
@@ -67,20 +100,65 @@ export default function QuizPage() {
   return (
     <ScrollView style={styles.container}>
       <View style={styles.content}>
-        {/* Progress section */}
+        {/* Add Topic Selector */}
+        <View style={styles.topicSelectorContainer}>
+          <Text style={styles.topicLabel}>Select Topic:</Text>
+          <ScrollView 
+            horizontal 
+            showsHorizontalScrollIndicator={false}
+            style={styles.topicScroll}
+          >
+            {topics.map((topic) => (
+              <Pressable
+                key={topic}
+                style={[
+                  styles.topicButton,
+                  selectedTopic === topic && styles.selectedTopicButton
+                ]}
+                onPress={() => setSelectedTopic(topic)}
+              >
+                <Text style={[
+                  styles.topicButtonText,
+                  selectedTopic === topic && styles.selectedTopicButtonText
+                ]}>
+                  {topic}
+                </Text>
+              </Pressable>
+            ))}
+          </ScrollView>
+        </View>
+
+        {/* Modified Progress section */}
         <View style={styles.progressContainer}>
           <Text style={styles.progressText}>
-            {`${calculateProgress()}%`}
+            {calculateProgress()}%
           </Text>
           <View style={styles.progressBar}>
             <View 
-              style={[styles.progressFill, { width: `${calculateProgress()}%` }]}
+              style={[
+                styles.progressFill,
+                {
+                  width: calculateProgress() + '%',
+                }
+              ]}
             />
           </View>
         </View>
 
-        {/* Questions */}
-        {quizData.map((quiz) => (
+        {/* Modified completion status */}
+        <View style={styles.completionContainer}>
+          <Text style={styles.completionText}>
+            Questions completed: {getCompletedCount()}/{filteredQuizData.length}
+          </Text>
+          {calculateCompletion() === 100 && (
+            <Text style={styles.completionNote}>
+              You can now review and change your answers
+            </Text>
+          )}
+        </View>
+
+        {/* Questions - now using filteredQuizData */}
+        {filteredQuizData.map((quiz) => (
           <View key={quiz.id} style={styles.questionContainer}>
             <Pressable
               onPress={() => toggleQuestion(quiz.id)}
@@ -103,9 +181,13 @@ export default function QuizPage() {
                         styles.optionButton,
                         selectedAnswers[quiz.id] && option === quiz.correctAnswer && styles.correctOption,
                         selectedAnswers[quiz.id] === option && 
-                        option !== quiz.correctAnswer && styles.incorrectOption
+                        option !== quiz.correctAnswer && styles.incorrectOption,
+                        !completedQuestions.has(quiz.id) || calculateCompletion() === 100 
+                          ? null 
+                          : styles.disabledOption
                       ]}
                       onPress={() => handleAnswer(quiz.id, option)}
+                      disabled={completedQuestions.has(quiz.id) && calculateCompletion() !== 100}
                     >
                       <Text style={styles.optionText}>{option}</Text>
                       {selectedAnswers[quiz.id] && (
@@ -166,12 +248,13 @@ const styles = StyleSheet.create({
     flex: 1,
     height: 8,
     backgroundColor: '#e5e7eb',
-    borderRadius: 9999,
+    borderRadius: 4,
     overflow: 'hidden',
   },
   progressFill: {
     height: '100%',
     backgroundColor: '#22c55e',
+    borderRadius: 4,
   },
   questionContainer: {
     marginBottom: 12,
@@ -281,5 +364,62 @@ const styles = StyleSheet.create({
     color: '#1e293b',
     fontSize: 14,
     lineHeight: 20,
+  },
+  topicSelectorContainer: {
+    marginBottom: 20,
+  },
+  topicLabel: {
+    fontSize: 16,
+    fontWeight: '500',
+    marginBottom: 8,
+    color: '#374151',
+  },
+  topicScroll: {
+    flexGrow: 0,
+  },
+  topicButton: {
+    paddingHorizontal: 16,
+    paddingVertical: 8,
+    borderRadius: 20,
+    backgroundColor: '#f3f4f6',
+    marginRight: 8,
+    borderWidth: 1,
+    borderColor: '#e5e7eb',
+  },
+  selectedTopicButton: {
+    backgroundColor: '#3b82f6',
+    borderColor: '#3b82f6',
+  },
+  topicButtonText: {
+    color: '#4b5563',
+    fontWeight: '500',
+  },
+  selectedTopicButtonText: {
+    color: 'white',
+  },
+  completionContainer: {
+    marginBottom: 20,
+    padding: 12,
+    backgroundColor: 'white',
+    borderRadius: 8,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.05,
+    shadowRadius: 1,
+    elevation: 1,
+  },
+  completionText: {
+    fontSize: 16,
+    fontWeight: '500',
+    color: '#374151',
+  },
+  completionNote: {
+    marginTop: 4,
+    fontSize: 14,
+    color: '#6b7280',
+    fontStyle: 'italic',
+  },
+  disabledOption: {
+    opacity: 0.7,
   },
 });
