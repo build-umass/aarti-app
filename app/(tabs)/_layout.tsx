@@ -18,12 +18,19 @@ export default function TabLayout() {
         tabBarActiveTintColor: Colors[colorScheme ?? 'light'].tint,
         tabBarInactiveTintColor: 'black',
         headerShown: false,
+        tabBarStyle: {
+          backgroundColor: '#CCCCCC',
+          borderTopWidth: 0,
+          height: 68,
+          paddingBottom: 10,
+          paddingTop: 10,
+        },
       }}>
       <Tabs.Screen
         name="index"
         options={{
           title:"",
-          tabBarIcon: ({ color, focused }) => (
+          tabBarIcon: ({ color }) => (
             <Feather name="home" size={ICON_SIZE} color = {color} />
           ),
         }}
@@ -32,7 +39,7 @@ export default function TabLayout() {
         name="resources"
         options={{
           title:"",
-          tabBarIcon: ({ color, focused }) => (
+          tabBarIcon: ({ color }) => (
             <Feather name="book-open" size={ICON_SIZE} color = {color} />
           ),
         }}
@@ -41,7 +48,7 @@ export default function TabLayout() {
         name="quizzes"
         options={{
           title:"",
-          tabBarIcon: ({ color, focused }) => (
+          tabBarIcon: ({ color }) => (
             <Entypo name="graduation-cap" size={ICON_SIZE} color= {color} />
           ),
         }}
@@ -50,7 +57,7 @@ export default function TabLayout() {
       name="profile"
       options={{
         title:"",
-        tabBarIcon: ({ color, focused }) => (
+        tabBarIcon: ({ color }) => (
             <Feather name="user" size={ICON_SIZE} color = {color} />
         ),
       }}
@@ -59,7 +66,7 @@ export default function TabLayout() {
         name="chatbot"
         options={{
           title:"",
-          tabBarIcon: ({ color, focused }) => (
+          tabBarIcon: ({ color }) => (
             <Entypo name="chat" size={ICON_SIZE} color = {color} />
           ),
         }}
