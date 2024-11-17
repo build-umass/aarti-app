@@ -1,6 +1,6 @@
-import { useState } from 'react';
-import { StyleSheet, Animated } from 'react-native';
-import { Bookmark } from 'lucide-react';
+import { useState, useEffect } from 'react';
+import { StyleSheet } from 'react-native';
+import { Bookmark } from 'lucide-react-native';
 import { Text, View, Pressable, ScrollView } from 'react-native';
 
 const quizData = [
@@ -137,9 +137,7 @@ export default function QuizPage() {
             <View 
               style={[
                 styles.progressFill,
-                {
-                  width: calculateProgress() + '%',
-                }
+                { width: `${calculateProgress()}%` }
               ]}
             />
           </View>
