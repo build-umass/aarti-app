@@ -4,6 +4,10 @@ import React from 'react';
 import { TabBarIcon } from '@/components/navigation/TabBarIcon';
 import { Colors } from '@/constants/Colors';
 import { useColorScheme } from '@/hooks/useColorScheme';
+import Feather from '@expo/vector-icons/Feather';
+import Entypo from '@expo/vector-icons/Entypo';
+
+const ICON_SIZE = 34;
 
 export default function TabLayout() {
   const colorScheme = useColorScheme();
@@ -12,6 +16,7 @@ export default function TabLayout() {
     <Tabs
       screenOptions={{
         tabBarActiveTintColor: Colors[colorScheme ?? 'light'].tint,
+        tabBarInactiveTintColor: 'black',
         headerShown: false,
       }}>
       <Tabs.Screen
@@ -19,16 +24,43 @@ export default function TabLayout() {
         options={{
           title:"",
           tabBarIcon: ({ color, focused }) => (
-            <TabBarIcon name={focused ? 'home' : 'home-outline'} color={color} />
+            <Feather name="home" size={ICON_SIZE} color = {color} />
           ),
         }}
       />
       <Tabs.Screen
-        name="explore"
+        name="resources"
         options={{
           title:"",
           tabBarIcon: ({ color, focused }) => (
-            <TabBarIcon name={focused ? 'code-slash' : 'code-slash-outline'} color={color} />
+            <Feather name="book-open" size={ICON_SIZE} color = {color} />
+          ),
+        }}
+      />
+      <Tabs.Screen
+        name="quizzes"
+        options={{
+          title:"",
+          tabBarIcon: ({ color, focused }) => (
+            <Entypo name="graduation-cap" size={ICON_SIZE} color= {color} />
+          ),
+        }}
+      />
+      <Tabs.Screen
+      name="profile"
+      options={{
+        title:"",
+        tabBarIcon: ({ color, focused }) => (
+            <Feather name="user" size={ICON_SIZE} color = {color} />
+        ),
+      }}
+    />
+    <Tabs.Screen
+        name="chatbot"
+        options={{
+          title:"",
+          tabBarIcon: ({ color, focused }) => (
+            <Entypo name="chat" size={ICON_SIZE} color = {color} />
           ),
         }}
       />
