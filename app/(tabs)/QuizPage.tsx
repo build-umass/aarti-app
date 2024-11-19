@@ -1,9 +1,23 @@
-import { useState, useEffect } from 'react';
-import { StyleSheet } from 'react-native';
+import React from 'react';
+import { useState } from 'react';
+import { StyleSheet, ViewStyle, TextStyle, Text, View, Pressable, ScrollView, PressableStateCallbackType } from 'react-native';
 import { Bookmark } from 'lucide-react-native';
-import { Text, View, Pressable, ScrollView } from 'react-native';
 
-const quizData = [
+interface QuizItem {
+  id: number;
+  topic: string;
+  title: string;
+  question: string;
+  options: string[];
+  correctAnswer: string;
+  feedback: string;
+}
+
+interface SelectedAnswers {
+  [key: number]: string;
+}
+
+const quizData: QuizItem[] = [
   {
     id: 1,
     topic: "Geography",
@@ -42,16 +56,37 @@ const quizData = [
   },
 ];
 
+interface ShadowOffset {
+  width: number;
+  height: number;
+}
+
+interface ViewStyleWithShadow extends ViewStyle {
+  shadowOffset?: ShadowOffset;
+  shadowOpacity?: number;
+  shadowRadius?: number;
+  elevation?: number;
+}
+
+interface ViewStyleWithGap extends ViewStyle {
+  gap?: number;
+}
+
+interface ViewStyleWithBorder extends ViewStyle {
+  borderLeftWidth?: number;
+  borderLeftColor?: string;
+}
+
 export default function QuizPage() {
-  const [selectedAnswers, setSelectedAnswers] = useState({});
-  const [expandedQuestion, setExpandedQuestion] = useState(null);
-  const [hasStarted, setHasStarted] = useState(false);
-  const [selectedTopic, setSelectedTopic] = useState('All');
-  const [completedQuestions, setCompletedQuestions] = useState(new Set());
+  const [selectedAnswers, setSelectedAnswers] = useState<SelectedAnswers>({});
+  const [expandedQuestion, setExpandedQuestion] = useState<number | null>(null);
+  const [hasStarted, setHasStarted] = useState<boolean>(false);
+  const [selectedTopic, setSelectedTopic] = useState<string>('All');
+  const [completedQuestions, setCompletedQuestions] = useState<Set<number>>(new Set());
 
-  const topics = ['All', ...new Set(quizData.map(quiz => quiz.topic))];
+  const topics: string[] = ['All', ...new Set(quizData.map(quiz => quiz.topic))];
 
-  const filteredQuizData = selectedTopic === 'All' 
+  const filteredQuizData: QuizItem[] = selectedTopic === 'All' 
     ? quizData 
     : quizData.filter(quiz => quiz.topic === selectedTopic);
 
@@ -77,7 +112,7 @@ export default function QuizPage() {
     return relevantQuestions.filter(quiz => completedQuestions.has(quiz.id)).length;
   };
 
-  const handleAnswer = (questionId, selectedOption) => {
+  const handleAnswer = (questionId: number, selectedOption: string): void => {
     if (!completedQuestions.has(questionId)) {
       setHasStarted(true);
       setSelectedAnswers(prev => ({
@@ -93,7 +128,7 @@ export default function QuizPage() {
     }
   };
 
-  const toggleQuestion = (questionId) => {
+  const toggleQuestion = (questionId: number): void => {
     setExpandedQuestion(expandedQuestion === questionId ? null : questionId);
   };
 
@@ -137,7 +172,7 @@ export default function QuizPage() {
             <View 
               style={[
                 styles.progressFill,
-                { width: `${calculateProgress()}%` }
+                { width: `${calculateProgress()}%` } as ViewStyle
               ]}
             />
           </View>
@@ -175,21 +210,21 @@ export default function QuizPage() {
                   {quiz.options.map((option, index) => (
                     <Pressable
                       key={index}
-                      style={[
+                      style={({ pressed }: PressableStateCallbackType): ViewStyle[] => [
                         styles.optionButton,
-                        selectedAnswers[quiz.id] && option === quiz.correctAnswer && styles.correctOption,
+                        selectedAnswers[quiz.id] && option === quiz.correctAnswer ? styles.correctOption : undefined,
                         selectedAnswers[quiz.id] === option && 
-                        option !== quiz.correctAnswer && styles.incorrectOption,
-                        !completedQuestions.has(quiz.id) || calculateCompletion() === 100 
-                          ? null 
+                        option !== quiz.correctAnswer ? styles.incorrectOption : undefined,
+                        (!completedQuestions.has(quiz.id) || calculateCompletion() === 100) 
+                          ? undefined 
                           : styles.disabledOption
-                      ]}
+                      ].filter((style): style is ViewStyle => style !== undefined)}
                       onPress={() => handleAnswer(quiz.id, option)}
                       disabled={completedQuestions.has(quiz.id) && calculateCompletion() !== 100}
                     >
                       <Text style={styles.optionText}>{option}</Text>
                       {selectedAnswers[quiz.id] && (
-                        <>
+                        <React.Fragment>
                           {option === quiz.correctAnswer && (
                             <Text style={[styles.icon, styles.correctIcon]}>✓</Text>
                           )}
@@ -197,7 +232,7 @@ export default function QuizPage() {
                            option !== quiz.correctAnswer && (
                             <Text style={[styles.icon, styles.incorrectIcon]}>✗</Text>
                           )}
-                        </>
+                        </React.Fragment>
                       )}
                     </Pressable>
                   ))}
@@ -222,7 +257,46 @@ export default function QuizPage() {
   );
 }
 
-const styles = StyleSheet.create({
+interface Styles {
+  container: ViewStyle;
+  content: ViewStyle;
+  progressContainer: ViewStyle;
+  progressText: TextStyle;
+  progressBar: ViewStyle;
+  progressFill: ViewStyle & { width?: string | number };
+  questionContainer: ViewStyle;
+  questionHeader: ViewStyleWithShadow;
+  questionTitle: TextStyle & { fontWeight: '500' };
+  iconContainer: ViewStyle;
+  icon: TextStyle;
+  questionContent: ViewStyleWithShadow;
+  questionText: TextStyle;
+  optionsContainer: ViewStyleWithGap;
+  optionButton: ViewStyle;
+  correctOption: ViewStyle;
+  incorrectOption: ViewStyle;
+  optionText: TextStyle;
+  backButton: ViewStyleWithShadow;
+  checkButton: ViewStyle;
+  checkButtonText: TextStyle & { fontWeight: '500' };
+  correctIcon: TextStyle & { fontWeight: 'bold' };
+  incorrectIcon: TextStyle & { fontWeight: 'bold' };
+  feedbackContainer: ViewStyleWithBorder;
+  feedbackText: TextStyle;
+  topicSelectorContainer: ViewStyle;
+  topicLabel: TextStyle;
+  topicScroll: ViewStyle;
+  topicButton: ViewStyle;
+  selectedTopicButton: ViewStyle;
+  topicButtonText: TextStyle & { fontWeight: '500' };
+  selectedTopicButtonText: TextStyle;
+  completionContainer: ViewStyleWithShadow;
+  completionText: TextStyle & { fontWeight: '500' };
+  completionNote: TextStyle;
+  disabledOption: ViewStyle;
+}
+
+const styles = StyleSheet.create<Styles>({
   container: {
     flex: 1,
     backgroundColor: '#f9fafb',
