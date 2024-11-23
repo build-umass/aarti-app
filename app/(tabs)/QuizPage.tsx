@@ -1,7 +1,7 @@
 import React from 'react';
 import { useState } from 'react';
 import { StyleSheet, ViewStyle, TextStyle, Text, View, Pressable, ScrollView, PressableStateCallbackType } from 'react-native';
-import { Bookmark } from 'lucide-react-native';
+import { Bookmark as BookmarkIcon } from 'lucide-react-native';
 
 interface QuizItem {
   id: number;
@@ -15,6 +15,10 @@ interface QuizItem {
 
 interface SelectedAnswers {
   [key: number]: string;
+}
+
+interface BookmarkedQuestions {
+  [key: number]: boolean;
 }
 
 const quizData: QuizItem[] = [
@@ -83,12 +87,19 @@ export default function QuizPage() {
   const [hasStarted, setHasStarted] = useState<boolean>(false);
   const [selectedTopic, setSelectedTopic] = useState<string>('All');
   const [completedQuestions, setCompletedQuestions] = useState<Set<number>>(new Set());
+  const [bookmarkedQuestions, setBookmarkedQuestions] = useState<BookmarkedQuestions>({});
 
-  const topics: string[] = ['All', ...new Set(quizData.map(quiz => quiz.topic))];
+  const topics: string[] = ['All', 'Bookmarked', ...new Set(quizData.map(quiz => quiz.topic))];
 
-  const filteredQuizData: QuizItem[] = selectedTopic === 'All' 
-    ? quizData 
-    : quizData.filter(quiz => quiz.topic === selectedTopic);
+  const filteredQuizData: QuizItem[] = React.useMemo(() => {
+    if (selectedTopic === 'All') {
+      return quizData;
+    }
+    if (selectedTopic === 'Bookmarked') {
+      return quizData.filter(quiz => bookmarkedQuestions[quiz.id]);
+    }
+    return quizData.filter(quiz => quiz.topic === selectedTopic);
+  }, [selectedTopic, bookmarkedQuestions]);
 
   const calculateProgress = () => {
     if (!hasStarted) return 0;
@@ -132,10 +143,16 @@ export default function QuizPage() {
     setExpandedQuestion(expandedQuestion === questionId ? null : questionId);
   };
 
+  const toggleBookmark = (questionId: number): void => {
+    setBookmarkedQuestions(prev => ({
+      ...prev,
+      [questionId]: !prev[questionId]
+    }));
+  };
+
   return (
     <ScrollView style={styles.container}>
       <View style={styles.content}>
-        {/* Add Topic Selector */}
         <View style={styles.topicSelectorContainer}>
           <Text style={styles.topicLabel}>Select Topic:</Text>
           <ScrollView 
@@ -163,7 +180,6 @@ export default function QuizPage() {
           </ScrollView>
         </View>
 
-        {/* Modified Progress section */}
         <View style={styles.progressContainer}>
           <Text style={styles.progressText}>
             {calculateProgress()}%
@@ -178,7 +194,6 @@ export default function QuizPage() {
           </View>
         </View>
 
-        {/* Modified completion status */}
         <View style={styles.completionContainer}>
           <Text style={styles.completionText}>
             Questions completed: {getCompletedCount()}/{filteredQuizData.length}
@@ -190,7 +205,6 @@ export default function QuizPage() {
           )}
         </View>
 
-        {/* Questions - now using filteredQuizData */}
         {filteredQuizData.map((quiz) => (
           <View key={quiz.id} style={styles.questionContainer}>
             <Pressable
@@ -199,7 +213,19 @@ export default function QuizPage() {
             >
               <Text style={styles.questionTitle}>{quiz.title}</Text>
               <View style={styles.iconContainer}>
-                <Bookmark size={20} color="#9ca3af" />
+                <Pressable 
+                  onPress={(e) => {
+                    e.stopPropagation();
+                    toggleBookmark(quiz.id);
+                  }}
+                  hitSlop={8}
+                >
+                  <BookmarkIcon 
+                    size={20} 
+                    color={bookmarkedQuestions[quiz.id] ? '#fbbf24' : '#9ca3af'}
+                    fill={bookmarkedQuestions[quiz.id] ? '#fbbf24' : 'transparent'}
+                  />
+                </Pressable>
               </View>
             </Pressable>
             
@@ -248,7 +274,6 @@ export default function QuizPage() {
           </View>
         ))}
 
-        {/* Back button */}
         <Pressable style={styles.backButton}>
           <Text style={styles.icon}>←</Text>
         </Pressable>
@@ -294,6 +319,13 @@ interface Styles {
   completionText: TextStyle & { fontWeight: '500' };
   completionNote: TextStyle;
   disabledOption: ViewStyle;
+  bookmarkButton: ViewStyle;
+  bookmarkedIcon: TextStyle;
+  bookmarkedSection: ViewStyle;
+  sectionTitle: TextStyle & { fontWeight: '600' };
+  bookmarkedItem: ViewStyleWithShadow;
+  bookmarkedTitle: TextStyle & { fontWeight: '500' };
+  bookmarkedQuestion: TextStyle;
 }
 
 const styles = StyleSheet.create<Styles>({
@@ -493,5 +525,41 @@ const styles = StyleSheet.create<Styles>({
   },
   disabledOption: {
     opacity: 0.7,
+  },
+  bookmarkButton: {
+    padding: 8,
+  },
+  bookmarkedIcon: {
+    color: '#fbbf24',
+  },
+  bookmarkedSection: {
+    marginBottom: 24,
+  },
+  sectionTitle: {
+    fontSize: 18,
+    fontWeight: '600',
+    color: '#1f2937',
+    marginBottom: 12,
+  },
+  bookmarkedItem: {
+    backgroundColor: 'white',
+    borderRadius: 8,
+    padding: 12,
+    marginBottom: 8,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.05,
+    shadowRadius: 1,
+    elevation: 1,
+  },
+  bookmarkedTitle: {
+    fontSize: 16,
+    fontWeight: '500',
+    color: '#374151',
+    marginBottom: 4,
+  },
+  bookmarkedQuestion: {
+    fontSize: 14,
+    color: '#6b7280',
   },
 });
