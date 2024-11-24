@@ -41,6 +41,16 @@ export default function TabLayout() {
           ),
         }}
       />
+      <Tabs.Screen
+        name="Resources"
+        options={{
+          title: "",
+          tabBarIcon: ({ color, focused }) => (
+            <TabBarIcon name={focused ? 'book' : 'book-outline'} color={color} />
+          ),
+        }}
+      />
+
     </Tabs>
   );
 }
