@@ -78,6 +78,10 @@ export const mainResource: MockResource[] = [
             {
                 "header": "Future of AI",
                 "content": "The future of AI holds promise for advancements in natural language understanding, robotics, and predictive analytics. As AI systems evolve, ethical considerations such as privacy, bias, and accountability become increasingly important to address."
+            },
+            {
+                "header": "Future of AI",
+                "content": "The future of AI holds promise for advancements in natural language understanding, robotics, and predictive analytics. As AI systems evolve, ethical considerations such as privacy, bias, and accountability become increasingly important to address."
             }
         ]
     },
@@ -96,6 +100,28 @@ export const mainResource: MockResource[] = [
             {
                 "header": "Overcoming Procrastination",
                 "content": "Procrastination can undermine your efforts to manage time effectively. To combat this, break tasks into smaller, manageable parts, set deadlines, and reward yourself for completing milestones. Developing a routine can also help you stay consistent."
+            }
+        ]
+    },
+    {
+        "id": "5",
+        "title": "World War II: A Comprehensive Overview",
+        "sections": [
+            {
+                "header": "The Causes of World War II",
+                "content": "World War II, which lasted from 1939 to 1945, was triggered by a complex web of factors, including the harsh terms of the Treaty of Versailles, the rise of authoritarian regimes in Germany, Italy, and Japan, and the global economic instability of the Great Depression. The aggressive expansionist policies of Adolf Hitler and the failure of appeasement further set the stage for global conflict."
+            },
+            {
+                "header": "Key Events and Turning Points",
+                "content": "World War II began with Germany's invasion of Poland in September 1939, prompting Britain and France to declare war. Major turning points included the Battle of Britain in 1940, the invasion of the Soviet Union in 1941, and the attack on Pearl Harbor, which brought the United States into the war. The Allied victory in the Battle of Stalingrad and the D-Day invasion of Normandy in 1944 marked significant shifts in the war's trajectory."
+            },
+            {
+                "header": "The End of the War",
+                "content": "The war in Europe ended in May 1945 with Germany's unconditional surrender following the fall of Berlin. In the Pacific, the conflict concluded after the United States dropped atomic bombs on Hiroshima and Nagasaki in August 1945, forcing Japan's surrender. The aftermath of the war reshaped global politics, leading to the establishment of the United Nations and the beginning of the Cold War."
+            },
+            {
+                "header": "The Impact of World War II",
+                "content": "World War II resulted in an estimated 70-85 million fatalities, making it the deadliest conflict in human history. It caused widespread devastation across Europe and Asia and led to significant social, economic, and technological changes. The war also paved the way for decolonization movements and set the foundation for international human rights initiatives."
             }
         ]
     }

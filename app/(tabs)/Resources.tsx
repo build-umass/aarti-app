@@ -2,7 +2,7 @@
 // npm install @react-navigation/native-stack @react-navigation/native
 
 import React from 'react';
-import { View, Text, TouchableOpacity, StyleSheet, FlatList } from 'react-native';
+import { View, Text, TouchableOpacity, StyleSheet, FlatList, ScrollView } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { resources } from '@/mockData/resourcesMockData';
@@ -56,20 +56,23 @@ const ResourceDetailsScreen: React.FC<any> = ({ route }) => {
   const { resource } : {resource : MockResource} = route.params;
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.detailsTitle}>{resource.title}</Text>
-      {/* <Text style={styles.content}>{resource.content}</Text> */}
-      <View>
-        {/* container of all sections */}
-        {resource.sections.map( (s, index) => (
-          <View style={styles.sectionContainer}>
-            <Text style={styles.sectionHeader}>{index + 1}.{s.header}</Text>
-            <Text style={styles.sectionContent}>{s.content}</Text>
-          </View>
-        ))}
+    <ScrollView>
+      <View style={styles.container}>
+        <Text style={styles.detailsTitle}>{resource.title}</Text>
+        {/* <Text style={styles.content}>{resource.content}</Text> */}
+        <View>
+          {/* container of all sections */}
+          {resource.sections.map( (s, index) => (
+            <View style={styles.sectionContainer}>
+              <Text style={styles.sectionHeader}>{index + 1}.{s.header}</Text>
+              <Text style={styles.sectionContent}>{s.content}</Text>
+            </View>
+          ))}
 
+        </View>
+        
       </View>
-    </View>
+    </ScrollView>
   );
 };
 
@@ -109,6 +112,7 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#fff',
     padding: 15,
+    height: '100%',
   },
   listContainer:{
      // flex : 1,
