@@ -5,7 +5,9 @@ import React from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, FlatList } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-
+import { resources } from '@/mockData/resourcesMockData';
+import { mainResource } from '@/mockData/resourcesMockData';
+import { MockResource } from '@/mockData/resourcesMockData';
 // Type definitions
 interface Resource {
   id: string;
@@ -13,23 +15,19 @@ interface Resource {
   content: string;
 }
 
+
 type RootStackParamList = {
   Resources: undefined;
-  ResourceDetails: { resource: Resource };
+  ResourceDetails: { resource: MockResource };
 };
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
-// Sample data
-const resources: Resource[] = [
-  { id: '1', title: 'Resource 1', content: 'Detailed content for getting started...' },
-  { id: '2', title: 'Resource 2', content: 'Best practices for development...' },
-  { id: '3', title: 'Resource 3', content: 'Complete API documentation...' },
-];
+// Mock data
 
 // Resources List Screen
 const ResourcesScreen: React.FC<any> = ({ navigation }) => {
-  const renderResource = ({ item }: { item: Resource }) => (
+  const renderResource = ({ item }: { item: MockResource }) => (
     <TouchableOpacity
       style={styles.resourceItem}
       onPress={() => navigation.navigate('ResourceDetails', { resource: item })}
@@ -42,23 +40,35 @@ const ResourcesScreen: React.FC<any> = ({ navigation }) => {
   return (
     <View style={styles.container}>
       <FlatList
-        data={resources}
+        data={mainResource}
         renderItem={renderResource}
         keyExtractor={(item) => item.id}
         ItemSeparatorComponent={() => <View style={styles.separator} />}
+        contentContainerStyle={styles.listContainer}
       />
     </View>
   );
 };
 
 // Resource Details Screen
+//TODO: change style here appropriately
 const ResourceDetailsScreen: React.FC<any> = ({ route }) => {
-  const { resource } = route.params;
+  const { resource } : {resource : MockResource} = route.params;
 
   return (
     <View style={styles.container}>
       <Text style={styles.detailsTitle}>{resource.title}</Text>
-      <Text style={styles.content}>{resource.content}</Text>
+      {/* <Text style={styles.content}>{resource.content}</Text> */}
+      <View>
+        {/* container of all sections */}
+        {resource.sections.map( (s, index) => (
+          <View style={styles.sectionContainer}>
+            <Text style={styles.sectionHeader}>{index + 1}.{s.header}</Text>
+            <Text style={styles.sectionContent}>{s.content}</Text>
+          </View>
+        ))}
+
+      </View>
     </View>
   );
 };
@@ -73,9 +83,9 @@ const Resources: React.FC = () => {
           options={{
             title: 'Resources',
             headerStyle: {
-              backgroundColor: '#f4511e',
+              backgroundColor: '#5F2446',
             },
-            headerTintColor: '#fff',
+            headerTintColor: '#E0C692',
           }}
         />
         <Stack.Screen 
@@ -84,9 +94,9 @@ const Resources: React.FC = () => {
           options={({ route }) => ({ 
             title: route.params.resource.title,
             headerStyle: {
-              backgroundColor: '#f4511e',
+              backgroundColor: '#5F2446',
             },
-            headerTintColor: '#fff',
+            headerTintColor: '#E0C692',
           })}
         />
       </Stack.Navigator>
@@ -100,15 +110,38 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     padding: 15,
   },
+  listContainer:{
+     // flex : 1,
+     backgroundColor: '#FFFFFF',
+     // backgroundColor: '#F0FFF0',
+     height: '100%',
+     // justifyContent: 'space-evenly',
+     // alignItems: 'center',
+  },
   resourceItem: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
     paddingVertical: 15,
+    
   },
   resourceTitle: {
-    fontSize: 16,
     flex: 1,
+    color: '#2270CA',
+    fontSize: 25,
+  },
+
+  sectionContainer:{
+    padding: 10
+  },
+  sectionHeader:{
+    fontSize: 20,
+    fontWeight: 'bold',
+    marginBottom: 10,
+  },
+  sectionContent:{
+    fontSize: 16,
+    lineHeight: 24,
   },
   arrow: {
     fontSize: 18,
