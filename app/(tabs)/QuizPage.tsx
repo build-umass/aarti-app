@@ -274,9 +274,7 @@ export default function QuizPage() {
           </View>
         ))}
 
-        <Pressable style={styles.backButton}>
-          <Text style={styles.icon}>←</Text>
-        </Pressable>
+        
       </View>
     </ScrollView>
   );
