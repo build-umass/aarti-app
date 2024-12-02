@@ -1,13 +1,15 @@
-import { Image, StyleSheet, Platform } from 'react-native';
-
-import { HelloWave } from '@/components/HelloWave';
-import ParallaxScrollView from '@/components/ParallaxScrollView';
-import { ThemedText } from '@/components/ThemedText';
-import { ThemedView } from '@/components/ThemedView';
 import NameInput from '@/components/NameInput';
+import NameInput2 from '@/components/NameInput2';
+import DataUpdateExample from '@/components/DataUpdateExample';
+import RefreshButton from '@/components/RefreshButton';
 
 export default function HomeScreen() {
   return (
-    <NameInput />
+    <>
+      <NameInput />
+      <NameInput2 />
+      <DataUpdateExample />
+      <RefreshButton />
+    </>
   );
 }

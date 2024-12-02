@@ -51,13 +51,22 @@ Join our community of developers creating universal apps.
 
 
 ## Compatability Notes
+for apple:
 had to install rbenv (openssl is deprecated) to install ruby >3.1.0 (3.2.2 for apple silicon) to install a newer version of cocoapods
 But it also requires xcode to be installed and I don't have enough space on my mac personally for that, so I skipped the IOS and just ran android
 But that's an issue for react-native-mmkv so I downgraded that to 2.10.1 so I could showcase local storage. But it is possible that we go back and upgrade in order to have ios demo available as well
 had to upgrade a couple react native packages for compatability (probably not necessary)
 had to add some lines to android gradle files in android/app/build.gradle and android/settings.gradle
-then you have to npx prebuild cd 
+then you have to 
+```
+npx prebuild cd 
 android && ./gradlew clean && cd ..
 then npx expo run:android
+```
 
-coding in this repository is like trying to catch a lubed up hog in the dark while wearing roller blades, we should probably dockerize it sometime soon
+warning: this process takes an apple silicon chip around 4-9 minutes so... yikes.
+
+to be able to refresh the app using Refresh button you must not use a production release, so start the app with this command
+```npx expo run:android --variant Release```
+
+coding in this repository is like trying to catch a lubed up hog in the dark wearing roller blades, we should probably dockerize it sometime soon

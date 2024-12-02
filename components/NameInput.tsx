@@ -1,9 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { View, TextInput, Button, Text, StyleSheet } from 'react-native';
-import { MMKV } from 'react-native-mmkv';
-
-// Initialize MMKV storage
-const storage = new MMKV();
+import { storage } from '@/constants/Storage';
 
 export default function NameInput() {
   const [inputName, setInputName] = useState('');
