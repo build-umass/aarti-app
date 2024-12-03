@@ -2,6 +2,7 @@ import React from 'react';
 import { useState } from 'react';
 import { StyleSheet, ViewStyle, TextStyle, Text, View, Pressable, ScrollView, PressableStateCallbackType } from 'react-native';
 import { Bookmark as BookmarkIcon } from 'lucide-react-native';
+import { MMKV } from 'react-native-mmkv';
 
 interface QuizItem {
   id: number;
@@ -81,13 +82,23 @@ interface ViewStyleWithBorder extends ViewStyle {
   borderLeftColor?: string;
 }
 
+// Initialize MMKV storage
+const storage = new MMKV();
+
 export default function QuizPage() {
   const [selectedAnswers, setSelectedAnswers] = useState<SelectedAnswers>({});
   const [expandedQuestion, setExpandedQuestion] = useState<number | null>(null);
   const [hasStarted, setHasStarted] = useState<boolean>(false);
   const [selectedTopic, setSelectedTopic] = useState<string>('All');
   const [completedQuestions, setCompletedQuestions] = useState<Set<number>>(new Set());
-  const [bookmarkedQuestions, setBookmarkedQuestions] = useState<BookmarkedQuestions>({});
+
+  // Load bookmarked questions from MMKV
+  const loadBookmarkedQuestions = (): BookmarkedQuestions => {
+    const storedBookmarks = storage.getString('bookmarkedQuestions');
+    return storedBookmarks ? JSON.parse(storedBookmarks) : {};
+  };
+
+  const [bookmarkedQuestions, setBookmarkedQuestions] = useState<BookmarkedQuestions>(loadBookmarkedQuestions());
 
   const topics: string[] = ['All', 'Bookmarked', ...new Set(quizData.map(quiz => quiz.topic))];
 
@@ -144,10 +155,13 @@ export default function QuizPage() {
   };
 
   const toggleBookmark = (questionId: number): void => {
-    setBookmarkedQuestions(prev => ({
-      ...prev,
-      [questionId]: !prev[questionId]
-    }));
+    const updatedBookmarks = {
+      ...bookmarkedQuestions,
+      [questionId]: !bookmarkedQuestions[questionId]
+    };
+    setBookmarkedQuestions(updatedBookmarks);
+    // Save updated bookmarks to MMKV
+    storage.set('bookmarkedQuestions', JSON.stringify(updatedBookmarks));
   };
 
   return (
