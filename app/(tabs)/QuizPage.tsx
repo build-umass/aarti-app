@@ -82,8 +82,10 @@ interface ViewStyleWithBorder extends ViewStyle {
   borderLeftColor?: string;
 }
 
-// Initialize MMKV storage
+// Initialize MMKV storage for general use
 const storage = new MMKV();
+// Initialize MMKV storage specifically for bookmarked questions
+const bookmarkedQuestionsStorage = new MMKV();
 
 export default function QuizPage() {
   const [selectedAnswers, setSelectedAnswers] = useState<SelectedAnswers>({});
@@ -92,9 +94,9 @@ export default function QuizPage() {
   const [selectedTopic, setSelectedTopic] = useState<string>('All');
   const [completedQuestions, setCompletedQuestions] = useState<Set<number>>(new Set());
 
-  // Load bookmarked questions from MMKV
+  // Load bookmarked questions from the dedicated storage
   const loadBookmarkedQuestions = (): BookmarkedQuestions => {
-    const storedBookmarks = storage.getString('bookmarkedQuestions');
+    const storedBookmarks = bookmarkedQuestionsStorage.getString('bookmarkedQuestions');
     return storedBookmarks ? JSON.parse(storedBookmarks) : {};
   };
 
@@ -160,8 +162,8 @@ export default function QuizPage() {
       [questionId]: !bookmarkedQuestions[questionId]
     };
     setBookmarkedQuestions(updatedBookmarks);
-    // Save updated bookmarks to MMKV
-    storage.set('bookmarkedQuestions', JSON.stringify(updatedBookmarks));
+    // Save updated bookmarks to the dedicated MMKV storage
+    bookmarkedQuestionsStorage.set('bookmarkedQuestions', JSON.stringify(updatedBookmarks));
   };
 
   return (
