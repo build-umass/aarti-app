@@ -48,3 +48,95 @@ Join our community of developers creating universal apps.
 
 - [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
 - [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+
+
+
+```ts
+
+// apps/client/context/AuthContext.tsx
+
+import React, { createContext, useContext, useState, useEffect } from 'react';
+import { userService } from '@/services/userService';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { IMinimalUser } from '@middle/types';
+
+interface AuthContextProps {
+  user: IMinimalUser | null;
+  login: (email: string, password: string) => Promise<void>;
+  logout: () => void;
+}
+
+const AuthContext = createContext<AuthContextProps>({
+  user: null,
+  login: async () => {},
+  logout: () => {},
+});
+
+export function AuthProvider({ children }: { children: React.ReactNode }) {
+  const [user, setUser] = useState<IMinimalUser | null>(null);
+
+  useEffect(() => {
+    // Attempt to load user from storage
+    (async () => {
+      const storedUser = await AsyncStorage.getItem('user');
+      if (storedUser) {
+        setUser(JSON.parse(storedUser));
+      }
+    })();
+  }, []);
+
+  async function login(email: string, password: string) {
+    // userService.login() => returns { token, user: IMinimalUser }
+    const { user: userData, token } = await userService.login({ email, password });
+
+    // Store user & token in local storage
+    await AsyncStorage.setItem('token', token);
+    await AsyncStorage.setItem('user', JSON.stringify(userData));
+
+    setUser(userData);
+  }
+
+  async function logout() {
+    await AsyncStorage.removeItem('user');
+    await AsyncStorage.removeItem('token');
+    setUser(null);
+  }
+
+  return (
+    <AuthContext.Provider value={{ user, login, logout }}>
+      {children}
+    </AuthContext.Provider>
+  );
+}
+
+/** Helper hook to use the AuthContext values */
+export function useAuth() {
+  return useContext(AuthContext);
+}
+// apps/client/app/_layout.tsx
+import React from 'react';
+import { Slot, Stack } from 'expo-router';
+import { AuthProvider } from '@/context/AuthContext';
+
+/**
+ * Root layout. 
+ * We wrap the entire app in an AuthProvider context so we can handle user authentication across screens.
+ */
+export default function Layout() {
+  return (
+    <AuthProvider>
+      {/* 
+        Slot is where nested routes will be rendered.
+        By default, everything in app/(tabs) or app/auth 
+        will appear in this <Slot /> if their layout doesn’t override it.
+      */}
+      <Stack>
+        <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+        <Stack.Screen name="auth/login" options={{ title: 'Login' }} />
+        <Stack.Screen name="auth/register" options={{ title: 'Register' }} />
+      </Stack>
+    </AuthProvider>
+  );
+}
+
+```
