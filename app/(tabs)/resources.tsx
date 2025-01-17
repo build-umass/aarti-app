@@ -3,7 +3,6 @@
 
 import React from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, FlatList, ScrollView } from 'react-native';
-import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { resources } from '@/mockData/resourcesMockData';
 import { mainResource } from '@/mockData/resourcesMockData';
@@ -21,8 +20,7 @@ type RootStackParamList = {
   ResourceDetails: { resource: MockResource };
 };
 
-const Stack = createNativeStackNavigator<RootStackParamList>();
-
+const Stack = createNativeStackNavigator<RootStackParamList>(); //passing in the RootStackParamList means that the Stack later will have 2 screens, one is Resources and one is ResourcesDetail screen
 // Mock data
 
 // Resources List Screen
@@ -51,7 +49,6 @@ const ResourcesScreen: React.FC<any> = ({ navigation }) => {
 };
 
 // Resource Details Screen
-//TODO: change style here appropriately
 const ResourceDetailsScreen: React.FC<any> = ({ route }) => {
   const { resource } : {resource : MockResource} = route.params;
 
@@ -76,17 +73,20 @@ const ResourceDetailsScreen: React.FC<any> = ({ route }) => {
   );
 };
 
-const Resources: React.FC = () => {
+const Resources = () => {
   return (
-    <NavigationContainer independent={true}>
-      <Stack.Navigator>
+      <Stack.Navigator 
+        screenOptions={ {
+          headerShown: false
+        }}
+      >
         <Stack.Screen 
           name="Resources" 
           component={ResourcesScreen}
           options={{
-            title: 'Resources',
+            title: '',
             headerStyle: {
-              backgroundColor: '#5F2446',
+              backgroundColor: '#FFFFFF',
             },
             headerTintColor: '#E0C692',
           }}
@@ -95,15 +95,15 @@ const Resources: React.FC = () => {
           name="ResourceDetails" 
           component={ResourceDetailsScreen}
           options={({ route }) => ({ 
-            title: route.params.resource.title,
+            title: route.params.resource.title, //!ResourceDetails is defined as {resource : MockResource} so we can access it as route.param.resource, MockResource has a title attribute so we can access it as normal
             headerStyle: {
               backgroundColor: '#5F2446',
             },
             headerTintColor: '#E0C692',
+            headerShown : true
           })}
         />
       </Stack.Navigator>
-    </NavigationContainer>
   );
 };
 
