@@ -14,10 +14,9 @@ interface Resource {
   content: string;
 }
 
-
 type RootStackParamList = {
   Resources: undefined;
-  ResourceDetails: { resource: MockResource };
+  ResourceDetails: { resource: MockResource }; //include a parameter resource when accessing the route
 };
 
 const Stack = createNativeStackNavigator<RootStackParamList>(); //passing in the RootStackParamList means that the Stack later will have 2 screens, one is Resources and one is ResourcesDetail screen
@@ -80,16 +79,17 @@ const Resources = () => {
           headerShown: false
         }}
       >
+        //!First screen, also the root screen
         <Stack.Screen 
           name="Resources" 
           component={ResourcesScreen}
-          options={{
-            title: '',
-            headerStyle: {
-              backgroundColor: '#FFFFFF',
-            },
-            headerTintColor: '#E0C692',
-          }}
+          // options={{
+          //   title: '',
+          //   headerStyle: {
+          //     backgroundColor: '#FFFFFF',
+          //   },
+          //   headerTintColor: '#E0C692',
+          // }}
         />
         <Stack.Screen 
           name="ResourceDetails" 
