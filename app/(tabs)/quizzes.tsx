@@ -1,7 +1,6 @@
 import React from 'react';
 import { useState } from 'react';
 import { StyleSheet, ViewStyle, TextStyle, Text, View, Pressable, ScrollView, PressableStateCallbackType } from 'react-native';
-import { Bookmark as BookmarkIcon } from 'lucide-react-native';
 import { MMKV } from 'react-native-mmkv';
 
 interface QuizItem {
@@ -291,11 +290,11 @@ export default function QuizPage() {
                   }}
                   hitSlop={8}
                 >
-                  <BookmarkIcon 
+                  {/* <Image 
                     size={20} 
                     color={bookmarkedQuestions[quiz.id] ? '#fbbf24' : '#9ca3af'}
                     fill={bookmarkedQuestions[quiz.id] ? '#fbbf24' : 'transparent'}
-                  />
+                  /> */}
                 </Pressable>
               </View>
             </Pressable>
