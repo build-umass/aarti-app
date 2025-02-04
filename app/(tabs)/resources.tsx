@@ -79,7 +79,7 @@ const Resources = () => {
           headerShown: false
         }}
       >
-        //!First screen, also the root screen
+        {/* !First screen, also the root screen */}
         <Stack.Screen 
           name="Resources" 
           component={ResourcesScreen}
