@@ -2,6 +2,7 @@ import React from 'react';
 import { useState } from 'react';
 import { StyleSheet, ViewStyle, TextStyle, Text, View, Pressable, ScrollView, PressableStateCallbackType } from 'react-native';
 import { MMKV } from 'react-native-mmkv';
+import Ionicons from '@expo/vector-icons/Ionicons';
 
 interface QuizItem {
   id: number;
@@ -290,11 +291,11 @@ export default function QuizPage() {
                   }}
                   hitSlop={8}
                 >
-                  {/* <Image 
-                    size={20} 
-                    color={bookmarkedQuestions[quiz.id] ? '#fbbf24' : '#9ca3af'}
-                    fill={bookmarkedQuestions[quiz.id] ? '#fbbf24' : 'transparent'}
-                  /> */}
+                  {<Ionicons  // Use the imported Icon
+        name={bookmarkedQuestions[quiz.id] ? 'bookmark' : 'bookmark-outline'} // Example: MaterialIcons bookmark and bookmark-border
+        size={20} // Adjust the size as needed
+        color={bookmarkedQuestions[quiz.id] ? '#fbbf24' : '#9ca3af'} // Set the color
+    /> }
                 </Pressable>
               </View>
             </Pressable>
