@@ -82,24 +82,6 @@ export default function TabLayout() {
         }}
       />
       <Tabs.Screen
-      name="profile"
-      options={{
-        tabBarLabel: "Profile",
-        tabBarIcon: ({ color }) => (
-            <Feather name="user" size={ICON_SIZE} color = {color} />
-        ),
-        header: () => (
-          <View style={styles.customHeader}>
-            <Text style={styles.headerText}>Profile</Text>
-            <Image 
-              source={require('../../assets/images/aarti-logo.png')}
-              style={styles.logo}
-            />
-          </View>
-        )
-      }}
-    />
-    <Tabs.Screen
         name="chatbot"
         options={{
           tabBarLabel: "Chat",
@@ -117,6 +99,24 @@ export default function TabLayout() {
           )
         }}
       />
+      <Tabs.Screen
+      name="profile"
+      options={{
+        tabBarLabel: "Profile",
+        tabBarIcon: ({ color }) => (
+            <Feather name="user" size={ICON_SIZE} color = {color} />
+        ),
+        header: () => (
+          <View style={styles.customHeader}>
+            <Text style={styles.headerText}>Profile</Text>
+            <Image 
+              source={require('../../assets/images/aarti-logo.png')}
+              style={styles.logo}
+            />
+          </View>
+        )
+      }}
+    />
     </Tabs>
   );
 }
