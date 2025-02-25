@@ -30,7 +30,14 @@
     },
     "plugins": [
       "expo-router",
-      "expo-font"
+      "expo-font",
+      ["expo-splash-screen",
+        {
+          "backgroundColor": "#5f2446",
+          "image": "assets/images/aarti-logo.png",
+          "imageWidth": 170
+        }
+      ]
     ],
     "experiments": {
       "typedRoutes": true
