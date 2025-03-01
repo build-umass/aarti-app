@@ -4,21 +4,16 @@
     "slug": "aarti-app",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/images/icon.png",
+    "icon": "./assets/images/aarti-logo-app-icon.png",
     "scheme": "myapp",
     "userInterfaceStyle": "automatic",
-    "splash": {
-      "image": "./assets/images/splash.png",
-      "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
-    },
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "com.romanobro.aartiapp"
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/images/adaptive-icon.png",
+        "foregroundImage": "./assets/images/aarti-logo-android-adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
       "package": "com.romanobro.aartiapp"
@@ -30,7 +25,14 @@
     },
     "plugins": [
       "expo-router",
-      "expo-font"
+      "expo-font",
+      ["expo-splash-screen",
+        {
+          "backgroundColor": "#5f2446",
+          "image": "assets/images/aarti-logo-splash-icon-2.png",
+          "imageWidth": 200
+        }
+      ]
     ],
     "experiments": {
       "typedRoutes": true
