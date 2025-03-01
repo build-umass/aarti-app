@@ -10,16 +10,8 @@ import { Textarea } from '@/components/ui/textarea';
 import { Plus, Minus, Save, Edit, X } from 'lucide-react';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
+import { QuizItem } from '../../../../packages/types/quiz';
 
-interface QuizItem {
-  id: number;
-  topic: string;
-  title: string;
-  question: string;
-  options: string[];
-  correctAnswer: string;
-  feedback: string;
-}
 
 export default function QuizzesPage() {
   const [quizzes, setQuizzes] = useState<QuizItem[]>([
