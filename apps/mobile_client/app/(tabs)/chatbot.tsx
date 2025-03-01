@@ -1,10 +1,12 @@
-import { Image, StyleSheet, Platform, View, Text } from 'react-native';
+import React from 'react';
+import { SafeAreaView, StyleSheet, View, Text } from 'react-native';
+import ChatScreen from '../../components/ChatScreen';
 
 export default function ChatBotScreen() {
   return (
-    <View style={styles.container}>
-      <Text>This is a chatbot screen</Text>
-    </View>
+    <SafeAreaView style={styles.container}>
+      <ChatScreen />
+    </SafeAreaView>
   );
 }
 
@@ -12,7 +14,5 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: 'white',
-    alignItems: 'center',
-    justifyContent: 'center',
   },
 });
