@@ -11,20 +11,12 @@ import { Plus, Minus, Save, Edit, X } from 'lucide-react';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { QuizItem } from '../../../../packages/types/quiz';
+import quizDataFile from '../../assets/quizData.json'
+
 
 
 export default function QuizzesPage() {
-  const [quizzes, setQuizzes] = useState<QuizItem[]>([
-    {
-      id: 1,
-      topic: "Geography",
-      title: "Capital Cities",
-      question: "What is the capital of France?",
-      options: ["London", "Berlin", "Paris", "Madrid"],
-      correctAnswer: "Paris",
-      feedback: "Excellent! Paris is indeed the capital of France, known for its iconic Eiffel Tower and rich cultural heritage."
-    }
-  ]);
+  const [quizzes, setQuizzes] = useState<QuizItem[]>(quizDataFile.quizzes);
 
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [options, setOptions] = useState<string[]>(['', '', '', '']);
