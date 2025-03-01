@@ -4,15 +4,7 @@ import { StyleSheet, ViewStyle, TextStyle, Text, View, Pressable, ScrollView, Pr
 import { MMKV } from 'react-native-mmkv';
 import Ionicons from '@expo/vector-icons/Ionicons';
 
-interface QuizItem {
-  id: number;
-  topic: string;
-  title: string;
-  question: string;
-  options: string[];
-  correctAnswer: string;
-  feedback: string;
-}
+import { QuizItem } from '../../../../packages/types/quiz';
 
 interface SelectedAnswers {
   [key: number]: string;
