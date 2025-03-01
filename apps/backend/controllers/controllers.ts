@@ -56,3 +56,15 @@ export async function registerUser(req: Request, res: Response) {
     return res.status(500).json({ error: 'Internal server error' });
   }
 }
+
+
+export async function getResources(req: Request, res: Response) {
+  try {
+
+  }
+  catch (error) {
+    console.error('Error at getResources:', error);
+    return res.status(500).json({ error: 'Internal server error' })
+  }
+
+}

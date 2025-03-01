@@ -1,10 +1,10 @@
 // apps/user-service/src/routes/user.routes.ts
 import { Router } from 'express';
 import {
-// user controls
+    // user controls
 } from '../controllers/user.controller';
 import { authenticateToken } from '@middle/utils';
-import { googleAuthCallbackController } from '../controllers/user.controller';
+import { googleAuthCallbackController, getResources } from '../controllers/controllers';
 
 const router = Router();
 
@@ -36,5 +36,8 @@ router.get('/verify-email', verifyEmailController as any);
 router.get('/upload-url', authenticateToken, getUploadUrlController as any);
 router.post('/profile-image', authenticateToken, updateUserProfileImageController as any);
 
+
+//Route for Resources
+router.get('api/resource', getResources);
 
 export default router;
