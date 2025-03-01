@@ -6,7 +6,7 @@ import { View, Text, TouchableOpacity, StyleSheet, FlatList, ScrollView } from '
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { resources } from '@/mockData/resourcesMockData';
 import { mainResource } from '@/mockData/resourcesMockData';
-import { MockResource } from '@/mockData/resourcesMockData';
+import { MockResource } from '../../../../packages/types/resource';
 // Type definitions
 interface Resource {
   id: string;

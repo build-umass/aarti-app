@@ -1,3 +1,4 @@
+import { MockResource, Section } from '../../../packages/types/resource'
 interface Resource {
     id: string;
     title: string;
@@ -12,17 +13,6 @@ export const resources: Resource[] = [
     { id: '2', title: 'Resource 2', content: 'Best practices for development...' },
     { id: '3', title: 'Resource 3', content: 'Complete API documentation...' },
 ];
-
-export interface Section {
-    header: string;
-    content: string;
-}
-
-export interface MockResource {
-    id: string;
-    title: string;
-    sections: Section[];
-}
 
 
 
