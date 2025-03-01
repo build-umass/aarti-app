@@ -1,6 +1,6 @@
 {
   "expo": {
-    "name": "aarti-app",
+    "name": "Aarti",
     "slug": "aarti-app",
     "version": "1.0.0",
     "orientation": "portrait",
@@ -29,8 +29,8 @@
       ["expo-splash-screen",
         {
           "backgroundColor": "#5f2446",
-          "image": "assets/images/aarti-logo-splash-icon-2.png",
-          "imageWidth": 200
+          "image": "assets/images/aarti-logo-splash-icon.png",
+          "imageWidth": 320
         }
       ]
     ],
