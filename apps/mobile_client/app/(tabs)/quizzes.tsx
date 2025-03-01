@@ -3,8 +3,8 @@ import { useState } from 'react';
 import { StyleSheet, ViewStyle, TextStyle, Text, View, Pressable, ScrollView, PressableStateCallbackType } from 'react-native';
 import { MMKV } from 'react-native-mmkv';
 import Ionicons from '@expo/vector-icons/Ionicons';
-
 import { QuizItem } from '../../../../packages/types/quiz';
+import quizDataFile from '../../assets/quizData.json';
 
 interface SelectedAnswers {
   [key: number]: string;
@@ -14,44 +14,7 @@ interface BookmarkedQuestions {
   [key: number]: boolean;
 }
 
-const quizData: QuizItem[] = [
-  {
-    id: 1,
-    topic: "Geography",
-    title: "Capital Cities",
-    question: "What is the capital of France?",
-    options: ["London", "Berlin", "Paris", "Madrid"],
-    correctAnswer: "Paris",
-    feedback: "Paris is the capital and largest city of France, known for its iconic Eiffel Tower and rich cultural heritage."
-  },
-  {
-    id: 2,
-    topic: "Science",
-    title: "Solar System",
-    question: "Which planet is known as the Red Planet?",
-    options: ["Venus", "Mars", "Jupiter", "Saturn"],
-    correctAnswer: "Mars",
-    feedback: "Mars appears red because of iron oxide (rust) on its surface, earning it the nickname 'The Red Planet'."
-  },
-  {
-    id: 3,
-    topic: "Mathematics",
-    title: "Basic Math",
-    question: "What is 2 + 2?",
-    options: ["3", "4", "5", "6"],
-    correctAnswer: "4",
-    feedback: "2 + 2 = 4 is one of the most basic arithmetic equations in mathematics."
-  },
-  {
-    id: 4,
-    topic: "Technology",
-    title: "Programming",
-    question: "Which language is React Native written in?",
-    options: ["Python", "Java", "JavaScript", "C++"],
-    correctAnswer: "JavaScript",
-    feedback: "React Native is written in JavaScript and allows developers to build mobile apps using JavaScript and React."
-  },
-];
+const quizData: QuizItem[] = quizDataFile.quizzes;
 
 interface ShadowOffset {
   width: number;
