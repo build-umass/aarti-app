@@ -1,5 +1,5 @@
 {
-  "name": "aarti-app",
+  "name": "@aarti-app/mobile_client",
   "main": "expo-router/entry",
   "version": "1.0.0",
   "scripts": {

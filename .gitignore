@@ -14,3 +14,5 @@ build
 apps/mobile_client/ios
 apps/mobile_client/android
 apps/mobile_client/.expo
+
+**/.turbo
