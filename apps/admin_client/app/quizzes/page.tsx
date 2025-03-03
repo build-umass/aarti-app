@@ -10,7 +10,7 @@ import { Textarea } from '@/components/ui/textarea';
 import { Plus, Minus, Save, Edit, X } from 'lucide-react';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { QuizItem } from '../../../../packages/types/quiz';
+import { QuizItem } from '@aarti-app/types';
 import quizDataFile from '../../assets/quizData.json'
 
 
