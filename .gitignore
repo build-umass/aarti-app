@@ -1,2 +1,16 @@
+node_modules
+**/node_modules
 packages/types/dist
-packages/types/node_modules
+
+dist
+**/dist
+build
+**/build
+
+.env
+.env.*
+!.env.example
+
+apps/mobile_client/ios
+apps/mobile_client/android
+apps/mobile_client/.expo
