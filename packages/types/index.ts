@@ -6,5 +6,14 @@ export interface QuizItem {
     options: string[];
     correctAnswer: string;
     feedback: string;
-  }
-  
+}
+
+export interface MockResource {
+    id: string;
+    title: string;
+    sections: Section[];
+}
+export interface Section {
+    header: string;
+    content: string;
+}
