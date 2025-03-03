@@ -3,7 +3,7 @@ import { useState } from 'react';
 import { StyleSheet, ViewStyle, TextStyle, Text, View, Pressable, ScrollView, PressableStateCallbackType } from 'react-native';
 import { MMKV } from 'react-native-mmkv';
 import Ionicons from '@expo/vector-icons/Ionicons';
-import { QuizItem } from '../../../../packages/types/quiz';
+import { QuizItem } from '@aarti-app/types';
 import quizDataFile from '../../assets/quizData.json';
 
 interface SelectedAnswers {
