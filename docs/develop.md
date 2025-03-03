@@ -79,3 +79,5 @@ Our app will consist of these main components:
 - resources: text-based resources available in multiple languages provided to us by Aarti home
 - quiz: an interactive learning experience in quiz format to enable learners to inform themselves in an engaging way
 - chatbot: a place you can ask relevant questions and get returned links to the proper resources
+
+Additionally, the admin client (used to put resources and quiz questions in the database for users to view) is a next js project
