@@ -1,6 +1,6 @@
 // apps/user-service/src/app.ts
 import express from 'express';
-import userRoutes from './routes/routes';
+import userRoutes from './routes';
 
 export function createApp() {
   const app = express();
