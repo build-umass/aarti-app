@@ -4,9 +4,12 @@ First, from the root:
 
 ```bash
 npm i
+turbo build
 ```
 
-this will organize all your packages and link the local packages
+`npm i` organizes all your packages and link the local packages
+
+`turbo build` creates the builds for our backend / next / packages in the order that they depend on each other.
 
 ## To run the mobile app:
 
