@@ -21,7 +21,7 @@ This is highly beneficial in that you can ensure safety across the frontend and 
 Once you update types, from the project root run:
 
 ```bash
-turbo build
+npx turbo build
 ```
 
 This will build the types, then your package and it will show you any potential errors (since it is a package, the types definition depend on the output of the build script, rather than the source file. Using turbo speeds up development in a monorepo space, this is one reason we make types a package)

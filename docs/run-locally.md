@@ -4,18 +4,17 @@ First, from the root:
 
 ```bash
 npm i
-turbo build
+npx turbo build
 ```
 
 `npm i` organizes all your packages and link the local packages
 
-`turbo build` creates the builds for our backend / next / packages in the order that they depend on each other.
+`npx turbo build` creates the builds for our backend / next / packages in the order that they depend on each other.
 
 ## To run the mobile app:
 
 ``` bash
 cd apps/mobile_client
-npm i
 ```
 
 1. if you want to run in the android simulator
@@ -43,7 +42,6 @@ npm run dev
 
 ``` bash
 cd apps/admin_client
-npm i
 npm run dev
 ```
 
