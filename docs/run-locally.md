@@ -4,7 +4,7 @@ First, from the root:
 
 ```bash
 npm i
-turbo build
+npx turbo build
 ```
 
 `npm i` organizes all your packages and link the local packages
