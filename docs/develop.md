@@ -66,7 +66,7 @@ Your end result will be a lot cleaner and easier to fix. Refer to the current ap
 
 # Database
 
-### TO DO: mongodb
+We are using mongodb. You can see examples of inserting, searching, deleting and updating database documents in `apps/backend/services.ts`
 
 # Frontend
 

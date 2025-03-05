@@ -8,10 +8,6 @@
             "dependsOn": [
                 "^build"
             ],
-            "inputs": [
-                "!apps/admin_client",
-                "!apps/mobile_client"
-            ],
             "cache": true
         },
         "dev": {

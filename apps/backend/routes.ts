@@ -1,4 +1,3 @@
-// apps/backend/routes.ts
 import { Router } from 'express';
 import {
     // import your controller logic here
