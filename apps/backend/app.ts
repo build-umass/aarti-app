@@ -1,4 +1,3 @@
-// apps/user-service/src/app.ts
 import express from 'express';
 import routes from './routes';
 
