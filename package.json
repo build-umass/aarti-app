@@ -12,12 +12,26 @@
     "packages/*"
   ],
   "scripts": {
-    "dev": "cd apps/backend && npm run dev"
+    "dev": "turbo run dev",
+    "dev:admin": "turbo run dev --filter=@aarti-app/admin_client",
+    "dev:mobile": "turbo run dev --filter=@aarti-app/mobile_client",
+    "dev:backend": "turbo run dev --filter=@aarti-app/backend",
+    "build": "turbo run build",
+    "build:admin": "turbo run build --filter=@aarti-app/admin_client",
+    "build:mobile": "turbo run build --filter=@aarti-app/mobile_client",
+    "build:backend": "turbo run build --filter=@aarti-app/backend",
+    "clean": "rm -rf node_modules",
+    "clean:workspace": "turbo run clean",
+    "clean:all": "rm -rf node_modules **/node_modules"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "devDependencies": {
     "turbo": "^2.4.4"
+  },
+  "resolutions": {
+    "react": "18.3.1",
+    "react-dom": "18.3.1"
   }
 }
