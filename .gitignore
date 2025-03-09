@@ -16,4 +16,3 @@ apps/mobile_client/android
 apps/mobile_client/.expo
 
 **/.turbo
-package-lock.json
