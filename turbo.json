@@ -3,7 +3,9 @@
     "tasks": {
         "build": {
             "outputs": [
-                "dist/**"
+                "dist/**",
+                ".next/**",
+                "!.next/cache/**"
             ],
             "dependsOn": [
                 "^build"
@@ -22,6 +24,9 @@
                 "^build"
             ],
             "outputs": []
+        },
+        "clean": {
+            "cache": false
         }
     },
     "globalDependencies": [
