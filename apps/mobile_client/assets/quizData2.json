@@ -2091,6 +2091,581 @@
         ],
         "correctAnswer": "A place specifically for persons in need of care and protection (like trafficking victims)",
         "feedback": "A protective home is defined as a place intended for individuals who are in need of care and protection, relevant in the context of victims rescued from prostitution or trafficking."
+      },
+      {
+        "id": 154,
+        "topic": "Property rights of Women in Andhra Pradesh",
+        "title": "Ancestral Property Definition",
+        "question": "What is defined as 'ancestral property' in the context of this document?",
+        "options": [
+          "Property purchased by an individual",
+          "Property inherited up to four generations of male members",
+          "Property received through a will",
+          "Property acquired from the division of any property"
+        ],
+        "correctAnswer": "Property inherited up to four generations of male members",
+        "feedback": "Ancestral property is defined as property that has been inherited through up to four generations of male lineage."
+      },
+      {
+        "id": 155,
+        "topic": "Property rights of Women in Andhra Pradesh",
+        "title": "Self-Acquired Property Definition",
+        "question": "Which of the following is considered 'self-acquired property'?",
+        "options": [
+          "Only property inherited through four male generations",
+          "Property purchased by an individual from their own resources",
+          "Property held jointly by a family without division",
+          "Property exclusively owned by the government"
+        ],
+        "correctAnswer": "Property purchased by an individual from their own resources",
+        "feedback": "Self-acquired property includes property purchased by an individual with their own funds, property received after dividing ancestral property, or property acquired as a legal heir or through a will."
+      },
+      {
+        "id": 156,
+        "topic": "Property rights of Women in Andhra Pradesh",
+        "title": "Intestate Succession Definition",
+        "question": "What is 'intestate succession'?",
+        "options": [
+          "Distribution of property according to a written will",
+          "Transfer of property during a person's lifetime",
+          "Distribution of a person's property between spouse and heirs when they die without a valid will",
+          "Division of ancestral property among male members only"
+        ],
+        "correctAnswer": "Distribution of a person's property between spouse and heirs when they die without a valid will",
+        "feedback": "Intestate succession refers to the process of distributing a person's assets to their spouse and heirs when the person dies without leaving a valid will."
+      },
+      {
+        "id": 157,
+        "topic": "Property rights of Women in Andhra Pradesh",
+        "title": "Hindu Daughter's Rights (Ancestral)",
+        "question": "Under Hindu Law, how does a daughter's right in ancestral property compare to a son's?",
+        "options": [
+          "She has no right",
+          "She has half the right of a son",
+          "She has the same right and liabilities as the son",
+          "She only has rights if there are no sons"
+        ],
+        "correctAnswer": "She has the same right and liabilities as the son",
+        "feedback": "According to Hindu Law, a daughter has the same rights and liabilities concerning ancestral property as a son."
+      },
+      {
+        "id": 158,
+        "topic": "Property rights of Women in Andhra Pradesh",
+        "title": "Hindu Daughter's Rights (Intestate)",
+        "question": "In intestate succession under Hindu Law, what property rights does a Hindu woman or girl have?",
+        "options": [
+          "No rights if male relatives exist",
+          "Rights only to self-acquired property",
+          "Equal property rights along with other male relatives",
+          "Rights determined by the eldest male relative"
+        ],
+        "correctAnswer": "Equal property rights along with other male relatives",
+        "feedback": "A Hindu woman or girl possesses equal property rights alongside male relatives in any partition arising from intestate succession."
+      },
+      {
+        "id": 159,
+        "topic": "Property rights of Women in Andhra Pradesh",
+        "title": "Hindu Married Daughter's Rights",
+        "question": "Under Hindu Law, what right does a married daughter have if she is deserted, widowed, or divorced?",
+        "options": [
+          "Right to maintenance from parents",
+          "Right to demand a share of parental self-acquired property",
+          "Right of residence (shelter)",
+          "No specific rights mentioned"
+        ],
+        "correctAnswer": "Right of residence (shelter)",
+        "feedback": "A deserted, widowed, or divorced married daughter under Hindu Law retains the right of residence in her parental home, although not the right to maintenance from them."
+      },
+      {
+        "id": 160,
+        "topic": "Property rights of Women in Andhra Pradesh",
+        "title": "Muslim Daughter's Inheritance Share",
+        "question": "Under Muslim Law, what is a daughter's share of inheritance from her father's estate compared to a son's share?",
+        "options": [
+          "Equal to the son's share",
+          "One-half of the son's share",
+          "One-third of the son's share",
+          "No share if sons exist"
+        ],
+        "correctAnswer": "One-half of the son's share",
+        "feedback": "Muslim daughters have the right to inherit a share equal to one-half of what a son inherits from their father's estate."
+      },
+      {
+        "id": 161,
+        "topic": "Property rights of Women in Andhra Pradesh",
+        "title": "Muslim Daughter's Control Over Property",
+        "question": "What control does a daughter have over her inherited share under Muslim Law?",
+        "options": [
+          "No control, managed by male relatives",
+          "Control only with husband's permission",
+          "Full control to manage and dispose of her share as she wishes",
+          "Control limited to using income, not disposal"
+        ],
+        "correctAnswer": "Full control to manage and dispose of her share as she wishes",
+        "feedback": "A Muslim daughter has full legal control over her share of property, including the right to manage and dispose of it during her lifetime or after death."
+      },
+      {
+        "id": 162,
+        "topic": "Property rights of Women in Andhra Pradesh",
+        "title": "Muslim Daughter's Right Before Marriage",
+        "question": "Under Muslim Law, what right does an unmarried daughter have regarding her parents' home?",
+        "options": [
+          "Right to maintenance only",
+          "Right of residence and support until she gets married",
+          "Right to a share of the house ownership",
+          "No specific rights mentioned"
+        ],
+        "correctAnswer": "Right of residence and support until she gets married",
+        "feedback": "An unmarried Muslim daughter has the right of residence in her parents' home and the right to receive support from them until she marries."
+      },
+      {
+        "id": 163,
+        "topic": "Property rights of Women in Andhra Pradesh",
+        "title": "Muslim Married Daughter's Maintenance (Post-Divorce)",
+        "question": "If a married Muslim daughter gets divorced, who is primarily responsible for her maintenance after the 'iddat' period, according to the text?",
+        "options": [
+          "Her ex-husband indefinitely",
+          "The state government",
+          "Her parents (unless she has children capable of supporting her)",
+          "She has no right to maintenance"
+        ],
+        "correctAnswer": "Her parents (unless she has children capable of supporting her)",
+        "feedback": "After the iddat period (approx. three months) post-divorce, the responsibility for a Muslim daughter's maintenance falls back on her parents, unless she has children who are capable of supporting her."
+      },
+      {
+        "id": 164,
+        "topic": "Property rights of Women in Andhra Pradesh",
+        "title": "Christian Daughter's Inheritance Share",
+        "question": "Under Christian Law as described, how do daughters inherit property compared to brothers?",
+        "options": [
+          "They get no share if brothers exist",
+          "They get half the share of brothers",
+          "They inherit equally with any brothers",
+          "Their share depends on the father's will only"
+        ],
+        "correctAnswer": "They inherit equally with any brothers",
+        "feedback": "Christian daughters inherit equally alongside any brothers from their father's or mother's estate."
+      },
+      {
+        "id": 165,
+        "topic": "Property rights of Women in Andhra Pradesh",
+        "title": "Christian Daughter's Rights Before Marriage",
+        "question": "What rights does a Christian daughter have from her parents before marriage?",
+        "options": [
+          "Right to inherit only",
+          "Right to shelter and maintenance until marriage",
+          "Right to dispose of parental property",
+          "No rights until she reaches majority"
+        ],
+        "correctAnswer": "Right to shelter and maintenance until marriage",
+        "feedback": "A Christian daughter has the right to shelter and maintenance from her parents until she gets married, but this right ceases after marriage."
+      },
+      {
+        "id": 166,
+        "topic": "Property rights of Women in Andhra Pradesh",
+        "title": "Hindu Wife's Right Over Own Property",
+        "question": "Under Hindu Law, what rights does a married woman have over property she earned, inherited, or received as a gift?",
+        "options": [
+          "Joint ownership with husband",
+          "Husband manages the property",
+          "She is the sole owner with full rights",
+          "Requires permission from in-laws to dispose"
+        ],
+        "correctAnswer": "She is the sole owner with full rights",
+        "feedback": "A married Hindu woman has full rights and is the sole owner of her property, regardless of whether it was gifted, inherited, or self-earned."
+      },
+      {
+        "id": 167,
+        "topic": "Property rights of Women in Andhra Pradesh",
+        "title": "Hindu Wife's Right to Maintenance",
+        "question": "From whom does a married Hindu woman have the right to claim maintenance and shelter?",
+        "options": [
+          "Only from her parents",
+          "From her husband, and potentially his joint family if applicable",
+          "Only from her adult children",
+          "From the state"
+        ],
+        "correctAnswer": "From her husband, and potentially his joint family if applicable",
+        "feedback": "A Hindu wife has the right to maintenance and shelter from her husband. If the husband is part of a joint family, this right extends to the joint family."
+      },
+      {
+        "id": 168,
+        "topic": "Property rights of Women in Andhra Pradesh",
+        "title": "Hindu Wife's Share in Partition",
+        "question": "If a joint family property is partitioned between her husband and his sons, what share is a Hindu wife entitled to?",
+        "options": [
+          "No share",
+          "A fixed nominal amount",
+          "A share equal to any other person (like her husband or a son)",
+          "Half of her husband's share"
+        ],
+        "correctAnswer": "A share equal to any other person (like her husband or a son)",
+        "feedback": "In a partition of joint family property involving her husband and sons, a Hindu wife is entitled to a share equal to that of any other person receiving a share."
+      },
+      {
+        "id": 169,
+        "topic": "Property rights of Women in Andhra Pradesh",
+        "title": "Hindu Widow's Inheritance",
+        "question": "Upon her husband's death under Hindu Law, what inheritance right does a widow have in his property?",
+        "options": [
+          "Only right to maintenance",
+          "A life interest only",
+          "Right to an equal share of his portion, jointly with her children and his mother",
+          "The entire share if there are no children"
+        ],
+        "correctAnswer": "Right to an equal share of his portion, jointly with her children and his mother",
+        "feedback": "A Hindu widow inherits an equal share of her deceased husband's part of the property, along with her children and the husband's mother (if alive)."
+      },
+      {
+        "id": 170,
+        "topic": "Property rights of Women in Andhra Pradesh",
+        "title": "Muslim Wife's Right to Mehr",
+        "question": "What specific financial right does a Muslim wife have based on the marriage contract?",
+        "options": [
+          "Monthly maintenance only",
+          "Share in husband's earnings",
+          "Right to 'Mehr' as per the terms agreed upon at the wedding",
+          "Equal share in ancestral property"
+        ],
+        "correctAnswer": "Right to 'Mehr' as per the terms agreed upon at the wedding",
+        "feedback": "A Muslim wife has the right to receive 'Mehr' according to the terms of the contract accepted during the marriage ceremony."
+      },
+      {
+        "id": 171,
+        "topic": "Property rights of Women in Andhra Pradesh",
+        "title": "Muslim Wife's Inheritance Share",
+        "question": "What is a Muslim wife's inheritance share from her deceased husband's property?",
+        "options": [
+          "Always one-half",
+          "Always one-third",
+          "One-fourth if no children, one-eighth if there are children",
+          "Equal share with the children"
+        ],
+        "correctAnswer": "One-fourth if no children, one-eighth if there are children",
+        "feedback": "A Muslim wife inherits one-fourth of her husband's estate if there are no children, and one-eighth if there are children."
+      },
+      {
+        "id": 172,
+        "topic": "Property rights of Women in Andhra Pradesh",
+        "title": "Christian Wife's Maintenance Rights",
+        "question": "Under Christian Law, what recourse does a wife have if her husband fails to provide maintenance?",
+        "options": [
+          "She can claim from his parents",
+          "She can ask for a divorce",
+          "She must rely on her children",
+          "She has no specific recourse mentioned"
+        ],
+        "correctAnswer": "She can ask for a divorce",
+        "feedback": "If a Christian husband fails to provide maintenance, his wife has the right to seek a divorce on these grounds."
+      },
+      {
+        "id": 173,
+        "topic": "Property rights of Women in Andhra Pradesh",
+        "title": "Christian Widow's Inheritance Share",
+        "question": "Upon her husband's death, what share of his estate does a Christian wife typically receive?",
+        "options": [
+          "The entire estate",
+          "One-half of the estate",
+          "One-third of the estate (with the rest divided among children)",
+          "One-fourth of the estate"
+        ],
+        "correctAnswer": "One-third of the estate (with the rest divided among children)",
+        "feedback": "A Christian widow is generally entitled to a one-third share of her deceased husband's estate, with the remaining two-thirds being divided equally among his children."
+      },
+      {
+        "id": 174,
+        "topic": "Property rights of Women in Andhra Pradesh",
+        "title": "Hindu Mother's Maintenance Rights",
+        "question": "From whom can a Hindu mother claim maintenance?",
+        "options": [
+          "Only from her husband",
+          "From her children who are capable of supporting her",
+          "Only from the government",
+          "She has no right to maintenance"
+        ],
+        "correctAnswer": "From her children who are capable of supporting her",
+        "feedback": "A Hindu mother has the right to receive maintenance from her children who have the means to support her. She is a Class I heir."
+      },
+      {
+        "id": 175,
+        "topic": "Property rights of Women in Andhra Pradesh",
+        "title": "Hindu Mother's Share in Partition",
+        "question": "In a joint family property partition, what share can a widowed Hindu mother claim?",
+        "options": [
+          "No share",
+          "Half the share of a son",
+          "A share equal to the share of her son",
+          "A fixed maintenance amount"
+        ],
+        "correctAnswer": "A share equal to the share of her son",
+        "feedback": "A widowed Hindu mother is entitled to take a share equal to that of her son during the partition of a joint family property."
+      },
+      {
+        "id": 176,
+        "topic": "Property rights of Women in Andhra Pradesh",
+        "title": "Muslim Mother's Inheritance Share",
+        "question": "What share of her deceased child's property does a Muslim mother inherit?",
+        "options": [
+          "One-third",
+          "One-fourth",
+          "One-sixth",
+          "One-eighth"
+        ],
+        "correctAnswer": "One-sixth",
+        "feedback": "A Muslim mother has the right to inherit a one-sixth share of her deceased child's property."
+      },
+      {
+        "id": 177,
+        "topic": "Property rights of Women in Andhra Pradesh",
+        "title": "Christian Mother's Maintenance Rights",
+        "question": "Does a Christian mother have the right to receive maintenance from her children?",
+        "options": [
+          "Yes, always",
+          "Yes, if the children are financially stable",
+          "No, the document states she doesn't have this right",
+          "Only if she is widowed"
+        ],
+        "correctAnswer": "No, the document states she doesn't have this right",
+        "feedback": "According to the provided text for Christian Law, the mother does not have the right to receive maintenance from her children."
+      },
+      {
+        "id": 178,
+        "topic": "Property rights of Women in Andhra Pradesh",
+        "title": "Christian Mother's Inheritance",
+        "question": "Under what condition may a Christian mother inherit property from her deceased child?",
+        "options": [
+          "She always inherits one-third",
+          "She inherits only if the child was unmarried",
+          "She may inherit one-fourth if the child dies without a spouse or any living child",
+          "She does not inherit from her children"
+        ],
+        "correctAnswer": "She may inherit one-fourth if the child dies without a spouse or any living child",
+        "feedback": "A Christian mother can inherit one-fourth of her child's property only if the child dies without leaving behind a spouse or any living children."
+      },
+      {
+        "id": 179,
+        "topic": "FIR",
+        "title": "Definition of FIR",
+        "question": "What is a First Information Report (FIR)?",
+        "options": [
+          "A final judgment by a court",
+          "A request for bail",
+          "A written document prepared by police upon receiving information about a cognizable offense",
+          "An internal police memo"
+        ],
+        "correctAnswer": "A written document prepared by police upon receiving information about a cognizable offense",
+        "feedback": "An FIR is the initial written report prepared by the police when they first receive information about the commission of a cognizable offense."
+      },
+      {
+        "id": 180,
+        "topic": "FIR",
+        "title": "Who Prepares the FIR?",
+        "question": "Who prepares the First Information Report (FIR)?",
+        "options": [
+          "The victim",
+          "A lawyer",
+          "The police",
+          "A magistrate"
+        ],
+        "correctAnswer": "The police",
+        "feedback": "The FIR is a document prepared by the police based on the information they receive about a cognizable offense."
+      },
+      {
+        "id": 181,
+        "topic": "FIR",
+        "title": "Format of Initial Report",
+        "question": "In what formats can the initial information leading to an FIR be given to the police?",
+        "options": [
+          "Only in writing",
+          "Only orally",
+          "Orally, in writing, or even via telephone",
+          "Only through a lawyer"
+        ],
+        "correctAnswer": "Orally, in writing, or even via telephone",
+        "feedback": "Information about a cognizable offense can be reported orally, in writing, and even a telephonic message can be treated as an FIR."
+      },
+      {
+        "id": 182,
+        "topic": "FIR",
+        "title": "Cognizable Offence Definition",
+        "question": "What is a key characteristic of a 'cognizable offence'?",
+        "options": [
+          "Police need court permission to investigate",
+          "Police cannot arrest without a warrant",
+          "Police may arrest a person without a warrant",
+          "It is a minor offense only punishable by fine"
+        ],
+        "correctAnswer": "Police may arrest a person without a warrant",
+        "feedback": "A cognizable offense is one where the police have the authority to arrest a person without a warrant and can start the investigation without court orders."
+      },
+      {
+        "id": 183,
+        "topic": "FIR",
+        "title": "Non-Cognizable Offence Definition",
+        "question": "What defines a 'non-cognizable offence'?",
+        "options": [
+          "Police can arrest without a warrant",
+          "Police can investigate without court permission",
+          "Police have no authority to arrest without a warrant and need court permission to investigate",
+          "It is always a serious crime"
+        ],
+        "correctAnswer": "Police have no authority to arrest without a warrant and need court permission to investigate",
+        "feedback": "In a non-cognizable offense, police cannot arrest without a warrant and require the court's permission to begin an investigation."
+      },
+      {
+        "id": 184,
+        "topic": "FIR",
+        "title": "Importance of FIR",
+        "question": "Why is registering an FIR considered important?",
+        "options": [
+          "It automatically proves the accused is guilty",
+          "It allows the victim to claim compensation immediately",
+          "It sets the process of criminal justice in motion and enables police investigation",
+          "It serves as the final evidence in court"
+        ],
+        "correctAnswer": "It sets the process of criminal justice in motion and enables police investigation",
+        "feedback": "The FIR is crucial because it initiates the criminal justice process, and police investigation typically begins only after the FIR is registered."
+      },
+      {
+        "id": 185,
+        "topic": "FIR",
+        "title": "Who Can Lodge an FIR?",
+        "question": "Who is eligible to lodge an FIR about a cognizable offence?",
+        "options": [
+          "Only the victim",
+          "Only a direct witness",
+          "Anyone who knows about the commission of the offense (victim, witness, person with knowledge, police officer)",
+          "Only a lawyer representing the victim"
+        ],
+        "correctAnswer": "Anyone who knows about the commission of the offense (victim, witness, person with knowledge, police officer)",
+        "feedback": "Anyone with knowledge of a cognizable offense, including the victim, a witness, someone informed about it, or even a police officer themselves, can lodge an FIR."
+      },
+      {
+        "id": 186,
+        "topic": "FIR",
+        "title": "FIR Filing Procedure (Oral Information)",
+        "question": "What must the police do if information about a cognizable offense is given orally?",
+        "options": [
+          "Tell the person to submit it in writing",
+          "Record it only if a witness is present",
+          "Write it down",
+          "Immediately arrest the suspect"
+        ],
+        "correctAnswer": "Write it down",
+        "feedback": "The procedure requires the police to write down the information if it is given orally."
+      },
+      {
+        "id": 187,
+        "topic": "FIR",
+        "title": "Complainant's Rights During FIR Filing",
+        "question": "What right does the person giving information for an FIR have regarding the recorded statement?",
+        "options": [
+          "To receive payment for the information",
+          "To demand it be kept confidential from the accused",
+          "To demand that the information recorded be read over to them",
+          "To dictate the exact legal sections to be included"
+        ],
+        "correctAnswer": "To demand that the information recorded be read over to them",
+        "feedback": "The person lodging the complaint has the right to demand that the information recorded by the police is read back to them to ensure accuracy."
+      },
+      {
+        "id": 188,
+        "topic": "FIR",
+        "title": "Signing the FIR",
+        "question": "When should the person giving the information sign the FIR?",
+        "options": [
+          "Immediately upon arrival at the station",
+          "Only after consulting a lawyer",
+          "Only after verifying that the recorded information accurately reflects what they stated",
+          "They are not required to sign it"
+        ],
+        "correctAnswer": "Only after verifying that the recorded information accurately reflects what they stated",
+        "feedback": "The informant should sign the report only after ensuring that the police have recorded the information correctly as per the details provided by them."
+      },
+      {
+        "id": 189,
+        "topic": "FIR",
+        "title": "Right to a Copy of FIR",
+        "question": "Does the person lodging the FIR have a right to receive a copy?",
+        "options": [
+          "No, it's an internal police document",
+          "Yes, but they have to pay a fee for it",
+          "Yes, they have the right to get a copy free of cost",
+          "Only if the case goes to court"
+        ],
+        "correctAnswer": "Yes, they have the right to get a copy free of cost",
+        "feedback": "It is the right of the person lodging the FIR to receive a copy of it from the police, free of cost."
+      },
+      {
+        "id": 190,
+        "topic": "FIR",
+        "title": "Information Required in FIR",
+        "question": "Which detail is essential to mention in an FIR?",
+        "options": [
+          "The potential punishment for the crime",
+          "The informant's opinion on the motive",
+          "Date, time, and location of the incident",
+          "Previous criminal record of the accused (if known)"
+        ],
+        "correctAnswer": "Date, time, and location of the incident",
+        "feedback": "Essential details to include in an FIR are the informant's name/address, date/time/location of the incident, true facts, names/descriptions of persons involved, and any witnesses."
+      },
+      {
+        "id": 191,
+        "topic": "FIR",
+        "title": "Recourse if FIR Not Registered (Police Hierarchy)",
+        "question": "If the local police station refuses to register an FIR, who is the first higher police authority the complainant can approach?",
+        "options": [
+          "The Chief Minister",
+          "The District Judge",
+          "The Superintendent of Police (SP) or other higher officers (DIG, IG)",
+          "The National Security Advisor"
+        ],
+        "correctAnswer": "The Superintendent of Police (SP) or other higher officers (DIG, IG)",
+        "feedback": "If an FIR is not registered, the complainant can approach senior police officers, starting with the Superintendent of Police (SP) of the concerned district."
+      },
+      {
+        "id": 192,
+        "topic": "FIR",
+        "title": "Recourse if FIR Not Registered (Written Complaint)",
+        "question": "Besides meeting higher officers, how else can a complaint be escalated within the police department if an FIR is not registered?",
+        "options": [
+          "By protesting outside the police station",
+          "By sending the complaint in writing and by post to the Superintendent of Police",
+          "By filing a Public Interest Litigation",
+          "By contacting the media immediately"
+        ],
+        "correctAnswer": "By sending the complaint in writing and by post to the Superintendent of Police",
+        "feedback": "A written complaint can be sent by post to the concerned Superintendent of Police, who, if satisfied, can investigate or order an investigation."
+      },
+      {
+        "id": 193,
+        "topic": "FIR",
+        "title": "Recourse if FIR Not Registered (Court)",
+        "question": "What legal action outside the police department can be taken if an FIR is not registered?",
+        "options": [
+          "Appeal to the Supreme Court directly",
+          "File a private complaint before the court having jurisdiction",
+          "Seek mediation through a Lok Adalat",
+          "Request arbitration"
+        ],
+        "correctAnswer": "File a private complaint before the court having jurisdiction",
+        "feedback": "If the police fail to register the FIR, the complainant has the option of filing a private complaint directly before the jurisdictional court."
+      },
+      {
+        "id": 194,
+        "topic": "FIR",
+        "title": "Recourse if FIR Not Registered (Human Rights Commission)",
+        "question": "Which commission(s) can be approached if the police fail to enforce the law or act improperly regarding an FIR?",
+        "options": [
+          "The Election Commission",
+          "The Union Public Service Commission",
+          "The State Human Rights Commission or the National Human Rights Commission",
+          "The Competition Commission"
+        ],
+        "correctAnswer": "The State Human Rights Commission or the National Human Rights Commission",
+        "feedback": "If police inaction or improper conduct occurs regarding FIR registration, a complaint can be made to the State Human Rights Commission or the National Human Rights Commission."
       }
+      
     ]
   }
