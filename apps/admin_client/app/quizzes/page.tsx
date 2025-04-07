@@ -7,7 +7,7 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormDescription } fr
 import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Textarea } from '@/components/ui/textarea';
-import { Plus, Minus, Save, Edit, X } from 'lucide-react';
+import { Plus, Minus, Save, Edit, X, Filter } from 'lucide-react';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { QuizItem } from '@aarti-app/types';
@@ -17,6 +17,7 @@ import quizDataFile from '../../assets/quizData.json'
 
 export default function QuizzesPage() {
   const [quizzes, setQuizzes] = useState<QuizItem[]>(quizDataFile.quizzes);
+  const [selectedTopic, setSelectedTopic] = useState<string>('all');
 
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [options, setOptions] = useState<string[]>(['', '', '', '']);
@@ -36,6 +37,11 @@ export default function QuizzesPage() {
 
   // Get unique topics from existing quizzes
   const existingTopics = Array.from(new Set(quizzes.map(quiz => quiz.topic)));
+
+  // Filter quizzes by selected topic
+  const filteredQuizzes = selectedTopic === 'all' 
+    ? quizzes 
+    : quizzes.filter(quiz => quiz.topic === selectedTopic);
 
   const addOption = () => {
     setOptions([...options, '']);
@@ -281,8 +287,28 @@ export default function QuizzesPage() {
         </Dialog>
       </div>
 
+      <div className="mb-6 flex items-center gap-4">
+        <div className="flex items-center gap-2">
+          <Filter className="h-4 w-4" />
+          <span className="font-medium">Filter by Topic:</span>
+        </div>
+        <Select value={selectedTopic} onValueChange={setSelectedTopic}>
+          <SelectTrigger className="w-[200px]">
+            <SelectValue placeholder="Select a topic" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="all">All Topics</SelectItem>
+            {existingTopics.map(topic => (
+              <SelectItem key={topic} value={topic}>
+                {topic}
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
+      </div>
+
       <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {quizzes.map((quiz) => (
+        {filteredQuizzes.map((quiz) => (
           <Card key={quiz.id}>
             <CardHeader>
               <CardTitle>{quiz.title}</CardTitle>
