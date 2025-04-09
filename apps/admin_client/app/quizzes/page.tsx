@@ -21,7 +21,9 @@ export default function QuizzesPage() {
 
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
+  const [isSaveDialogOpen, setIsSaveDialogOpen] = useState(false);
   const [quizToDelete, setQuizToDelete] = useState<QuizItem | null>(null);
+  const [quizToSave, setQuizToSave] = useState<any>(null);
   const [options, setOptions] = useState<string[]>(['', '', '', '']);
   const [editingQuiz, setEditingQuiz] = useState<QuizItem | null>(null);
   const [newTopic, setNewTopic] = useState('');
@@ -92,8 +94,8 @@ export default function QuizzesPage() {
     });
   };
 
-  const onSubmit = (data: any) => {
-    const quizData: QuizItem = {
+  const handleSaveClick = (data: any) => {
+    const quizData = {
       id: editingQuiz ? editingQuiz.id : quizzes.length + 1,
       topic: data.topic,
       title: data.title,
@@ -102,13 +104,25 @@ export default function QuizzesPage() {
       correctAnswer: data.correctAnswer,
       feedback: data.feedback
     };
+    
+    setQuizToSave(quizData);
+    setIsSaveDialogOpen(true);
+  };
+
+  const onSubmit = (data: any) => {
+    handleSaveClick(data);
+  };
+
+  const saveQuiz = () => {
+    if (!quizToSave) return;
 
     if (editingQuiz) {
-      setQuizzes(quizzes.map(q => q.id === editingQuiz.id ? quizData : q));
+      setQuizzes(quizzes.map(q => q.id === editingQuiz.id ? quizToSave : q));
     } else {
-      setQuizzes([...quizzes, quizData]);
+      setQuizzes([...quizzes, quizToSave]);
     }
 
+    setIsSaveDialogOpen(false);
     setIsDialogOpen(false);
     resetForm();
   };
@@ -398,6 +412,38 @@ export default function QuizzesPage() {
               onClick={() => {
                 setIsDeleteDialogOpen(false);
                 setQuizToDelete(null);
+              }}
+            >
+              Cancel
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+
+      {/* Save Confirmation Dialog */}
+      <Dialog open={isSaveDialogOpen} onOpenChange={setIsSaveDialogOpen}>
+        <DialogContent className="sm:max-w-md">
+          <DialogHeader>
+            <DialogTitle>Confirm Save</DialogTitle>
+            <DialogDescription>
+              Are you sure you want to {editingQuiz ? 'save changes to' : 'create'} the quiz "{quizToSave?.title}"?
+            </DialogDescription>
+          </DialogHeader>
+          <DialogFooter className="flex space-x-2 sm:justify-start">
+            <Button
+              type="button"
+              variant="default"
+              onClick={saveQuiz}
+            >
+              <Save className="h-4 w-4 mr-2" />
+              Save
+            </Button>
+            <Button
+              type="button"
+              variant="outline"
+              onClick={() => {
+                setIsSaveDialogOpen(false);
+                setQuizToSave(null);
               }}
             >
               Cancel
