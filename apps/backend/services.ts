@@ -47,11 +47,13 @@ export async function getQuizItemById(id: number) {
 
 export async function updateQuizItem(id: number, updateData: Partial<Omit<IQuizItem, 'id'>>) {
   try {
-    return await QuizItem.findOneAndUpdate(
-      { id },
-      updateData,
-      { new: true, runValidators: true }
-    );
+    const quizItem = await QuizItem.findOne({ id });
+    if (!quizItem) {
+      throw new Error(`Quiz item with ID ${id} not found`);
+    }
+
+    Object.assign(quizItem, updateData);
+    return await quizItem.save();
   } catch (error) {
     console.error(`Error updating quiz item with ID ${id}:`, error);
     throw error;
