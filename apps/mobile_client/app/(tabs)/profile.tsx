@@ -1,4 +1,4 @@
-import { StyleSheet, Pressable, View, Text } from 'react-native';
+import { StyleSheet, Pressable, View, Text, Dimensions } from 'react-native';
 import { useState } from 'react';
 import { Colors } from '@/constants/Colors';
 import FontAwesome from '@expo/vector-icons/FontAwesome';
@@ -9,7 +9,7 @@ import FontAwesome from '@expo/vector-icons/FontAwesome';
 // settings page
 
 export default function ProfileScreen() {
-  const [activeTab, setActiveTab] = useState('quiz'); // valid options: quiz, resource
+  const [activeTab, setActiveTab] = useState<'quiz' | 'resource'>('quiz'); // valid options: quiz, resource
 
   return (
     <View style={styles.container}>
@@ -66,6 +66,12 @@ const renderResourceStats = () => {
   );
 };
 
+const calcButtonWidth = () => {
+  const screenWidth = Dimensions.get('window').width;
+  const buttonWidth = (screenWidth - 50) / 2;
+  return buttonWidth;
+}
+
 const styles = StyleSheet.create({
   settings: {
     flexDirection: 'row',
@@ -93,7 +99,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
   },
   button: {
-    width: 200,
+    width: calcButtonWidth(),
   },
   buttonText: {
     textAlign: 'center',
