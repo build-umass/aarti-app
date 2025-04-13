@@ -1,7 +1,16 @@
-import { StyleSheet, Pressable, View, Text, } from 'react-native';
+import { StyleSheet, Pressable, View, Text } from 'react-native';
+import { useState } from 'react';
+import { Colors } from '@/constants/Colors';
 import FontAwesome from '@expo/vector-icons/FontAwesome';
 
+// TODO:
+// stats module
+// dynamic name support
+// settings page
+
 export default function ProfileScreen() {
+  const [activeTab, setActiveTab] = useState('quiz'); // valid options: quiz, resource
+
   return (
     <View style={styles.container}>
 
@@ -16,23 +25,24 @@ export default function ProfileScreen() {
 
       <View style={styles.statsSelection}>
 
-        <Pressable style={styles.button}>
-          <Text>Quizzes</Text>  
+        <Pressable 
+          style={styles.button}
+          onPressIn={() => setActiveTab("quiz")}>
+          <Text style={[{color: activeTab === 'quiz' ? Colors.light.tint : "black"}, styles.buttonText]}>Quizzes</Text>  
         </Pressable>
 
         <View style={styles.divider}></View>
 
-        <Pressable style={styles.button}>
-          <Text>Resources</Text>  
+        <Pressable 
+          style={styles.button}
+          onPress={() => setActiveTab("resource")}>
+          <Text style={[{color: activeTab === 'resource' ? Colors.light.tint : "black"}, styles.buttonText]}>Resources</Text>  
         </Pressable>
 
       </View>
     </View>
   );
 }
-
-const changeTabToQuizzes = () => {}
-const changeTabToResources = () => {}
 
 const styles = StyleSheet.create({
   settings: {
@@ -53,6 +63,7 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     fontSize: 35,
     marginTop: 25,
+    textAlign: 'center',
   },
   statsSelection: {
     justifyContent: 'center',
@@ -60,11 +71,17 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
   },
   button: {
-
+    width: 200,
+  },
+  buttonText: {
+    textAlign: 'center',
+    fontSize: 24,
   },
   divider: {
     width: 2,
     height: '100%',
     backgroundColor: '#ccc',
   },
+  activeColor: {color: Colors.light.tint},
+  inactiveColor: {color: "black"},
 });
