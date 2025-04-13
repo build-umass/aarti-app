@@ -38,11 +38,33 @@ export default function ProfileScreen() {
           onPress={() => setActiveTab("resource")}>
           <Text style={[{color: activeTab === 'resource' ? Colors.light.tint : "black"}, styles.buttonText]}>Resources</Text>  
         </Pressable>
-
       </View>
+
+      {renderStats(activeTab)}
+
     </View>
   );
 }
+
+const renderStats = (activeTab: 'quiz' | 'resource') => {
+  return (
+    <View style={styles.statsModule}>
+      {activeTab === 'quiz' ? renderQuizStats() : renderResourceStats()}
+    </View>
+  );
+};
+
+const renderQuizStats = () => {
+  return (
+    <Text>quiz</Text>
+  );
+};
+
+const renderResourceStats = () => {
+  return (
+    <Text>resource</Text>
+  );
+};
 
 const styles = StyleSheet.create({
   settings: {
@@ -82,6 +104,17 @@ const styles = StyleSheet.create({
     height: '100%',
     backgroundColor: '#ccc',
   },
-  activeColor: {color: Colors.light.tint},
-  inactiveColor: {color: "black"},
+  statsModule: {
+    flex: 1,
+    marginTop: 20,
+    marginRight: 20,
+    marginLeft: 20,
+    marginBottom: 20,
+    borderWidth: 2,
+    borderTopRightRadius: 20,
+    borderTopLeftRadius: 20,
+    borderBottomLeftRadius: 20,
+    borderBottomRightRadius: 20,
+    backgroundColor: '#CCCCCC',
+  }
 });
