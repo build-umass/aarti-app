@@ -1,6 +1,7 @@
 import { StyleSheet, Pressable, View, Text, Dimensions } from 'react-native';
 import { useState } from 'react';
 import { Colors } from '@/constants/Colors';
+import ProgressBar from '../../components/ProgressBar';
 import FontAwesome from '@expo/vector-icons/FontAwesome';
 
 // TODO:
@@ -48,7 +49,7 @@ export default function ProfileScreen() {
 
 const renderStats = (activeTab: 'quiz' | 'resource') => {
   return (
-    <View style={styles.statsModule}>
+    <View style={styles.statsOutline}>
       {activeTab === 'quiz' ? renderQuizStats() : renderResourceStats()}
     </View>
   );
@@ -56,13 +57,19 @@ const renderStats = (activeTab: 'quiz' | 'resource') => {
 
 const renderQuizStats = () => {
   return (
-    <Text>quiz</Text>
+    <View style={styles.statsContent}>
+      <ProgressBar calculateProgress={tempQuizProgress} />
+      <Text>quizzes</Text>
+    </View>
   );
 };
 
 const renderResourceStats = () => {
   return (
-    <Text>resource</Text>
+    <View style={styles.statsContent}>
+      <ProgressBar calculateProgress={tempResourceProgress} />
+      <Text>resources</Text>
+    </View>
   );
 };
 
@@ -71,6 +78,9 @@ const calcButtonWidth = () => {
   const buttonWidth = (screenWidth - 50) / 2;
   return buttonWidth;
 }
+
+const tempQuizProgress = () => 50;
+const tempResourceProgress = () => 36;
 
 const styles = StyleSheet.create({
   settings: {
@@ -110,7 +120,7 @@ const styles = StyleSheet.create({
     height: '100%',
     backgroundColor: '#ccc',
   },
-  statsModule: {
+  statsOutline: {
     flex: 1,
     marginTop: 20,
     marginRight: 20,
@@ -122,5 +132,9 @@ const styles = StyleSheet.create({
     borderBottomLeftRadius: 20,
     borderBottomRightRadius: 20,
     backgroundColor: '#CCCCCC',
+  },
+  statsContent: {
+    marginLeft: 20,
+    marginRight: 20,
   }
 });
