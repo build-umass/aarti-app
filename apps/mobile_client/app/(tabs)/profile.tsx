@@ -58,7 +58,7 @@ const renderStats = (activeTab: 'quiz' | 'resource') => {
 const renderQuizStats = () => {
   return (
     <View style={styles.statsContent}>
-      <ProgressBar calculateProgress={tempQuizProgress} />
+      <ProgressBar progressFunc={tempQuizProgress} />
       <Text>quizzes</Text>
     </View>
   );
@@ -67,7 +67,7 @@ const renderQuizStats = () => {
 const renderResourceStats = () => {
   return (
     <View style={styles.statsContent}>
-      <ProgressBar calculateProgress={tempResourceProgress} />
+      <ProgressBar progressFunc={tempResourceProgress} />
       <Text>resources</Text>
     </View>
   );
@@ -79,7 +79,8 @@ const calcButtonWidth = () => {
   return buttonWidth;
 }
 
-const tempQuizProgress = () => 50;
+// TODO: change to fetch total completion from MMKV
+const tempQuizProgress = () => 80;
 const tempResourceProgress = () => 36;
 
 const styles = StyleSheet.create({

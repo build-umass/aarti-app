@@ -3,18 +3,18 @@ import { Colors } from '@/constants/Colors';
 
 
 type ProgressBarProps = {
-  calculateProgress: () => number
+  progressFunc: () => number
 };
 
-const ProgressBar: React.FC<ProgressBarProps> = ({ calculateProgress }) => {
+const ProgressBar: React.FC<ProgressBarProps> = ({ progressFunc }) => {
   return (
     <View style={styles.progressContainer}>
-      <Text style={styles.progressText}>{calculateProgress()}%</Text>
+      <Text style={styles.progressText}>{progressFunc()}%</Text>
       <View style={styles.progressBar}>
         <View
           style={[
             styles.progressFill,
-            { width: `${calculateProgress()}%` } as ViewStyle,
+            { width: `${progressFunc()}%` } as ViewStyle,
           ]}
         />
       </View>
@@ -26,7 +26,6 @@ const styles = StyleSheet.create({
   progressContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginBottom: 24,
   },
   progressText: {
     fontSize: 24,

@@ -5,6 +5,7 @@ import { MMKV } from 'react-native-mmkv';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { QuizItem } from '@aarti-app/types';
 import quizDataFile from '../../assets/quizData.json';
+import ProgressBar from '@/components/ProgressBar';
 
 interface SelectedAnswers {
   [key: number]: string;
@@ -206,18 +207,8 @@ export default function QuizPage() {
           </ScrollView>
         </View>
 
-        <View style={styles.progressContainer}>
-          <Text style={styles.progressText}>
-            {calculateProgress()}%
-          </Text>
-          <View style={styles.progressBar}>
-            <View 
-              style={[
-                styles.progressFill,
-                { width: `${calculateProgress()}%` } as ViewStyle
-              ]}
-            />
-          </View>
+        <View style={styles.progressMargin}>
+          <ProgressBar progressFunc={calculateProgress} />
         </View>
 
         <View style={styles.completionContainer}>
@@ -309,10 +300,7 @@ export default function QuizPage() {
 interface Styles {
   container: ViewStyle;
   content: ViewStyle;
-  progressContainer: ViewStyle;
-  progressText: TextStyle;
-  progressBar: ViewStyle;
-  progressFill: ViewStyle & { width?: string | number };
+  progressMargin: ViewStyle;
   questionContainer: ViewStyle;
   questionHeader: ViewStyleWithShadow;
   questionTitle: TextStyle & { fontWeight: '500' };
@@ -363,26 +351,8 @@ const styles = StyleSheet.create<Styles>({
     alignSelf: 'center',
     width: '100%',
   },
-  progressContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
+  progressMargin: {
     marginBottom: 24,
-  },
-  progressText: {
-    fontSize: 24,
-    marginRight: 16,
-  },
-  progressBar: {
-    flex: 1,
-    height: 8,
-    backgroundColor: '#e5e7eb',
-    borderRadius: 4,
-    overflow: 'hidden',
-  },
-  progressFill: {
-    height: '100%',
-    backgroundColor: '#22c55e',
-    borderRadius: 4,
   },
   questionContainer: {
     marginBottom: 12,
