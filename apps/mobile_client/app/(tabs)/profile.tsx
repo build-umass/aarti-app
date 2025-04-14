@@ -1,11 +1,12 @@
-import { StyleSheet, Pressable, View, Text, Dimensions } from 'react-native';
+import { StyleSheet, Pressable, View, ScrollView, Text, Dimensions } from 'react-native';
 import { useState } from 'react';
 import { Colors } from '@/constants/Colors';
 import ProgressBar from '../../components/ProgressBar';
 import FontAwesome from '@expo/vector-icons/FontAwesome';
 
 // TODO:
-// stats module
+// get categories from MMKV/storage?
+// get stats from MMKV
 // dynamic name support
 // settings page
 
@@ -59,7 +60,28 @@ const renderQuizStats = () => {
   return (
     <View style={styles.statsContent}>
       <ProgressBar progressFunc={tempQuizProgress} />
-      <Text>quizzes</Text>
+      <Text style={[styles.statsText, {fontWeight:'bold'}]}>
+        Total Questions Completed: 14/200
+      </Text>
+      
+      <ScrollView style={styles.statsScrollBox} persistentScrollbar={true}>
+        <Text style={styles.statsText}>General Knowledge: 5/10</Text>
+        <Text style={styles.statsText}>Science & Nature: 7/9</Text>
+        <Text style={styles.statsText}>History & Politics: 3/5</Text>
+        <Text style={styles.statsText}>Geography: 4/6</Text>
+        <Text style={styles.statsText}>Pop Culture: 6/8</Text>
+        <Text style={styles.statsText}>Literature & Books: 2/4</Text>
+        <Text style={styles.statsText}>Technology & Computing: 5/7</Text>
+        <Text style={styles.statsText}>Movies & TV Shows: 8/10</Text>
+        <Text style={styles.statsText}>Sports & Games: 4/5</Text>
+        <Text style={styles.statsText}>Music & Lyrics: 6/9</Text>
+      </ScrollView>
+      {/*
+        Questions completed x/total
+          -> Category 1 a/total
+          ...
+          -> Category n z/total
+      */}
     </View>
   );
 };
@@ -135,7 +157,15 @@ const styles = StyleSheet.create({
     backgroundColor: '#CCCCCC',
   },
   statsContent: {
+    flex: 1,
     marginLeft: 20,
     marginRight: 20,
-  }
+    marginBottom: 10,
+  },
+  statsText: {
+    fontSize: 20,
+  },
+  statsScrollBox: {
+    height: "85%"
+  },
 });
