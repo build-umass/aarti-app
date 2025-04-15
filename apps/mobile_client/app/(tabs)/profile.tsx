@@ -3,12 +3,15 @@ import { useState } from 'react';
 import { Colors } from '@/constants/Colors';
 import ProgressBar from '../../components/ProgressBar';
 import FontAwesome from '@expo/vector-icons/FontAwesome';
+import { generalQuestionsStorage, quizData } from './quizzes';
+import { settingsStorage } from '../_layout';
 
 // TODO:
 // get categories from MMKV/storage?
 // get stats from MMKV
 // dynamic name support
-// settings page
+// settings page (store using MMKV)
+// resources stats (after resources are uploaded and finalized with categories)
 
 export default function ProfileScreen() {
   const [activeTab, setActiveTab] = useState<'quiz' | 'resource'>('quiz'); // valid options: quiz, resource
@@ -22,7 +25,7 @@ export default function ProfileScreen() {
 
       <View style={styles.user}>
         <FontAwesome name="user-circle" size={170} color="black" />
-        <Text style={styles.text}>Sean</Text>
+        <Text style={styles.text}>{`${settingsStorage.getString("username")}`}</Text>
       </View>
 
       <View style={styles.statsSelection}>
@@ -57,31 +60,29 @@ const renderStats = (activeTab: 'quiz' | 'resource') => {
 };
 
 const renderQuizStats = () => {
+  // get overall progress
+  // get categories
+  // get progress per category
+
   return (
     <View style={styles.statsContent}>
-      <ProgressBar progressFunc={tempQuizProgress} />
+      <ProgressBar progressFunc={tempQuizProgress} backgroundColor={"#ffffff"} />
       <Text style={[styles.statsText, {fontWeight:'bold'}]}>
         Total Questions Completed: 14/200
       </Text>
       
       <ScrollView style={styles.statsScrollBox} persistentScrollbar={true}>
-        <Text style={styles.statsText}>General Knowledge: 5/10</Text>
-        <Text style={styles.statsText}>Science & Nature: 7/9</Text>
-        <Text style={styles.statsText}>History & Politics: 3/5</Text>
-        <Text style={styles.statsText}>Geography: 4/6</Text>
-        <Text style={styles.statsText}>Pop Culture: 6/8</Text>
-        <Text style={styles.statsText}>Literature & Books: 2/4</Text>
-        <Text style={styles.statsText}>Technology & Computing: 5/7</Text>
-        <Text style={styles.statsText}>Movies & TV Shows: 8/10</Text>
-        <Text style={styles.statsText}>Sports & Games: 4/5</Text>
-        <Text style={styles.statsText}>Music & Lyrics: 6/9</Text>
+        <Text style={styles.statsText}>• General Knowledge: 5/10</Text>
+        <Text style={styles.statsText}>• Science & Nature: 7/9</Text>
+        <Text style={styles.statsText}>• History & Politics: 3/5</Text>
+        <Text style={styles.statsText}>• Geography: 4/6</Text>
+        <Text style={styles.statsText}>• Pop Culture: 6/8</Text>
+        <Text style={styles.statsText}>• Literature & Books: 2/4</Text>
+        <Text style={styles.statsText}>• Technology & Computing: 5/7</Text>
+        <Text style={styles.statsText}>• Movies & TV Shows: 8/10</Text>
+        <Text style={styles.statsText}>• Sports & Games: 4/5</Text>
+        <Text style={styles.statsText}>• Music & Lyrics: 6/9</Text>
       </ScrollView>
-      {/*
-        Questions completed x/total
-          -> Category 1 a/total
-          ...
-          -> Category n z/total
-      */}
     </View>
   );
 };
@@ -89,8 +90,8 @@ const renderQuizStats = () => {
 const renderResourceStats = () => {
   return (
     <View style={styles.statsContent}>
-      <ProgressBar progressFunc={tempResourceProgress} />
-      <Text>resources</Text>
+      <ProgressBar progressFunc={tempResourceProgress} backgroundColor={"ffffff"} />
+      <Text>TODO</Text>
     </View>
   );
 };
@@ -101,9 +102,19 @@ const calcButtonWidth = () => {
   return buttonWidth;
 }
 
-// TODO: change to fetch total completion from MMKV
+// may need to update these if quiz code changes after connecting to backend
 const tempQuizProgress = () => 80;
 const tempResourceProgress = () => 36;
+
+const totalQuestions = () => quizData.length;
+
+const totalCompleted = () => {
+  const completed = generalQuestionsStorage.getString('completedQuestions');
+};
+const totalInCategory = (category: String) => {};
+const totalCompletedInCategory = (category: String) => {};
+
+const getAllCategories = () => [...new Set(quizData.map(quiz => quiz.topic))];
 
 const styles = StyleSheet.create({
   settings: {
@@ -149,23 +160,29 @@ const styles = StyleSheet.create({
     marginRight: 20,
     marginLeft: 20,
     marginBottom: 20,
-    borderWidth: 2,
     borderTopRightRadius: 20,
     borderTopLeftRadius: 20,
     borderBottomLeftRadius: 20,
     borderBottomRightRadius: 20,
-    backgroundColor: '#CCCCCC',
+    backgroundColor: '#e5e5ea',
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.05,
+    shadowRadius: 1,
+    elevation: 3,
   },
   statsContent: {
     flex: 1,
     marginLeft: 20,
     marginRight: 20,
+    marginTop: 5,
     marginBottom: 10,
   },
   statsText: {
     fontSize: 20,
   },
   statsScrollBox: {
-    height: "85%"
+    height: "85%",
+    marginTop: 3,
   },
 });

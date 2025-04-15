@@ -15,7 +15,7 @@ interface BookmarkedQuestions {
   [key: number]: boolean;
 }
 
-const quizData: QuizItem[] = quizDataFile.quizzes;
+export const quizData: QuizItem[] = quizDataFile.quizzes;
 
 interface ShadowOffset {
   width: number;
@@ -41,7 +41,7 @@ interface ViewStyleWithBorder extends ViewStyle {
 // Initialize MMKV storage specifically for bookmarked questions
 const bookmarkedQuestionsStorage = new MMKV();
 // Add new MMKV storage for general questions progress
-const generalQuestionsStorage = new MMKV();
+export const generalQuestionsStorage = new MMKV();
 
 // Add this new function to load selected answers from storage
 const loadSelectedAnswers = () => {
@@ -208,7 +208,7 @@ export default function QuizPage() {
         </View>
 
         <View style={styles.progressMargin}>
-          <ProgressBar progressFunc={calculateProgress} />
+          <ProgressBar progressFunc={calculateProgress} backgroundColor={"#e5e7eb"} />
         </View>
 
         <View style={styles.completionContainer}>

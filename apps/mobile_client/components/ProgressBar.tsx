@@ -1,16 +1,18 @@
-import { StyleSheet, View, Text, ViewStyle } from 'react-native';
+import { StyleSheet, View, Text, ViewStyle, ColorValue } from 'react-native';
 import { Colors } from '@/constants/Colors';
 
 
 type ProgressBarProps = {
-  progressFunc: () => number
+  progressFunc: () => number,
+  backgroundColor: ColorValue,
 };
 
-const ProgressBar: React.FC<ProgressBarProps> = ({ progressFunc }) => {
+const ProgressBar: React.FC<ProgressBarProps> = ({ progressFunc, backgroundColor }) => {
   return (
     <View style={styles.progressContainer}>
       <Text style={styles.progressText}>{progressFunc()}%</Text>
-      <View style={styles.progressBar}>
+      <View style={[styles.progressBar,
+            { backgroundColor: backgroundColor} as ViewStyle]}>
         <View
           style={[
             styles.progressFill,
@@ -34,7 +36,6 @@ const styles = StyleSheet.create({
   progressBar: {
     flex: 1,
     height: 8,
-    backgroundColor: '#e5e7eb',
     borderRadius: 4,
     overflow: 'hidden',
   },
