@@ -1,5 +1,5 @@
 import { StyleSheet, Pressable, View, ScrollView, Text, Dimensions } from 'react-native';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Colors } from '@/constants/Colors';
 import ProgressBar from '../../components/ProgressBar';
 import FontAwesome from '@expo/vector-icons/FontAwesome';
@@ -7,9 +7,9 @@ import { generalQuestionsStorage, quizData } from './quizzes';
 import { settingsStorage } from '../_layout';
 
 // TODO:
-// get categories from MMKV/storage?
-// get stats from MMKV
-// dynamic name support
+// fix child key console warning
+// fix stats update on profile after quiz
+// get topic stats from MMKV
 // settings page (store using MMKV)
 // resources stats (after resources are uploaded and finalized with categories)
 
@@ -66,22 +66,15 @@ const renderQuizStats = () => {
 
   return (
     <View style={styles.statsContent}>
-      <ProgressBar progressFunc={tempQuizProgress} backgroundColor={"#ffffff"} />
+      <ProgressBar progressFunc={totalPercentage} backgroundColor={"#ffffff"} />
       <Text style={[styles.statsText, {fontWeight:'bold'}]}>
-        Total Questions Completed: 14/200
+        Total Questions Completed: {totalCompleted()}/{totalQuestions()}
       </Text>
       
       <ScrollView style={styles.statsScrollBox} persistentScrollbar={true}>
-        <Text style={styles.statsText}>• General Knowledge: 5/10</Text>
-        <Text style={styles.statsText}>• Science & Nature: 7/9</Text>
-        <Text style={styles.statsText}>• History & Politics: 3/5</Text>
-        <Text style={styles.statsText}>• Geography: 4/6</Text>
-        <Text style={styles.statsText}>• Pop Culture: 6/8</Text>
-        <Text style={styles.statsText}>• Literature & Books: 2/4</Text>
-        <Text style={styles.statsText}>• Technology & Computing: 5/7</Text>
-        <Text style={styles.statsText}>• Movies & TV Shows: 8/10</Text>
-        <Text style={styles.statsText}>• Sports & Games: 4/5</Text>
-        <Text style={styles.statsText}>• Music & Lyrics: 6/9</Text>
+        {getAllTopics().map(topic => 
+          <Text style={styles.statsText}>• {topic}: 0/0</Text>
+        )}
       </ScrollView>
     </View>
   );
@@ -103,18 +96,19 @@ const calcButtonWidth = () => {
 }
 
 // may need to update these if quiz code changes after connecting to backend
-const tempQuizProgress = () => 80;
 const tempResourceProgress = () => 36;
 
 const totalQuestions = () => quizData.length;
-
 const totalCompleted = () => {
   const completed = generalQuestionsStorage.getString('completedQuestions');
+  if (completed) return JSON.parse(completed).length;
+  else return 0;
 };
-const totalInCategory = (category: String) => {};
-const totalCompletedInCategory = (category: String) => {};
+const totalPercentage = () => (totalCompleted() / totalQuestions())*100;
+const totalInTopic = (category: String) => {};
+const totalCompletedInTopic = (category: String) => {};
 
-const getAllCategories = () => [...new Set(quizData.map(quiz => quiz.topic))];
+const getAllTopics = () => [...new Set(quizData.map(quiz => quiz.topic))];
 
 const styles = StyleSheet.create({
   settings: {
