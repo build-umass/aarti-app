@@ -5,9 +5,7 @@ import { IQuizItem } from 'models/QuizItem';
 export async function nothing() {} // to make it a module => if you add a function, you can remove
 
  
-
 export async function createQuizItem(req: Request, res: Response) {
-  
   try {
     const { id, topic, title, question, options, correctAnswer, feedback } = req.body as IQuizItem;
 
@@ -15,9 +13,42 @@ export async function createQuizItem(req: Request, res: Response) {
 
     return res.status(201).json(newQuizItem);
 
-  }
-  catch (error) {
+  } catch (error) {
     console.error('Error creating quiz item:', error);
+    return res.status(500).json({ error: 'Internal server error' });
+  }
+}
+
+export async function updateQuizItem(req: Request, res: Response) {
+  try {
+    const {topic, title, question, options, correctAnswer, feedback } = req.body as IQuizItem;
+    const quizItemId = parseInt(req.params.id);
+    const updatedQuizItem = await services.updateQuizItem(quizItemId, { topic, title, question, options, correctAnswer, feedback });
+
+    if (!updatedQuizItem) {
+      return res.status(404).json({ error: 'No quiz item with that id found' });
+    }
+
+    return res.status(200).json(updatedQuizItem);
+
+  } catch (error) {
+    return res.status(500).json({ error: 'Internal server error' });
+  }
+}
+
+export async function deleteQuizItem(req: Request, res: Response) {
+  try {
+    const quizItemId = parseInt(req.params.id);
+    const deletedQuizItem = await services.deleteQuizItem(quizItemId);
+
+    if (!deletedQuizItem) {
+      return res.status(404).json({ error: 'No quiz item with that id found' });
+    }
+
+    return res.status(200).json(deletedQuizItem);
+
+  } catch (error) {
+    console.error('Error deleting quiz item:', error);
     return res.status(500).json({ error: 'Internal server error' });
   }
 }
