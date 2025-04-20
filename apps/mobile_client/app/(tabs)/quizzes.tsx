@@ -59,7 +59,7 @@ export default function QuizPage() {
   const loadCompletedQuestions = (): Set<number> => {
     const storedProgress = generalQuestionsStorage.getString('completedQuestions');
     const storedTopicProgress = generalQuestionsStorage.getString(`completedQuestions_${selectedTopic}`);
-    
+
     if (selectedTopic === 'All' || selectedTopic === 'Bookmarked') {
       return storedProgress ? new Set(JSON.parse(storedProgress)) : new Set();
     }
@@ -72,11 +72,11 @@ export default function QuizPage() {
   const updateCompletedQuestionsStorage = (newCompletedQuestions: Set<number>) => {
     // Store overall progress
     generalQuestionsStorage.set('completedQuestions', JSON.stringify([...newCompletedQuestions]));
-    
+
     // Store topic-specific progress
     if (selectedTopic !== 'All' && selectedTopic !== 'Bookmarked') {
       generalQuestionsStorage.set(
-        `completedQuestions_${selectedTopic}`, 
+        `completedQuestions_${selectedTopic}`,
         JSON.stringify([...newCompletedQuestions])
       );
     }
@@ -107,7 +107,7 @@ export default function QuizPage() {
     const relevantQuestions = filteredQuizData;
     const totalQuestions = relevantQuestions.length;
     if (totalQuestions === 0) return 0;
-    
+
     const correctAnswers = relevantQuestions.filter(
       quiz => selectedAnswers[quiz.id] === quiz.correctAnswer
     ).length;
@@ -118,7 +118,7 @@ export default function QuizPage() {
     const relevantQuestions = filteredQuizData;
     const totalQuestions = relevantQuestions.length;
     if (totalQuestions === 0) return 0;
-    
+
     const completed = relevantQuestions.filter(quiz => completedQuestions.has(quiz.id)).length;
     return Math.round((completed / totalQuestions) * 100);
   };
@@ -137,7 +137,7 @@ export default function QuizPage() {
       };
       setSelectedAnswers(newSelectedAnswers);
       generalQuestionsStorage.set('selectedAnswers', JSON.stringify(newSelectedAnswers));
-      
+
       const newCompletedQuestions = new Set([...completedQuestions, questionId]);
       setCompletedQuestions(newCompletedQuestions);
       updateCompletedQuestionsStorage(newCompletedQuestions);
@@ -182,8 +182,8 @@ export default function QuizPage() {
       <View style={styles.content}>
         <View style={styles.topicSelectorContainer}>
           <Text style={styles.topicLabel}>Select Topic:</Text>
-          <ScrollView 
-            horizontal 
+          <ScrollView
+            horizontal
             showsHorizontalScrollIndicator={false}
             style={styles.topicScroll}
           >
@@ -230,7 +230,7 @@ export default function QuizPage() {
             >
               <Text style={styles.questionTitle}>{quiz.title}</Text>
               <View style={styles.iconContainer}>
-                <Pressable 
+                <Pressable
                   onPress={(e) => {
                     e.stopPropagation();
                     toggleBookmark(quiz.id);
@@ -238,14 +238,14 @@ export default function QuizPage() {
                   hitSlop={8}
                 >
                   {<Ionicons  // Use the imported Icon
-        name={bookmarkedQuestions[quiz.id] ? 'bookmark' : 'bookmark-outline'} // Example: MaterialIcons bookmark and bookmark-border
-        size={20} // Adjust the size as needed
-        color={bookmarkedQuestions[quiz.id] ? '#fbbf24' : '#9ca3af'} // Set the color
-    /> }
+                    name={bookmarkedQuestions[quiz.id] ? 'bookmark' : 'bookmark-outline'} // Example: MaterialIcons bookmark and bookmark-border
+                    size={20} // Adjust the size as needed
+                    color={bookmarkedQuestions[quiz.id] ? '#fbbf24' : '#9ca3af'} // Set the color
+                  />}
                 </Pressable>
               </View>
             </Pressable>
-            
+
             {expandedQuestion === quiz.id && (
               <View style={styles.questionContent}>
                 <Text style={styles.questionText}>{quiz.question}</Text>
@@ -256,10 +256,10 @@ export default function QuizPage() {
                       style={({ pressed }: PressableStateCallbackType): ViewStyle[] => [
                         styles.optionButton,
                         selectedAnswers[quiz.id] && option === quiz.correctAnswer ? styles.correctOption : undefined,
-                        selectedAnswers[quiz.id] === option && 
-                        option !== quiz.correctAnswer ? styles.incorrectOption : undefined,
-                        (!completedQuestions.has(quiz.id) || calculateCompletion() === 100) 
-                          ? undefined 
+                        selectedAnswers[quiz.id] === option &&
+                          option !== quiz.correctAnswer ? styles.incorrectOption : undefined,
+                        (!completedQuestions.has(quiz.id) || calculateCompletion() === 100)
+                          ? undefined
                           : styles.disabledOption
                       ].filter((style): style is ViewStyle => style !== undefined)}
                       onPress={() => handleAnswer(quiz.id, option)}
@@ -267,20 +267,20 @@ export default function QuizPage() {
                     >
                       <Text style={styles.optionText}>{option}</Text>
                       {selectedAnswers[quiz.id] && (
-                        <React.Fragment>
+                        <>
                           {option === quiz.correctAnswer && (
                             <Text style={[styles.icon, styles.correctIcon]}>✓</Text>
                           )}
-                          {selectedAnswers[quiz.id] === option && 
-                           option !== quiz.correctAnswer && (
-                            <Text style={[styles.icon, styles.incorrectIcon]}>✗</Text>
-                          )}
-                        </React.Fragment>
+                          {selectedAnswers[quiz.id] === option &&
+                            option !== quiz.correctAnswer && (
+                              <Text style={[styles.icon, styles.incorrectIcon]}>✗</Text>
+                            )}
+                        </>
                       )}
                     </Pressable>
                   ))}
                 </View>
-                
+
                 {selectedAnswers[quiz.id] && (
                   <View style={styles.feedbackContainer}>
                     <Text style={styles.feedbackText}>{quiz.feedback}</Text>
@@ -291,7 +291,7 @@ export default function QuizPage() {
           </View>
         ))}
 
-        
+
       </View>
     </ScrollView>
   );

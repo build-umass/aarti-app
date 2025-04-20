@@ -72,8 +72,8 @@ const renderQuizStats = () => {
       </Text>
       
       <ScrollView style={styles.statsScrollBox} persistentScrollbar={true}>
-        {getAllTopics().map(topic => 
-          <Text style={styles.statsText}>• {topic}: 0/0</Text>
+        {getAllTopics().map((topic, i) => 
+          <Text style={styles.statsText} key={i}>• {topic}: 0/0</Text>
         )}
       </ScrollView>
     </View>
