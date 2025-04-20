@@ -2,12 +2,12 @@
 
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle, CardFooter } from '@/components/ui/card';
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger, DialogDescription, DialogFooter } from '@/components/ui/dialog';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormDescription } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Textarea } from '@/components/ui/textarea';
-import { Plus, Minus, Save, Edit, X } from 'lucide-react';
+import { Plus, Minus, Save, Edit, X, Filter, Trash2 } from 'lucide-react';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { QuizItem } from '@aarti-app/types';
@@ -17,8 +17,13 @@ import quizDataFile from '../../assets/quizData.json'
 
 export default function QuizzesPage() {
   const [quizzes, setQuizzes] = useState<QuizItem[]>(quizDataFile.quizzes);
+  const [selectedTopic, setSelectedTopic] = useState<string>('all');
 
   const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
+  const [isSaveDialogOpen, setIsSaveDialogOpen] = useState(false);
+  const [quizToDelete, setQuizToDelete] = useState<QuizItem | null>(null);
+  const [quizToSave, setQuizToSave] = useState<any>(null);
   const [options, setOptions] = useState<string[]>(['', '', '', '']);
   const [editingQuiz, setEditingQuiz] = useState<QuizItem | null>(null);
   const [newTopic, setNewTopic] = useState('');
@@ -36,6 +41,11 @@ export default function QuizzesPage() {
 
   // Get unique topics from existing quizzes
   const existingTopics = Array.from(new Set(quizzes.map(quiz => quiz.topic)));
+
+  // Filter quizzes by selected topic
+  const filteredQuizzes = selectedTopic === 'all' 
+    ? quizzes 
+    : quizzes.filter(quiz => quiz.topic === selectedTopic);
 
   const addOption = () => {
     setOptions([...options, '']);
@@ -67,6 +77,11 @@ export default function QuizzesPage() {
     setIsDialogOpen(true);
   };
 
+  const handleDeleteClick = (quiz: QuizItem) => {
+    setQuizToDelete(quiz);
+    setIsDeleteDialogOpen(true);
+  };
+
   const resetForm = () => {
     setEditingQuiz(null);
     setOptions(['', '', '', '']);
@@ -79,8 +94,8 @@ export default function QuizzesPage() {
     });
   };
 
-  const onSubmit = (data: any) => {
-    const quizData: QuizItem = {
+  const handleSaveClick = (data: any) => {
+    const quizData = {
       id: editingQuiz ? editingQuiz.id : quizzes.length + 1,
       topic: data.topic,
       title: data.title,
@@ -89,13 +104,25 @@ export default function QuizzesPage() {
       correctAnswer: data.correctAnswer,
       feedback: data.feedback
     };
+    
+    setQuizToSave(quizData);
+    setIsSaveDialogOpen(true);
+  };
+
+  const onSubmit = (data: any) => {
+    handleSaveClick(data);
+  };
+
+  const saveQuiz = () => {
+    if (!quizToSave) return;
 
     if (editingQuiz) {
-      setQuizzes(quizzes.map(q => q.id === editingQuiz.id ? quizData : q));
+      setQuizzes(quizzes.map(q => q.id === editingQuiz.id ? quizToSave : q));
     } else {
-      setQuizzes([...quizzes, quizData]);
+      setQuizzes([...quizzes, quizToSave]);
     }
 
+    setIsSaveDialogOpen(false);
     setIsDialogOpen(false);
     resetForm();
   };
@@ -281,8 +308,28 @@ export default function QuizzesPage() {
         </Dialog>
       </div>
 
+      <div className="mb-6 flex items-center gap-4">
+        <div className="flex items-center gap-2">
+          <Filter className="h-4 w-4" />
+          <span className="font-medium">Filter by Topic:</span>
+        </div>
+        <Select value={selectedTopic} onValueChange={setSelectedTopic}>
+          <SelectTrigger className="w-[200px]">
+            <SelectValue placeholder="Select a topic" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="all">All Topics</SelectItem>
+            {existingTopics.map(topic => (
+              <SelectItem key={topic} value={topic}>
+                {topic}
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
+      </div>
+
       <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {quizzes.map((quiz) => (
+        {filteredQuizzes.map((quiz) => (
           <Card key={quiz.id}>
             <CardHeader>
               <CardTitle>{quiz.title}</CardTitle>
@@ -315,19 +362,95 @@ export default function QuizzesPage() {
                 </details>
               </div>
             </CardContent>
-            <CardFooter>
+            <CardFooter className="flex gap-2">
               <Button 
                 variant="outline" 
-                className="w-full"
+                className="flex-1"
                 onClick={() => handleEdit(quiz)}
               >
                 <Edit className="h-4 w-4 mr-2" />
-                Edit Quiz
+                Edit
+              </Button>
+              <Button 
+                variant="outline" 
+                className="flex-1"
+                onClick={() => handleDeleteClick(quiz)}
+              >
+                <Trash2 className="h-4 w-4 mr-2" />
+                Delete
               </Button>
             </CardFooter>
           </Card>
         ))}
       </div>
+
+      {/* Delete Confirmation Dialog */}
+      <Dialog open={isDeleteDialogOpen} onOpenChange={setIsDeleteDialogOpen}>
+        <DialogContent className="sm:max-w-md">
+          <DialogHeader>
+            <DialogTitle>Confirm Deletion</DialogTitle>
+            <DialogDescription>
+              Are you sure you want to delete the quiz "{quizToDelete?.title}"? This action cannot be undone.
+            </DialogDescription>
+          </DialogHeader>
+          <DialogFooter className="flex space-x-2 sm:justify-start">
+            <Button
+              type="button"
+              variant="destructive"
+              onClick={() => {
+                // Delete functionality would go here
+                setIsDeleteDialogOpen(false);
+                setQuizToDelete(null);
+              }}
+            >
+              <Trash2 className="h-4 w-4 mr-2" />
+              Delete
+            </Button>
+            <Button
+              type="button"
+              variant="outline"
+              onClick={() => {
+                setIsDeleteDialogOpen(false);
+                setQuizToDelete(null);
+              }}
+            >
+              Cancel
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+
+      {/* Save Confirmation Dialog */}
+      <Dialog open={isSaveDialogOpen} onOpenChange={setIsSaveDialogOpen}>
+        <DialogContent className="sm:max-w-md">
+          <DialogHeader>
+            <DialogTitle>Confirm Save</DialogTitle>
+            <DialogDescription>
+              Are you sure you want to {editingQuiz ? 'save changes to' : 'create'} the quiz "{quizToSave?.title}"?
+            </DialogDescription>
+          </DialogHeader>
+          <DialogFooter className="flex space-x-2 sm:justify-start">
+            <Button
+              type="button"
+              variant="default"
+              onClick={saveQuiz}
+            >
+              <Save className="h-4 w-4 mr-2" />
+              Save
+            </Button>
+            <Button
+              type="button"
+              variant="outline"
+              onClick={() => {
+                setIsSaveDialogOpen(false);
+                setQuizToSave(null);
+              }}
+            >
+              Cancel
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }
