@@ -4,7 +4,7 @@
 
 
 # Types
-This project uses a shared types definiton file (which is actually a local npm package) in `packages/types`
+This project uses a shared types definiton file in `/types`
 
 For example, the `QuizItem` interface
 
@@ -17,14 +17,6 @@ export interface QuizItem {
 ```
 
 This is highly beneficial in that you can ensure safety across the frontend and backend. For example, if you updated the `QuizItem` to include a new field, it is now necessary everywhere `QuizItem` is used works with the new definition. Otherwise, typescript will throw an error.
-
-Once you update types, from the project root run:
-
-```bash
-npx turbo build
-```
-
-This will build the types, then your package and it will show you any potential errors (since it is a package, the types definition depend on the output of the build script, rather than the source file. Using turbo speeds up development in a monorepo space, this is one reason we make types a package)
 
 # Routes
 
