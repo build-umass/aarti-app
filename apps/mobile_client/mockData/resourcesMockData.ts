@@ -1,4 +1,4 @@
-import { MockResource, Section } from '../../../packages/types/resource'
+import { MockResource, Section } from '../../../types'
 interface Resource {
     id: string;
     title: string;
