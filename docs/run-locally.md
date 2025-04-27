@@ -1,15 +1,25 @@
 # Run locally
 
-First, from the root:
+1. Install Packages:
 
-```bash
-npm i
-npx turbo build
+- you can copy this script or you can install the packages in each of the apps
+
+```
+(cd apps/mobile_client && npm i) && (cd apps/admin_client && npm i) && (cd apps/backend && npm i)
 ```
 
-`npm i` organizes all your packages and link the local packages
+2. Update .env
 
-`npx turbo build` creates the builds for our backend / next / packages in the order that they depend on each other.
+- If you were on the team as of Spring 2025 semester you should have gotten the mongodb connection string sent to your school email. Copy it to .env.example and rename the file to just .env
+
+- If you need the connection string you can contact Roman or club leadership.
+
+## To run the backend
+
+```bash
+cd apps/backend
+npm run start
+```
 
 ## To run the mobile app:
 
@@ -31,12 +41,6 @@ npx expo start
 w
 ```
 
-## To run the backend
-
-```bash
-cd apps/backend
-npm run dev
-```
 
 ## To run the admin client:
 
