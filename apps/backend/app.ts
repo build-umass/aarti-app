@@ -1,9 +1,13 @@
 import express from 'express';
+import cors from 'cors';
 import routes from './routes';
 
 export function createApp() {
   const app = express();
 
+  // Enable CORS
+  app.use(cors());
+  
   // JSON parsing
   app.use(express.json());
   app.use((req, _, next) => {
@@ -12,7 +16,6 @@ export function createApp() {
     next();
   });
   
-
   // Register routes for user
   app.use('/', routes);
 

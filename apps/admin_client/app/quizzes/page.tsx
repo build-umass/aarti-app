@@ -8,15 +8,16 @@ import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Textarea } from '@/components/ui/textarea';
 import { Plus, Minus, Save, Edit, X, Filter, Trash2 } from 'lucide-react';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
-import { QuizItem } from '@aarti-app/types';
-import quizDataFile from '../../assets/quizData.json'
+import { QuizItem } from '../../../../types';
+import { toast } from '@/hooks/use-toast';
 
-
+const API_BASE_URL = 'http://localhost:3002';
 
 export default function QuizzesPage() {
-  const [quizzes, setQuizzes] = useState<QuizItem[]>(quizDataFile.quizzes);
+  const [quizzes, setQuizzes] = useState<QuizItem[]>([]);
+  const [loading, setLoading] = useState(true);
   const [selectedTopic, setSelectedTopic] = useState<string>('all');
 
   const [isDialogOpen, setIsDialogOpen] = useState(false);
@@ -38,6 +39,32 @@ export default function QuizzesPage() {
       feedback: '',
     }
   });
+
+  // Fetch quiz data from backend when component mounts
+  useEffect(() => {
+    const fetchQuizzes = async () => {
+      try {
+        setLoading(true);
+        const response = await fetch(`${API_BASE_URL}/quiz`);
+        if (!response.ok) {
+          throw new Error('Failed to fetch quizzes');
+        }
+        const data = await response.json();
+        setQuizzes(data);
+      } catch (error) {
+        console.error('Error fetching quizzes:', error);
+        toast({
+          title: 'Error',
+          description: 'Failed to load quizzes from the server',
+          variant: 'destructive',
+        });
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchQuizzes();
+  }, []);
 
   // Get unique topics from existing quizzes
   const existingTopics = Array.from(new Set(quizzes.map(quiz => quiz.topic)));
@@ -96,7 +123,7 @@ export default function QuizzesPage() {
 
   const handleSaveClick = (data: any) => {
     const quizData = {
-      id: editingQuiz ? editingQuiz.id : quizzes.length + 1,
+      id: editingQuiz ? editingQuiz.id : quizzes.length > 0 ? Math.max(...quizzes.map(q => q.id)) + 1 : 1,
       topic: data.topic,
       title: data.title,
       question: data.question,
@@ -113,18 +140,92 @@ export default function QuizzesPage() {
     handleSaveClick(data);
   };
 
-  const saveQuiz = () => {
+  const saveQuiz = async () => {
     if (!quizToSave) return;
 
-    if (editingQuiz) {
-      setQuizzes(quizzes.map(q => q.id === editingQuiz.id ? quizToSave : q));
-    } else {
-      setQuizzes([...quizzes, quizToSave]);
-    }
+    try {
+      if (editingQuiz) {
+        // Update existing quiz
+        const response = await fetch(`${API_BASE_URL}/quiz/${editingQuiz.id}`, {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(quizToSave),
+        });
 
-    setIsSaveDialogOpen(false);
-    setIsDialogOpen(false);
-    resetForm();
+        if (!response.ok) {
+          throw new Error('Failed to update quiz');
+        }
+
+        const updatedQuiz = await response.json();
+        setQuizzes(quizzes.map(q => q.id === editingQuiz.id ? updatedQuiz : q));
+        toast({
+          title: 'Success',
+          description: 'Quiz updated successfully',
+        });
+      } else {
+        // Create new quiz
+        const response = await fetch(`${API_BASE_URL}/quiz`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(quizToSave),
+        });
+
+        if (!response.ok) {
+          throw new Error('Failed to create quiz');
+        }
+
+        const newQuiz = await response.json();
+        setQuizzes([...quizzes, newQuiz]);
+        toast({
+          title: 'Success',
+          description: 'Quiz created successfully',
+        });
+      }
+
+      setIsSaveDialogOpen(false);
+      setIsDialogOpen(false);
+      resetForm();
+    } catch (error) {
+      console.error('Error saving quiz:', error);
+      toast({
+        title: 'Error',
+        description: 'Failed to save quiz',
+        variant: 'destructive',
+      });
+    }
+  };
+
+  const deleteQuiz = async () => {
+    if (!quizToDelete) return;
+
+    try {
+      const response = await fetch(`${API_BASE_URL}/quiz/${quizToDelete.id}`, {
+        method: 'DELETE',
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to delete quiz');
+      }
+
+      setQuizzes(quizzes.filter(q => q.id !== quizToDelete.id));
+      toast({
+        title: 'Success',
+        description: 'Quiz deleted successfully',
+      });
+      setIsDeleteDialogOpen(false);
+      setQuizToDelete(null);
+    } catch (error) {
+      console.error('Error deleting quiz:', error);
+      toast({
+        title: 'Error',
+        description: 'Failed to delete quiz',
+        variant: 'destructive',
+      });
+    }
   };
 
   const handleAddTopic = () => {
@@ -328,61 +429,71 @@ export default function QuizzesPage() {
         </Select>
       </div>
 
-      <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {filteredQuizzes.map((quiz) => (
-          <Card key={quiz.id}>
-            <CardHeader>
-              <CardTitle>{quiz.title}</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <p className="text-sm text-muted-foreground mb-2">Topic: {quiz.topic}</p>
-              <p className="font-medium mb-2">{quiz.question}</p>
-              <div className="space-y-2">
-                {quiz.options.map((option, index) => (
-                  <div
-                    key={index}
-                    className={`p-2 rounded-md ${
-                      option === quiz.correctAnswer
-                        ? 'bg-green-100 dark:bg-green-900'
-                        : 'bg-secondary'
-                    }`}
-                  >
-                    Option {index + 1}: {option}
-                  </div>
-                ))}
-              </div>
-              <div className="mt-4">
-                <details className="text-sm">
-                  <summary className="font-medium cursor-pointer">View Feedback</summary>
-                  <div className="mt-2">
-                    <div className="p-2 bg-green-50 dark:bg-green-900/20 rounded-md">
-                      <p>{quiz.feedback}</p>
+      {loading ? (
+        <div className="text-center py-10">Loading quizzes...</div>
+      ) : filteredQuizzes.length === 0 ? (
+        <div className="text-center py-10">
+          {selectedTopic === 'all' 
+            ? 'No quizzes found. Create your first quiz!'
+            : `No quizzes found for topic "${selectedTopic}"`}
+        </div>
+      ) : (
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {filteredQuizzes.map((quiz) => (
+            <Card key={quiz.id}>
+              <CardHeader>
+                <CardTitle>{quiz.title}</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <p className="text-sm text-muted-foreground mb-2">Topic: {quiz.topic}</p>
+                <p className="font-medium mb-2">{quiz.question}</p>
+                <div className="space-y-2">
+                  {quiz.options.map((option, index) => (
+                    <div
+                      key={index}
+                      className={`p-2 rounded-md ${
+                        option === quiz.correctAnswer
+                          ? 'bg-green-100 dark:bg-green-900'
+                          : 'bg-secondary'
+                      }`}
+                    >
+                      Option {index + 1}: {option}
                     </div>
-                  </div>
-                </details>
-              </div>
-            </CardContent>
-            <CardFooter className="flex gap-2">
-              <Button 
-                variant="outline" 
-                className="flex-1"
-                onClick={() => handleEdit(quiz)}
-              >
-                <Edit className="h-4 w-4 mr-2" />
-                Edit
-              </Button>
-              <Button 
-                variant="outline" 
-                className="flex-1"
-                onClick={() => handleDeleteClick(quiz)}
-              >
-                <Trash2 className="h-4 w-4 mr-2" />
-                Delete
-              </Button>
-            </CardFooter>
-          </Card>
-        ))}
-      </div>
+                  ))}
+                </div>
+                <div className="mt-4">
+                  <details className="text-sm">
+                    <summary className="font-medium cursor-pointer">View Feedback</summary>
+                    <div className="mt-2">
+                      <div className="p-2 bg-green-50 dark:bg-green-900/20 rounded-md">
+                        <p>{quiz.feedback}</p>
+                      </div>
+                    </div>
+                  </details>
+                </div>
+              </CardContent>
+              <CardFooter className="flex gap-2">
+                <Button 
+                  variant="outline" 
+                  className="flex-1"
+                  onClick={() => handleEdit(quiz)}
+                >
+                  <Edit className="h-4 w-4 mr-2" />
+                  Edit
+                </Button>
+                <Button 
+                  variant="outline" 
+                  className="flex-1"
+                  onClick={() => handleDeleteClick(quiz)}
+                >
+                  <Trash2 className="h-4 w-4 mr-2" />
+                  Delete
+                </Button>
+              </CardFooter>
+            </Card>
+          ))}
+        </div>
+      )}
 
       {/* Delete Confirmation Dialog */}
       <Dialog open={isDeleteDialogOpen} onOpenChange={setIsDeleteDialogOpen}>
@@ -397,11 +508,7 @@ export default function QuizzesPage() {
             <Button
               type="button"
               variant="destructive"
-              onClick={() => {
-                // Delete functionality would go here
-                setIsDeleteDialogOpen(false);
-                setQuizToDelete(null);
-              }}
+              onClick={deleteQuiz}
             >
               <Trash2 className="h-4 w-4 mr-2" />
               Delete
