@@ -22,7 +22,7 @@ export default function RootLayout({
 
   // --- Authentication Check ---
   const cookieStore = cookies();
-  const tokenCookie = cookieStore.get('auth_token');
+  const tokenCookie = (cookieStore as any).get('auth_token');
   const isSignedIn = !!tokenCookie?.value;
   console.log(`[Layout Server Render] User signed in status: ${isSignedIn}`);
   // --- End Authentication Check ---
