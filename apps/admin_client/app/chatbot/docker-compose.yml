@@ -1,0 +1,21 @@
+version: '3'
+
+services:
+  chromadb:
+    image: chromadb/chroma
+    ports:
+      - "8000:8000"
+
+  flask_app:
+    image: python:3.11
+    ports:
+      - "5000:5000"
+    volumes:
+      - .:/app
+    working_dir: /app
+    command: bash -c "pip install pandas flask chromadb pdfplumber sentence-transformers && python app.py"
+    environment:
+      - CHROMA_HOST=chromadb
+      - CHROMA_PORT=8000
+    depends_on:
+      - chromadb
