@@ -18,7 +18,7 @@ export default function Home() {
           </CardHeader>
           <CardContent>
             <p className="mb-4">Easily create, edit, and organize your quiz content.</p>
-            <Link href="/quizzes">
+            <Link href="/quizzes" legacyBehavior>
               <Button>Manage Quizzes</Button>
             </Link>
           </CardContent>
@@ -33,7 +33,7 @@ export default function Home() {
           </CardHeader>
           <CardContent>
             <p className="mb-4">Upload and organize educational materials.</p>
-            <Link href="/resources">
+            <Link href="/resources" legacyBehavior>
               <Button>Manage Resources</Button>
             </Link>
           </CardContent>
