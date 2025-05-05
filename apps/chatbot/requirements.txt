@@ -1,0 +1,5 @@
+pandas
+flask
+chromadb
+pdfplumber
+sentence-transformers

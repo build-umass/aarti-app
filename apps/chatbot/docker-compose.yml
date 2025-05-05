@@ -1,21 +1,30 @@
-version: '3'
+version: '3.8'
 
 services:
   chromadb:
-    image: chromadb/chroma
+    image: chromadb/chroma:latest
     ports:
       - "8000:8000"
+    volumes:
+      - chroma_data_volume:/chroma
 
   flask_app:
-    image: python:3.11
+    build: .
     ports:
-      - "5000:5000"
+      - "5001:5000"
     volumes:
       - .:/app
+      - sentence_transformers_cache:/app/.cache/sentence_transformers
     working_dir: /app
-    command: bash -c "pip install pandas flask chromadb pdfplumber sentence-transformers && python app.py"
     environment:
       - CHROMA_HOST=chromadb
       - CHROMA_PORT=8000
+      - FLASK_ENV=development
+      - FLASK_DEBUG=1
+      - SENTENCE_TRANSFORMERS_HOME=/app/.cache/sentence_transformers
     depends_on:
       - chromadb
+
+volumes:
+  chroma_data_volume:
+  sentence_transformers_cache:
