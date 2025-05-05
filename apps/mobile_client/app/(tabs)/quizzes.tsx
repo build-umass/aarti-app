@@ -1,328 +1,68 @@
-import React from 'react';
-import { useState } from 'react';
-import { StyleSheet, ViewStyle, TextStyle, Text, View, Pressable, ScrollView, PressableStateCallbackType } from 'react-native';
-import { MMKV } from 'react-native-mmkv';
+import React, { useState } from 'react'; // Removed useEffect, useMemo, MMKV
+import {
+  StyleSheet,
+  ViewStyle,
+  TextStyle,
+  Text,
+  View,
+  Pressable,
+  ScrollView,
+  PressableStateCallbackType,
+  ActivityIndicator
+} from 'react-native';
 import Ionicons from '@expo/vector-icons/Ionicons';
-import { QuizItem } from '@aarti-app/types';
-import quizDataFile from '../../assets/quizData.json';
-import ProgressBar from '@/components/ProgressBar';
+import { QuizItem } from '../../../../types'; // Keep type import
+import ProgressBar from '@/components/ProgressBar'; // Keep component import
+import { useQuiz } from '../../contexts/quizContext'; // Import the context hook
 
-interface SelectedAnswers {
-  [key: number]: string;
-}
-
-interface BookmarkedQuestions {
-  [key: number]: boolean;
-}
-
-export const quizData: QuizItem[] = quizDataFile.quizzes;
-
+// --- Styles Interface (copied from original, no changes needed) ---
 interface ShadowOffset {
   width: number;
   height: number;
 }
-
 interface ViewStyleWithShadow extends ViewStyle {
   shadowOffset?: ShadowOffset;
   shadowOpacity?: number;
   shadowRadius?: number;
   elevation?: number;
 }
-
 interface ViewStyleWithGap extends ViewStyle {
   gap?: number;
 }
-
 interface ViewStyleWithBorder extends ViewStyle {
   borderLeftWidth?: number;
   borderLeftColor?: string;
 }
-
-// Initialize MMKV storage specifically for bookmarked questions
-const bookmarkedQuestionsStorage = new MMKV();
-// Add new MMKV storage for general questions progress
-export const generalQuestionsStorage = new MMKV();
-
-// Add this new function to load selected answers from storage
-const loadSelectedAnswers = () => {
-  const storedAnswers = generalQuestionsStorage.getString('selectedAnswers');
-  return storedAnswers ? JSON.parse(storedAnswers) : {};
-};
-
-export default function QuizPage() {
-  const [selectedAnswers, setSelectedAnswers] = useState<SelectedAnswers>(loadSelectedAnswers());
-  const [expandedQuestion, setExpandedQuestion] = useState<number | null>(null);
-  const [hasStarted, setHasStarted] = useState<boolean>(false);
-  const [selectedTopic, setSelectedTopic] = useState<string>('All');
-
-  // Load completed questions from storage
-  const loadCompletedQuestions = (): Set<number> => {
-    const storedProgress = generalQuestionsStorage.getString('completedQuestions');
-    const storedTopicProgress = generalQuestionsStorage.getString(`completedQuestions_${selectedTopic}`);
-
-    if (selectedTopic === 'All' || selectedTopic === 'Bookmarked') {
-      return storedProgress ? new Set(JSON.parse(storedProgress)) : new Set();
-    }
-    return storedTopicProgress ? new Set(JSON.parse(storedTopicProgress)) : new Set();
-  };
-
-  const [completedQuestions, setCompletedQuestions] = useState<Set<number>>(loadCompletedQuestions());
-
-  // Update storage when completed questions change
-  const updateCompletedQuestionsStorage = (newCompletedQuestions: Set<number>) => {
-    // Store overall progress
-    generalQuestionsStorage.set('completedQuestions', JSON.stringify([...newCompletedQuestions]));
-
-    // Store topic-specific progress
-    if (selectedTopic !== 'All' && selectedTopic !== 'Bookmarked') {
-      generalQuestionsStorage.set(
-        `completedQuestions_${selectedTopic}`,
-        JSON.stringify([...newCompletedQuestions])
-      );
-    }
-  };
-
-  // Load bookmarked questions from the dedicated storage
-  const loadBookmarkedQuestions = (): BookmarkedQuestions => {
-    const storedBookmarks = bookmarkedQuestionsStorage.getString('bookmarkedQuestions');
-    return storedBookmarks ? JSON.parse(storedBookmarks) : {};
-  };
-
-  const [bookmarkedQuestions, setBookmarkedQuestions] = useState<BookmarkedQuestions>(loadBookmarkedQuestions());
-
-  const topics: string[] = ['All', 'Bookmarked', ...new Set(quizData.map(quiz => quiz.topic))];
-
-  const filteredQuizData: QuizItem[] = React.useMemo(() => {
-    if (selectedTopic === 'All') {
-      return quizData;
-    }
-    if (selectedTopic === 'Bookmarked') {
-      return quizData.filter(quiz => bookmarkedQuestions[quiz.id]);
-    }
-    return quizData.filter(quiz => quiz.topic === selectedTopic);
-  }, [selectedTopic, bookmarkedQuestions]);
-
-  const calculateProgress = () => {
-    if (!hasStarted && calculateCompletion() === 0) return 0;
-    const relevantQuestions = filteredQuizData;
-    const totalQuestions = relevantQuestions.length;
-    if (totalQuestions === 0) return 0;
-
-    const correctAnswers = relevantQuestions.filter(
-      quiz => selectedAnswers[quiz.id] === quiz.correctAnswer
-    ).length;
-    return Math.round((correctAnswers / totalQuestions) * 100);
-  };
-
-  const calculateCompletion = () => {
-    const relevantQuestions = filteredQuizData;
-    const totalQuestions = relevantQuestions.length;
-    if (totalQuestions === 0) return 0;
-
-    const completed = relevantQuestions.filter(quiz => completedQuestions.has(quiz.id)).length;
-    return Math.round((completed / totalQuestions) * 100);
-  };
-
-  const getCompletedCount = () => {
-    const relevantQuestions = filteredQuizData;
-    return relevantQuestions.filter(quiz => completedQuestions.has(quiz.id)).length;
-  };
-
-  const handleAnswer = (questionId: number, selectedOption: string): void => {
-    if (!completedQuestions.has(questionId)) {
-      setHasStarted(true);
-      const newSelectedAnswers = {
-        ...selectedAnswers,
-        [questionId]: selectedOption
-      };
-      setSelectedAnswers(newSelectedAnswers);
-      generalQuestionsStorage.set('selectedAnswers', JSON.stringify(newSelectedAnswers));
-
-      const newCompletedQuestions = new Set([...completedQuestions, questionId]);
-      setCompletedQuestions(newCompletedQuestions);
-      updateCompletedQuestionsStorage(newCompletedQuestions);
-    } else if (calculateCompletion() === 100) {
-      const newSelectedAnswers = {
-        ...selectedAnswers,
-        [questionId]: selectedOption
-      };
-      setSelectedAnswers(newSelectedAnswers);
-      generalQuestionsStorage.set('selectedAnswers', JSON.stringify(newSelectedAnswers));
-    }
-  };
-
-  const toggleQuestion = (questionId: number): void => {
-    setExpandedQuestion(expandedQuestion === questionId ? null : questionId);
-  };
-
-  const toggleBookmark = (questionId: number): void => {
-    const updatedBookmarks = {
-      ...bookmarkedQuestions,
-      [questionId]: !bookmarkedQuestions[questionId]
-    };
-    setBookmarkedQuestions(updatedBookmarks);
-    // Save updated bookmarks to the dedicated MMKV storage
-    bookmarkedQuestionsStorage.set('bookmarkedQuestions', JSON.stringify(updatedBookmarks));
-  };
-
-  // Update completedQuestions when topic changes
-  React.useEffect(() => {
-    setCompletedQuestions(loadCompletedQuestions());
-  }, [selectedTopic]);
-
-  // Add effect to update hasStarted based on completion
-  React.useEffect(() => {
-    if (calculateCompletion() > 0) {
-      setHasStarted(true);
-    }
-  }, [selectedTopic]);
-
-  return (
-    <ScrollView style={styles.container}>
-      <View style={styles.content}>
-        <View style={styles.topicSelectorContainer}>
-          <Text style={styles.topicLabel}>Select Topic:</Text>
-          <ScrollView
-            horizontal
-            showsHorizontalScrollIndicator={false}
-            style={styles.topicScroll}
-          >
-            {topics.map((topic) => (
-              <Pressable
-                key={topic}
-                style={[
-                  styles.topicButton,
-                  selectedTopic === topic && styles.selectedTopicButton
-                ]}
-                onPress={() => setSelectedTopic(topic)}
-              >
-                <Text style={[
-                  styles.topicButtonText,
-                  selectedTopic === topic && styles.selectedTopicButtonText
-                ]}>
-                  {topic}
-                </Text>
-              </Pressable>
-            ))}
-          </ScrollView>
-        </View>
-
-        <View style={styles.progressMargin}>
-          <ProgressBar progressFunc={calculateProgress} backgroundColor={"#e5e7eb"} />
-        </View>
-
-        <View style={styles.completionContainer}>
-          <Text style={styles.completionText}>
-            Questions completed: {getCompletedCount()}/{filteredQuizData.length}
-          </Text>
-          {calculateCompletion() === 100 && (
-            <Text style={styles.completionNote}>
-              You can now review and change your answers
-            </Text>
-          )}
-        </View>
-
-        {filteredQuizData.map((quiz) => (
-          <View key={quiz.id} style={styles.questionContainer}>
-            <Pressable
-              onPress={() => toggleQuestion(quiz.id)}
-              style={styles.questionHeader}
-            >
-              <Text style={styles.questionTitle}>{quiz.title}</Text>
-              <View style={styles.iconContainer}>
-                <Pressable
-                  onPress={(e) => {
-                    e.stopPropagation();
-                    toggleBookmark(quiz.id);
-                  }}
-                  hitSlop={8}
-                >
-                  {<Ionicons  // Use the imported Icon
-                    name={bookmarkedQuestions[quiz.id] ? 'bookmark' : 'bookmark-outline'} // Example: MaterialIcons bookmark and bookmark-border
-                    size={20} // Adjust the size as needed
-                    color={bookmarkedQuestions[quiz.id] ? '#fbbf24' : '#9ca3af'} // Set the color
-                  />}
-                </Pressable>
-              </View>
-            </Pressable>
-
-            {expandedQuestion === quiz.id && (
-              <View style={styles.questionContent}>
-                <Text style={styles.questionText}>{quiz.question}</Text>
-                <View style={styles.optionsContainer}>
-                  {quiz.options.map((option, index) => (
-                    <Pressable
-                      key={index}
-                      style={({ pressed }: PressableStateCallbackType): ViewStyle[] => [
-                        styles.optionButton,
-                        selectedAnswers[quiz.id] && option === quiz.correctAnswer ? styles.correctOption : undefined,
-                        selectedAnswers[quiz.id] === option &&
-                          option !== quiz.correctAnswer ? styles.incorrectOption : undefined,
-                        (!completedQuestions.has(quiz.id) || calculateCompletion() === 100)
-                          ? undefined
-                          : styles.disabledOption
-                      ].filter((style): style is ViewStyle => style !== undefined)}
-                      onPress={() => handleAnswer(quiz.id, option)}
-                      disabled={completedQuestions.has(quiz.id) && calculateCompletion() !== 100}
-                    >
-                      <Text style={styles.optionText}>{option}</Text>
-                      {selectedAnswers[quiz.id] && (
-                        <>
-                          {option === quiz.correctAnswer && (
-                            <Text style={[styles.icon, styles.correctIcon]}>✓</Text>
-                          )}
-                          {selectedAnswers[quiz.id] === option &&
-                            option !== quiz.correctAnswer && (
-                              <Text style={[styles.icon, styles.incorrectIcon]}>✗</Text>
-                            )}
-                        </>
-                      )}
-                    </Pressable>
-                  ))}
-                </View>
-
-                {selectedAnswers[quiz.id] && (
-                  <View style={styles.feedbackContainer}>
-                    <Text style={styles.feedbackText}>{quiz.feedback}</Text>
-                  </View>
-                )}
-              </View>
-            )}
-          </View>
-        ))}
-
-
-      </View>
-    </ScrollView>
-  );
-}
-
 interface Styles {
   container: ViewStyle;
+  centerContent: ViewStyle;
+  loadingText: TextStyle;
+  errorText: TextStyle;
+  noQuestionsText: TextStyle;
   content: ViewStyle;
   progressMargin: ViewStyle;
   questionContainer: ViewStyle;
   questionHeader: ViewStyleWithShadow;
   questionTitle: TextStyle & { fontWeight: '500' };
   iconContainer: ViewStyle;
+  expandIcon: ViewStyle;
   icon: TextStyle;
   questionContent: ViewStyleWithShadow;
   questionText: TextStyle;
   optionsContainer: ViewStyleWithGap;
   optionButton: ViewStyle;
+  optionButtonPressed: ViewStyle;
   correctOption: ViewStyle;
   incorrectOption: ViewStyle;
   optionText: TextStyle;
-  backButton: ViewStyleWithShadow;
-  checkButton: ViewStyle;
-  checkButtonText: TextStyle & { fontWeight: '500' };
-  correctIcon: TextStyle & { fontWeight: 'bold' };
-  incorrectIcon: TextStyle & { fontWeight: 'bold' };
+  correctIcon: TextStyle;
+  incorrectIcon: TextStyle;
   feedbackContainer: ViewStyleWithBorder;
   feedbackText: TextStyle;
   topicSelectorContainer: ViewStyle;
   topicLabel: TextStyle;
   topicScroll: ViewStyle;
+  topicScrollContent: ViewStyle;
   topicButton: ViewStyle;
   selectedTopicButton: ViewStyle;
   topicButtonText: TextStyle & { fontWeight: '500' };
@@ -332,18 +72,298 @@ interface Styles {
   completionNote: TextStyle;
   disabledOption: ViewStyle;
   bookmarkButton: ViewStyle;
-  bookmarkedIcon: TextStyle;
-  bookmarkedSection: ViewStyle;
-  sectionTitle: TextStyle & { fontWeight: '600' };
-  bookmarkedItem: ViewStyleWithShadow;
-  bookmarkedTitle: TextStyle & { fontWeight: '500' };
-  bookmarkedQuestion: TextStyle;
 }
 
+// --- Component ---
+export default function QuizPage() {
+  // --- Consume Context ---
+  // All quiz-related state and logic now comes from the context
+  const {
+    quizData, // Still needed for the null check initially
+    isLoading,
+    error,
+    selectedTopic,
+    setSelectedTopic,
+    filteredQuizData,
+    topics,
+    selectedAnswers,
+    completedQuestions,
+    bookmarkedQuestions,
+    handleAnswer, // Use context's handleAnswer
+    toggleBookmark, // Use context's toggleBookmark
+    calculateProgress, // Use context's calculation
+    calculateCompletion, // Use context's calculation
+    getCompletedCount, // Use context's calculation
+    // hasStarted // Not directly used in rendering logic, but available if needed
+  } = useQuiz();
+
+  // --- Local UI State ---
+  // State for managing which question is expanded remains local to this component
+  const [expandedQuestion, setExpandedQuestion] = useState<number | null>(null);
+
+  // --- Local UI Functions ---
+  // Function to toggle question expansion remains local
+  const toggleQuestion = (questionId: number): void => {
+    setExpandedQuestion(prevExpanded => (prevExpanded === questionId ? null : questionId));
+  };
+
+  // --- Removed State Definitions ---
+  // [quizData, setQuizData] -> Provided by context
+  // [selectedAnswers, setSelectedAnswers] -> Provided by context
+  // [bookmarkedQuestions, setBookmarkedQuestions] -> Provided by context
+  // [selectedTopic, setSelectedTopic] -> Provided by context
+  // [completedQuestions, setCompletedQuestions] -> Provided by context
+  // [hasStarted, setHasStarted] -> Provided by context
+  // [isLoading, setIsLoading] -> Provided by context
+  // [error, setError] -> Provided by context
+
+  // --- Removed Effects ---
+  // useEffect for fetching data -> Handled by context
+  // useEffect for updating completedQuestions on topic change -> Handled by context
+  // useEffect for setting hasStarted -> Handled by context
+
+  // --- Removed Derived State Calculations ---
+  // topics useMemo -> Provided by context
+  // filteredQuizData useMemo -> Provided by context
+  // calculateProgress function -> Provided by context
+  // calculateCompletion function -> Provided by context
+  // getCompletedCount function -> Provided by context
+
+  // --- Removed Handler Functions ---
+  // handleAnswer -> Provided by context
+  // toggleBookmark -> Provided by context
+  // (Storage functions like load/update are internal to context)
+
+  // --- Conditional Rendering for Loading/Error States ---
+  // Uses isLoading and error directly from the context
+  if (isLoading) {
+    return (
+      <View style={[styles.container, styles.centerContent]}>
+        <ActivityIndicator size="large" color="#3b82f6" />
+        <Text style={styles.loadingText}>Loading Quiz...</Text>
+      </View>
+    );
+  }
+
+  if (error) {
+    return (
+      <View style={[styles.container, styles.centerContent]}>
+        <Text style={styles.errorText}>Error loading quiz: {error}</Text>
+        {/* Optionally add a retry button here */}
+      </View>
+    );
+  }
+
+  // Ensure quizData is loaded before proceeding (context might still be loading initially)
+  // Although isLoading=false should guarantee quizData is at least [], this is an extra safety check
+  if (!quizData) {
+    return (
+      <View style={[styles.container, styles.centerContent]}>
+        {/* Could show a different message or rely on isLoading */}
+        <Text style={styles.errorText}>No quiz data available yet.</Text>
+      </View>
+    );
+  }
+
+  // --- Render JSX (using context values) ---
+  return (
+    <ScrollView style={styles.container}>
+      <View style={styles.content}>
+        {/* Topic Selector */}
+        <View style={styles.topicSelectorContainer}>
+          <Text style={styles.topicLabel}>Select Topic:</Text>
+          <ScrollView
+            horizontal
+            showsHorizontalScrollIndicator={false}
+            contentContainerStyle={styles.topicScrollContent}
+            style={styles.topicScroll}
+          >
+            {/* Use topics from context */}
+            {topics.map((topic: string) => (
+              <Pressable
+                key={topic}
+                style={[
+                  styles.topicButton,
+                  selectedTopic === topic && styles.selectedTopicButton // Use selectedTopic from context
+                ]}
+                onPress={() => setSelectedTopic(topic)} // Use setSelectedTopic from context
+              >
+                <Text style={[
+                  styles.topicButtonText,
+                  selectedTopic === topic && styles.selectedTopicButtonText // Use selectedTopic from context
+                ]}>
+                  {topic}
+                </Text>
+              </Pressable>
+            ))}
+          </ScrollView>
+        </View>
+
+        {/* Progress Bar */}
+        <View style={styles.progressMargin}>
+          {/* Pass calculateProgress function from context */}
+          <ProgressBar progressFunc={calculateProgress} backgroundColor={"#e5e7eb"} />
+        </View>
+
+        {/* Completion Status */}
+        <View style={styles.completionContainer}>
+          <Text style={styles.completionText}>
+            {/* Use getCompletedCount from context and filteredQuizData from context */}
+            Questions completed: {getCompletedCount()}/{filteredQuizData.length}
+          </Text>
+          {/* Use calculateCompletion from context */}
+          {calculateCompletion() === 100 && filteredQuizData.length > 0 && (
+            <Text style={styles.completionNote}>
+              You can now review and change your answers.
+            </Text>
+          )}
+        </View>
+
+        {/* Quiz Questions List */}
+        {/* Use filteredQuizData from context */}
+        {filteredQuizData.length === 0 ? (
+          <Text style={styles.noQuestionsText}>No questions found for "{selectedTopic}".</Text> // Use selectedTopic from context
+        ) : (
+          /* Use filteredQuizData from context */
+          filteredQuizData.map((quiz: QuizItem) => {
+            const isCompleted = completedQuestions.has(quiz.id); // Use completedQuestions from context
+            const currentCompletion = calculateCompletion(); // Use calculateCompletion from context
+            const canInteract = !isCompleted || currentCompletion === 100;
+
+            return (
+              <View key={quiz.id} style={styles.questionContainer}>
+                {/* Question Header (Pressable to expand/collapse) */}
+                <Pressable
+                  onPress={() => toggleQuestion(quiz.id)} // Uses local toggleQuestion
+                  style={styles.questionHeader}
+                >
+                  <Text style={styles.questionTitle}>{quiz.title}</Text>
+                  <View style={styles.iconContainer}>
+                    {/* Bookmark Button */}
+                    <Pressable
+                      onPress={(e) => {
+                        e.stopPropagation();
+                        toggleBookmark(quiz.id); // Use toggleBookmark from context
+                      }}
+                      hitSlop={8}
+                      style={styles.bookmarkButton}
+                    >
+                      <Ionicons
+                        name={bookmarkedQuestions[quiz.id] ? 'bookmark' : 'bookmark-outline'} // Use bookmarkedQuestions from context
+                        size={20}
+                        color={bookmarkedQuestions[quiz.id] ? '#fbbf24' : '#9ca3af'} // Use bookmarkedQuestions from context
+                      />
+                    </Pressable>
+                    {/* Expand/collapse icon based on local state */}
+                    <Ionicons
+                      name={expandedQuestion === quiz.id ? 'chevron-up' : 'chevron-down'}
+                      size={20}
+                      color='#9ca3af'
+                    />
+                  </View>
+                </Pressable>
+
+                {/* Expanded Question Content (uses local expandedQuestion state) */}
+                {expandedQuestion === quiz.id && (
+                  <View style={styles.questionContent}>
+                    <Text style={styles.questionText}>{quiz.question}</Text>
+                    <View style={styles.optionsContainer}>
+                      {quiz.options.map((option: string, index: number) => {
+                        const isSelected = selectedAnswers[quiz.id] === option; // Use selectedAnswers from context
+                        const isCorrect = option === quiz.correctAnswer;
+                        // Determine button styles based on state
+                        const getOptionStyle = ({ pressed }: PressableStateCallbackType): ViewStyle[] => {
+                          const baseStyle = styles.optionButton;
+                          let dynamicStyle: ViewStyle | undefined;
+
+                          // Use selectedAnswers from context
+                          if (selectedAnswers[quiz.id]) {
+                            if (isSelected && !isCorrect) dynamicStyle = styles.incorrectOption;
+                            else if (isCorrect) dynamicStyle = styles.correctOption;
+                          }
+
+                          const disabledStyle = !canInteract ? styles.disabledOption : undefined;
+                          const pressedStyle = pressed ? styles.optionButtonPressed : undefined;
+
+                          return [
+                            baseStyle,
+                            dynamicStyle,
+                            disabledStyle,
+                            pressedStyle
+                          ].filter((style): style is ViewStyle => style !== undefined);
+                        };
+
+                        return (
+                          <Pressable
+                            key={index}
+                            style={getOptionStyle}
+                            onPress={() => handleAnswer(quiz.id, option)} // Use handleAnswer from context
+                            disabled={!canInteract}
+                          >
+                            <Text style={styles.optionText}>{option}</Text>
+                            {/* Use selectedAnswers from context */}
+                            {selectedAnswers[quiz.id] && (
+                              <>
+                                {isCorrect && (
+                                  <Ionicons name="checkmark-circle" size={20} style={[styles.icon, styles.correctIcon]} />
+                                )}
+                                {isSelected && !isCorrect && (
+                                  <Ionicons name="close-circle" size={20} style={[styles.icon, styles.incorrectIcon]} />
+                                )}
+                              </>
+                            )}
+                          </Pressable>
+                        );
+                      })}
+                    </View>
+
+                    {/* Feedback (shown only if an answer is selected) */}
+                    {/* Use selectedAnswers from context */}
+                    {selectedAnswers[quiz.id] && (
+                      <View style={styles.feedbackContainer}>
+                        <Text style={styles.feedbackText}>{quiz.feedback}</Text>
+                      </View>
+                    )}
+                  </View>
+                )}
+              </View>
+            );
+          })
+        )}
+      </View>
+    </ScrollView>
+  );
+}
+
+// --- Styles ---
+// Keep the existing styles object as it was
 const styles = StyleSheet.create<Styles>({
   container: {
     flex: 1,
     backgroundColor: '#f9fafb',
+  },
+  centerContent: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    padding: 16,
+    flex: 1, // Ensure it takes full height for centering
+  },
+  loadingText: {
+    marginTop: 10,
+    fontSize: 16,
+    color: '#6b7280',
+  },
+  errorText: {
+    fontSize: 16,
+    color: '#ef4444',
+    textAlign: 'center',
+  },
+  noQuestionsText: {
+    fontSize: 16,
+    color: '#6b7280',
+    textAlign: 'center',
+    marginTop: 30,
+    fontStyle: 'italic',
   },
   content: {
     padding: 16,
@@ -360,7 +380,8 @@ const styles = StyleSheet.create<Styles>({
   questionHeader: {
     backgroundColor: 'white',
     borderRadius: 8,
-    padding: 16,
+    paddingVertical: 12,
+    paddingHorizontal: 16,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
@@ -371,84 +392,73 @@ const styles = StyleSheet.create<Styles>({
     elevation: 1,
   },
   questionTitle: {
+    flex: 1,
+    marginRight: 8,
+    fontSize: 16,
     fontWeight: '500',
+    color: '#1f2937',
   },
   iconContainer: {
     flexDirection: 'row',
     alignItems: 'center',
   },
+  expandIcon: {
+    marginLeft: 8, // Keep spacing between bookmark and expand icon
+  },
   icon: {
-    fontSize: 20,
-    marginHorizontal: 4,
-    color: '#9ca3af',
+    // General icon styles
   },
   questionContent: {
-    marginTop: 8,
-    backgroundColor: 'white',
-    borderRadius: 8,
+    marginTop: 1,
+    backgroundColor: '#fdfdff',
+    borderBottomLeftRadius: 8,
+    borderBottomRightRadius: 8,
     padding: 16,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 1 },
-    shadowOpacity: 0.05,
-    shadowRadius: 1,
-    elevation: 1,
+    borderTopWidth: 1,
+    borderTopColor: '#f3f4f6',
   },
   questionText: {
     color: '#1f2937',
     marginBottom: 16,
+    fontSize: 15,
+    lineHeight: 22,
   },
   optionsContainer: {
-    gap: 8,
+    gap: 10,
   },
   optionButton: {
     width: '100%',
-    padding: 12,
+    paddingVertical: 12,
+    paddingHorizontal: 16,
     borderRadius: 8,
     backgroundColor: '#f9fafb',
+    borderWidth: 1,
+    borderColor: '#e5e7eb',
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
   },
+  optionButtonPressed: {
+    backgroundColor: '#f3f4f6',
+  },
   correctOption: {
     backgroundColor: '#dcfce7',
+    borderColor: '#22c55e',
   },
   incorrectOption: {
     backgroundColor: '#fee2e2',
+    borderColor: '#ef4444',
   },
   optionText: {
     color: '#374151',
-  },
-  backButton: {
-    position: 'absolute',
-    bottom: 16,
-    right: 16,
-    padding: 8,
-    borderRadius: 9999,
-    backgroundColor: 'white',
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.1,
-    shadowRadius: 4,
-    elevation: 2,
-  },
-  checkButton: {
-    backgroundColor: '#3b82f6',
-    padding: 12,
-    borderRadius: 8,
-    marginTop: 16,
-    alignItems: 'center',
-  },
-  checkButtonText: {
-    color: 'white',
-    fontWeight: '500',
+    flex: 1,
+    marginRight: 8,
   },
   correctIcon: {
-    color: '#22c55e',
-    fontWeight: 'bold',
+    color: '#16a34a',
   },
   incorrectIcon: {
-    color: '#ef4444',
-    fontWeight: 'bold',
+    color: '#dc2626',
   },
   feedbackContainer: {
     marginTop: 16,
@@ -456,7 +466,7 @@ const styles = StyleSheet.create<Styles>({
     backgroundColor: '#f8fafc',
     borderRadius: 8,
     borderLeftWidth: 4,
-    borderLeftColor: '#3b82f6',
+    borderLeftColor: '#60a5fa',
   },
   feedbackText: {
     color: '#1e293b',
@@ -469,18 +479,21 @@ const styles = StyleSheet.create<Styles>({
   topicLabel: {
     fontSize: 16,
     fontWeight: '500',
-    marginBottom: 8,
+    marginBottom: 10,
     color: '#374151',
   },
   topicScroll: {
     flexGrow: 0,
+  },
+  topicScrollContent: {
+    paddingRight: 8,
   },
   topicButton: {
     paddingHorizontal: 16,
     paddingVertical: 8,
     borderRadius: 20,
     backgroundColor: '#f3f4f6',
-    marginRight: 8,
+    marginRight: 10,
     borderWidth: 1,
     borderColor: '#e5e7eb',
   },
@@ -497,7 +510,7 @@ const styles = StyleSheet.create<Styles>({
   },
   completionContainer: {
     marginBottom: 20,
-    padding: 12,
+    padding: 16,
     backgroundColor: 'white',
     borderRadius: 8,
     shadowColor: '#000',
@@ -510,50 +523,20 @@ const styles = StyleSheet.create<Styles>({
     fontSize: 16,
     fontWeight: '500',
     color: '#374151',
+    textAlign: 'center',
   },
   completionNote: {
-    marginTop: 4,
+    marginTop: 6,
     fontSize: 14,
     color: '#6b7280',
     fontStyle: 'italic',
+    textAlign: 'center',
   },
   disabledOption: {
-    opacity: 0.7,
+    opacity: 0.6,
+    backgroundColor: '#f3f4f6',
   },
   bookmarkButton: {
-    padding: 8,
-  },
-  bookmarkedIcon: {
-    color: '#fbbf24',
-  },
-  bookmarkedSection: {
-    marginBottom: 24,
-  },
-  sectionTitle: {
-    fontSize: 18,
-    fontWeight: '600',
-    color: '#1f2937',
-    marginBottom: 12,
-  },
-  bookmarkedItem: {
-    backgroundColor: 'white',
-    borderRadius: 8,
-    padding: 12,
-    marginBottom: 8,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 1 },
-    shadowOpacity: 0.05,
-    shadowRadius: 1,
-    elevation: 1,
-  },
-  bookmarkedTitle: {
-    fontSize: 16,
-    fontWeight: '500',
-    color: '#374151',
-    marginBottom: 4,
-  },
-  bookmarkedQuestion: {
-    fontSize: 14,
-    color: '#6b7280',
+    padding: 4,
   },
 });
