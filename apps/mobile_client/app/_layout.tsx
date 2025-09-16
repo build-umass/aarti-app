@@ -12,9 +12,17 @@ import { useColorScheme } from '@/hooks/useColorScheme';
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();
 
-// initialize default settings
-export const settingsStorage = new MMKV();
-settingsStorage.set("username", "Example User");
+// Storage instance - will be initialized in useEffect
+let settingsStorage: MMKV | null = null;
+
+// Function to get settings storage instance
+export const getSettingsStorage = () => {
+  if (!settingsStorage) {
+    settingsStorage = new MMKV();
+    settingsStorage.set("username", "Example User");
+  }
+  return settingsStorage;
+};
 
 export default function RootLayout() {
   const colorScheme = useColorScheme();
@@ -26,6 +34,8 @@ export default function RootLayout() {
 
   useEffect(() => {
     if (loaded) {
+      // Initialize storage after fonts are loaded
+      getSettingsStorage();
       setAppIsReady(true);
     }
   }, [loaded]);

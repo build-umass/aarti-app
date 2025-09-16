@@ -3,8 +3,8 @@ import { useState, useEffect } from 'react';
 import { Colors } from '@/constants/Colors';
 import ProgressBar from '../../components/ProgressBar';
 import FontAwesome from '@expo/vector-icons/FontAwesome';
-import { generalQuestionsStorage, quizData } from './quizzes';
-import { settingsStorage } from '../_layout';
+import { getGeneralQuestionsStorage, quizData } from './quizzes';
+import { getSettingsStorage } from '../_layout';
 
 // TODO:
 // fix child key console warning
@@ -15,6 +15,16 @@ import { settingsStorage } from '../_layout';
 
 export default function ProfileScreen() {
   const [activeTab, setActiveTab] = useState<'quiz' | 'resource'>('quiz'); // valid options: quiz, resource
+  const [username, setUsername] = useState<string>('Loading...');
+
+  useEffect(() => {
+    // Load username from storage
+    const storage = getSettingsStorage();
+    const storedUsername = storage.getString("username");
+    if (storedUsername) {
+      setUsername(storedUsername);
+    }
+  }, []);
 
   return (
     <View style={styles.container}>
@@ -25,7 +35,7 @@ export default function ProfileScreen() {
 
       <View style={styles.user}>
         <FontAwesome name="user-circle" size={170} color="black" />
-        <Text style={styles.text}>{`${settingsStorage.getString("username")}`}</Text>
+        <Text style={styles.text}>{username}</Text>
       </View>
 
       <View style={styles.statsSelection}>
@@ -100,7 +110,8 @@ const tempResourceProgress = () => 36;
 
 const totalQuestions = () => quizData.length;
 const totalCompleted = () => {
-  const completed = generalQuestionsStorage.getString('completedQuestions');
+  const storage = getGeneralQuestionsStorage();
+  const completed = storage.getString('completedQuestions');
   if (completed) return JSON.parse(completed).length;
   else return 0;
 };
