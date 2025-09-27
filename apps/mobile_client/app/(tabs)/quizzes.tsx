@@ -38,14 +38,30 @@ interface ViewStyleWithBorder extends ViewStyle {
   borderLeftColor?: string;
 }
 
-// Initialize MMKV storage specifically for bookmarked questions
-const bookmarkedQuestionsStorage = new MMKV();
-// Add new MMKV storage for general questions progress
-export const generalQuestionsStorage = new MMKV();
+// Storage instances - will be initialized in useEffect
+let bookmarkedQuestionsStorage: MMKV | null = null;
+let generalQuestionsStorage: MMKV | null = null;
+
+// Function to get bookmarked questions storage instance
+const getBookmarkedQuestionsStorage = () => {
+  if (!bookmarkedQuestionsStorage) {
+    bookmarkedQuestionsStorage = new MMKV();
+  }
+  return bookmarkedQuestionsStorage;
+};
+
+// Function to get general questions storage instance
+export const getGeneralQuestionsStorage = () => {
+  if (!generalQuestionsStorage) {
+    generalQuestionsStorage = new MMKV();
+  }
+  return generalQuestionsStorage;
+};
 
 // Add this new function to load selected answers from storage
 const loadSelectedAnswers = () => {
-  const storedAnswers = generalQuestionsStorage.getString('selectedAnswers');
+  const storage = getGeneralQuestionsStorage();
+  const storedAnswers = storage.getString('selectedAnswers');
   return storedAnswers ? JSON.parse(storedAnswers) : {};
 };
 
@@ -57,8 +73,9 @@ export default function QuizPage() {
 
   // Load completed questions from storage
   const loadCompletedQuestions = (): Set<number> => {
-    const storedProgress = generalQuestionsStorage.getString('completedQuestions');
-    const storedTopicProgress = generalQuestionsStorage.getString(`completedQuestions_${selectedTopic}`);
+    const storage = getGeneralQuestionsStorage();
+    const storedProgress = storage.getString('completedQuestions');
+    const storedTopicProgress = storage.getString(`completedQuestions_${selectedTopic}`);
 
     if (selectedTopic === 'All' || selectedTopic === 'Bookmarked') {
       return storedProgress ? new Set(JSON.parse(storedProgress)) : new Set();
@@ -70,12 +87,13 @@ export default function QuizPage() {
 
   // Update storage when completed questions change
   const updateCompletedQuestionsStorage = (newCompletedQuestions: Set<number>) => {
+    const storage = getGeneralQuestionsStorage();
     // Store overall progress
-    generalQuestionsStorage.set('completedQuestions', JSON.stringify([...newCompletedQuestions]));
+    storage.set('completedQuestions', JSON.stringify([...newCompletedQuestions]));
 
     // Store topic-specific progress
     if (selectedTopic !== 'All' && selectedTopic !== 'Bookmarked') {
-      generalQuestionsStorage.set(
+      storage.set(
         `completedQuestions_${selectedTopic}`,
         JSON.stringify([...newCompletedQuestions])
       );
@@ -84,7 +102,8 @@ export default function QuizPage() {
 
   // Load bookmarked questions from the dedicated storage
   const loadBookmarkedQuestions = (): BookmarkedQuestions => {
-    const storedBookmarks = bookmarkedQuestionsStorage.getString('bookmarkedQuestions');
+    const storage = getBookmarkedQuestionsStorage();
+    const storedBookmarks = storage.getString('bookmarkedQuestions');
     return storedBookmarks ? JSON.parse(storedBookmarks) : {};
   };
 
@@ -136,7 +155,7 @@ export default function QuizPage() {
         [questionId]: selectedOption
       };
       setSelectedAnswers(newSelectedAnswers);
-      generalQuestionsStorage.set('selectedAnswers', JSON.stringify(newSelectedAnswers));
+      getGeneralQuestionsStorage().set('selectedAnswers', JSON.stringify(newSelectedAnswers));
 
       const newCompletedQuestions = new Set([...completedQuestions, questionId]);
       setCompletedQuestions(newCompletedQuestions);
@@ -147,7 +166,7 @@ export default function QuizPage() {
         [questionId]: selectedOption
       };
       setSelectedAnswers(newSelectedAnswers);
-      generalQuestionsStorage.set('selectedAnswers', JSON.stringify(newSelectedAnswers));
+      getGeneralQuestionsStorage().set('selectedAnswers', JSON.stringify(newSelectedAnswers));
     }
   };
 
@@ -162,7 +181,7 @@ export default function QuizPage() {
     };
     setBookmarkedQuestions(updatedBookmarks);
     // Save updated bookmarks to the dedicated MMKV storage
-    bookmarkedQuestionsStorage.set('bookmarkedQuestions', JSON.stringify(updatedBookmarks));
+    getBookmarkedQuestionsStorage().set('bookmarkedQuestions', JSON.stringify(updatedBookmarks));
   };
 
   // Update completedQuestions when topic changes
