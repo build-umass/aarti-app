@@ -1,0 +1,2671 @@
+{
+    "quizzes": [
+      {
+        "id": 1,
+        "topic": "Family Law (India)",
+        "title": "Abandoned Wife Definition",
+        "question": "What is the minimum continuous period a husband must leave his wife for her to be legally considered an 'abandoned wife' according to the text?",
+        "options": ["Six months", "One year", "Two years", "Five years"],
+        "correctAnswer": "Two years",
+        "feedback": "The law defines an 'abandoned wife' as one whose husband has left her for a minimum continuous period of two years."
+      },
+      {
+        "id": 2,
+        "topic": "Family Law (India)",
+        "title": "Rights of Abandoned Wife",
+        "question": "What primary legal right does an 'abandoned wife' gain after being left by her husband for two continuous years?",
+        "options": ["Right to remarry immediately", "Right to automatically inherit property", "Right to file a petition for divorce", "Right to claim citizenship elsewhere"],
+        "correctAnswer": "Right to file a petition for divorce",
+        "feedback": "An abandoned wife can file a petition for divorce in the District Court if she has been abandoned by her husband for two years continuously, irrespective of her religion."
+      },
+      {
+        "id": 3,
+        "topic": "Family Law (India)",
+        "title": "Maintenance Entitlement",
+        "question": "According to the document, who is generally entitled to ask for maintenance?",
+        "options": ["Only divorced women", "Only wives with children", "Divorced women and wives without sufficient means", "Any married woman"],
+        "correctAnswer": "Divorced women and wives without sufficient means",
+        "feedback": "The text states that divorced women and wives who do not have enough means to maintain themselves (under Sec 125 CrPC) are entitled to ask for maintenance."
+      },
+      {
+        "id": 4,
+        "topic": "Family Law (India)",
+        "title": "Maintenance Laws",
+        "question": "What type of laws primarily govern maintenance rights for divorced women in India?",
+        "options": ["Criminal Laws", "Civil Procedure Code", "Religious Personal Laws", "Constitutional Law"],
+        "correctAnswer": "Religious Personal Laws",
+        "feedback": "Maintenance rights for divorced women are governed by various religious personal laws in India, such as Hindu law, Muslim Personal law, and the Indian Divorce Act for Christians."
+      },
+      {
+        "id": 5,
+        "topic": "Family Law (India)",
+        "title": "Maintenance Laws (Hindu)",
+        "question": "Which Acts grant divorced Hindu women the right to claim maintenance?",
+        "options": ["Muslim Women Act & Indian Divorce Act", "Hindu Marriage Act & Hindu Adoption and Maintenance Act", "Special Marriage Act & CrPC Sec 125", "Guardians and Wards Act & Dowry Prohibition Act"],
+        "correctAnswer": "Hindu Marriage Act & Hindu Adoption and Maintenance Act",
+        "feedback": "Under Hindu law, The Hindu Marriage Act, 1955 and the Hindu Adoption and Maintenance Act, 1956 grant the right to women to claim maintenance after divorce."
+      },
+      {
+        "id": 6,
+        "topic": "Family Law (India)",
+        "title": "Maintenance Laws (Muslim)",
+        "question": "Which Act specifically governs the maintenance of divorced Muslim women mentioned in the text?",
+        "options": ["Hindu Marriage Act, 1955", "Indian Divorce Act, 1869", "Muslim Women (Protection of Rights on Divorce) Act, 1986", "Special Marriage Act, 1954"],
+        "correctAnswer": "Muslim Women (Protection of Rights on Divorce) Act, 1986",
+        "feedback": "The law governing maintenance for divorced Muslim women mentioned is the Muslim Women (Protection of Rights on Divorce) Act, 1986."
+      },
+      {
+        "id": 7,
+        "topic": "Family Law (India)",
+        "title": "Maintenance Laws (Christian)",
+        "question": "Under which Act can divorced Christian women claim maintenance according to the document?",
+        "options": ["Hindu Adoption and Maintenance Act, 1956", "Muslim Women Act, 1986", "Indian Divorce Act, 1869", "Christian Marriage Act, 1872"],
+        "correctAnswer": "Indian Divorce Act, 1869",
+        "feedback": "Divorced Christian women can claim maintenance under the Indian Divorce Act, 1869."
+      },
+      {
+        "id": 8,
+        "topic": "Family Law (India)",
+        "title": "Determining Maintenance Amount",
+        "question": "How is the amount of maintenance typically decided?",
+        "options": ["Solely by the husband's income", "Solely by the wife's needs", "By mutual settlement or court order", "Based on the number of children"],
+        "correctAnswer": "By mutual settlement or court order",
+        "feedback": "The amount of maintenance is determined either by a mutual settlement between the husband and wife or based on an order received from the court."
+      },
+      {
+        "id": 9,
+        "topic": "Family Law (India)",
+        "title": "Non-Payment of Maintenance",
+        "question": "What recourse does a wife have if her husband fails to pay court-ordered maintenance without a valid reason?",
+        "options": ["She automatically forfeits the amount", "She can file a criminal case against him", "She must wait for the husband to pay voluntarily", "She can only file another civil suit"],
+        "correctAnswer": "She can file a criminal case against him",
+        "feedback": "In case of non-payment of maintenance money without sufficient cause, the wife can approach the court and file a criminal case against the husband."
+      },
+      {
+        "id": 10,
+        "topic": "Family Law (India)",
+        "title": "Husband Missing",
+        "question": "If a wife hasn't heard from her husband for a certain period and doesn't know if he's alive, after how long can she file for divorce on these grounds?",
+        "options": ["Two years", "Five years", "Seven years", "Ten years"],
+        "correctAnswer": "Seven years",
+        "feedback": "If a wife has been abandoned and has not heard of her husband for seven years, and doesn't know if he is alive, she can file a divorce petition."
+      },
+      {
+        "id": 11,
+        "topic": "Family Law (India)",
+        "title": "Definition of Child",
+        "question": "According to the provided text, what are the legal age limits that define a 'child' for the purposes of marriage law?",
+        "options": [
+          "Male under 18, Female under 18",
+          "Male under 21, Female under 21",
+          "Male under 21, Female under 18",
+          "Male under 18, Female under 16"
+        ],
+        "correctAnswer": "Male under 21, Female under 18",
+        "feedback": "The law defines a child as a male person under 21 years of age and a female under 18 years of age."
+      },
+      {
+        "id": 12,
+        "topic": "Family Law (India)",
+        "title": "Child Marriage Definition",
+        "question": "What constitutes a 'child marriage' as defined in the document?",
+        "options": [
+          "A marriage where both parties are under 18",
+          "A marriage arranged by parents without the children's consent",
+          "A marriage to which either of the parties is a child (below legal age)",
+          "A marriage not registered with the government"
+        ],
+        "correctAnswer": "A marriage to which either of the parties is a child (below legal age)",
+        "feedback": "Child marriage is defined as a marriage where either the male (under 21) or the female (under 18), or both, are children."
+      },
+      {
+        "id": 13,
+        "topic": "Family Law (India)",
+        "title": "Punishment for Child Marriage",
+        "question": "Who can be punished for the offence of conducting or abetting a child marriage?",
+        "options": [
+          "Only the parents of the child",
+          "Only the adult spouse (if one exists)",
+          "Only the priest or official performing the ceremony",
+          "Any person who performs, conducts, directs, or abets the marriage"
+        ],
+        "correctAnswer": "Any person who performs, conducts, directs, or abets the marriage",
+        "feedback": "The law states that any person involved in performing, conducting, directing, or abetting a child marriage is punishable."
+      },
+      {
+        "id": 14,
+        "topic": "Family Law (India)",
+        "title": "Filing a Complaint",
+        "question": "Who is eligible to file a complaint if they suspect a child marriage is taking place?",
+        "options": [
+          "Only the child involved",
+          "Only a Child Marriage Prohibition Officer",
+          "Only law enforcement officials",
+          "Any person who believes or has information about it"
+        ],
+        "correctAnswer": "Any person who believes or has information about it",
+        "feedback": "A complaint can be filed by any person (e.g., teachers, doctors, parents, NGOs, neighbors) who believes or knows a child marriage is occurring."
+      },
+      {
+        "id": 15,
+        "topic": "Family Law (India)",
+        "title": "Void vs. Voidable Marriage",
+        "question": "What is the primary difference between a 'void' and a 'voidable' marriage according to the text?",
+        "options": [
+          "Void marriages involve children, voidable marriages involve adults",
+          "Void marriages are illegal internationally, voidable ones only locally",
+          "A void marriage is invalid from the start; a voidable marriage is valid until terminated",
+          "Void marriages require court termination, voidable ones do not"
+        ],
+        "correctAnswer": "A void marriage is invalid from the start; a voidable marriage is valid until terminated",
+        "feedback": "A void marriage is considered never to have existed legally. A voidable marriage is legally recognized unless and until a spouse decides to terminate it through legal procedure."
+      },
+      {
+        "id": 16,
+        "topic": "Family Law (India)",
+        "title": "Conditions for Void Child Marriage",
+        "question": "Under which circumstance described is a child marriage considered 'void' (invalid from the beginning)?",
+        "options": [
+          "If the parents disapprove of the marriage",
+          "If the marriage is not registered within 30 days",
+          "If the child was sold for the purpose of marriage or trafficked",
+          "If the marriage took place without a religious ceremony"
+        ],
+        "correctAnswer": "If the child was sold for the purpose of marriage or trafficked",
+        "feedback": "A child marriage is void if the child was taken without guardian permission, compelled, sold for marriage, or subsequently sold/trafficked/used for immoral purposes."
+      },
+      {
+        "id": 17,
+        "topic": "Family Law (India)",
+        "title": "Terminating Child Marriage",
+        "question": "Who has the legal right to file a petition to annul (terminate) a child marriage?",
+        "options": [
+          "Either spouse, regardless of their age at marriage",
+          "Only the parents or guardians of the child spouse",
+          "The spouse who was a child at the time of the marriage",
+          "Only the Child Marriage Prohibition Officer"
+        ],
+        "correctAnswer": "The spouse who was a child at the time of the marriage",
+        "feedback": "The petition for annulment can be filed by the spouse who was underage at the time the marriage occurred."
+      },
+      {
+        "id": 18,
+        "topic": "Family Law (India)",
+        "title": "Minor Filing for Annulment",
+        "question": "Can a person who is still a minor file a petition to annul their child marriage?",
+        "options": [
+          "No, they must wait until they reach the age of majority (18 or 21)",
+          "Yes, but only if both parents consent",
+          "Yes, through their guardian or next friend along with the Child Marriage Prohibition Officer",
+          "No, only the adult spouse can file for annulment"
+        ],
+        "correctAnswer": "Yes, through their guardian or next friend along with the Child Marriage Prohibition Officer",
+        "feedback": "A minor can file the petition for annulment through a guardian or next friend, accompanied by the Child Marriage Prohibition Officer."
+      },
+      {
+        "id": 19,
+        "topic": "Family Law (India)",
+        "title": "Age Limit for Annulment Petition",
+        "question": "What is the time limit for the person (who was a child at marriage) to file the annulment petition after becoming an adult?",
+        "options": [
+          "Within one year of reaching adulthood",
+          "Any time before completing two years as an adult (i.e., before age 20)",
+          "Within five years of the marriage date",
+          "There is no time limit"
+        ],
+        "correctAnswer": "Any time before completing two years as an adult (i.e., before age 20)",
+        "feedback": "The petition must be filed before the child completes two years as an adult, specified as reaching 20 years of age in the text."
+      },
+      {
+        "id": 20,
+        "topic": "Family Law (India)",
+        "title": "Where to File Complaint",
+        "question": "Where can a person file a complaint regarding a child marriage?",
+        "options": [
+          "Only at the High Court",
+          "Only with a Non-Governmental Organization (NGO)",
+          "With the CMPO, nearest police station, or Judicial Magistrate of the First Class",
+          "Only directly to the District Collector"
+        ],
+        "correctAnswer": "With the CMPO, nearest police station, or Judicial Magistrate of the First Class",
+        "feedback": "Complaints can be filed with the Child Marriage Prohibition Officer, the nearest police station, or the Judicial Magistrate of the First Class."
+      },
+      {
+        "id": 21,
+        "topic": "Family Law (India)",
+        "title": "Role of CMPO",
+        "question": "What is the primary function of a Child Marriage Prohibition Officer (CMPO)?",
+        "options": [
+          "To officiate marriages",
+          "To provide marriage counseling",
+          "To prevent child marriages from occurring",
+          "To grant divorces in cases of child marriage"
+        ],
+        "correctAnswer": "To prevent child marriages from occurring",
+        "feedback": "The CMPO is appointed by the State Government specifically to prevent child marriages."
+      },
+      {
+        "id": 22,
+        "topic": "Family Law (India)",
+        "title": "Annulment Procedure",
+        "question": "How can a person who was a child at the time of marriage get it legally annulled?",
+        "options": [
+          "By signing a declaration with their parents",
+          "By informing the local village council",
+          "By approaching the District Court for a decree of nullity",
+          "By agreement with the other spouse recorded by police"
+        ],
+        "correctAnswer": "By approaching the District Court for a decree of nullity",
+        "feedback": "To annul a child marriage, the person must approach the District Court to pass a decree of nullity."
+      },
+      {
+        "id": 23,
+        "topic": "Family Law (India)",
+        "title": "CMPO Administrative Levels",
+        "question": "Based on the examples for Kadapa and Chittoor, at which administrative levels are CMPOs typically designated?",
+        "options": [
+          "Only at the State capital level",
+          "Only Village level officials",
+          "District, Divisional, Mandal, and Village levels",
+          "Only District and State levels"
+        ],
+        "correctAnswer": "District, Divisional, Mandal, and Village levels",
+        "feedback": "The examples show CMPOs designated at multiple levels: District (Collector), Divisional (RDO), Mandal (Tahsildar), and Village (ICDS/Panchayat Secretaries)."
+      },
+      {
+        "id": 24,
+        "topic": "Child Protection Law (India)",
+        "title": "Definition of Child Sexual Abuse",
+        "question": "Which of the following acts can constitute child sexual abuse according to the document?",
+        "options": [
+          "Only penetrative sexual assault",
+          "Only physical touching",
+          "Showing pornographic videos, stalking, or verbal abuse with sexual intent",
+          "Only acts committed by adults"
+        ],
+        "correctAnswer": "Showing pornographic videos, stalking, or verbal abuse with sexual intent",
+        "feedback": "Child sexual abuse encompasses a wide range of acts including sexual harassment, rape, assault, showing pornography, using a child in pornography, verbal abuse, lewd gestures, sexualized games, stalking, and sexualized online chat."
+      },
+      {
+        "id": 25,
+        "topic": "Child Protection Law (India)",
+        "title": "Definition of Child (POCSO)",
+        "question": "Under the Prevention of Children from Sexual Offences (POCSO) Act mentioned, who is defined as a 'child'?",
+        "options": [
+          "Any person below the age of 16",
+          "Only females below the age of 18",
+          "Any person below the age of 18 years",
+          "Any person below the age of 21"
+        ],
+        "correctAnswer": "Any person below the age of 18 years",
+        "feedback": "Under the POCSO Act, a 'child' is defined as any person below the age of 18 years. The Act is gender-neutral."
+      },
+      {
+        "id": 26,
+        "topic": "Child Protection Law (India)",
+        "title": "Child Consent",
+        "question": "What is the legal standing of a child's consent to sexual activity according to the text?",
+        "options": [
+          "Consent is valid if the child is above 16",
+          "Consent is valid if given freely without coercion",
+          "Consent from a child is not legally recognized",
+          "Consent is only invalid if the other person is an adult"
+        ],
+        "correctAnswer": "Consent from a child is not legally recognized",
+        "feedback": "Indian law, including POCSO, does not recognize consensual sexual acts involving a child (under 18), either with another child or an adult. Consent is not a valid defense."
+      },
+      {
+        "id": 27,
+        "topic": "Child Protection Law (India)",
+        "title": "Signs of Abuse",
+        "question": "Which of the following is listed as a potential behavioral sign that a child might be experiencing sexual abuse?",
+        "options": [
+          "Sudden improvement in academic performance",
+          "Increased outgoing behavior and seeking attention",
+          "Regressive behavior such as bed wetting or thumb sucking",
+          "Strong attachment to a specific new adult"
+        ],
+        "correctAnswer": "Regressive behavior such as bed wetting or thumb sucking",
+        "feedback": "The text lists several signs, including unexpected behavioral changes like social withdrawal, aggression, and regressive behaviors (e.g., bed wetting, thumb sucking)."
+      },
+      {
+        "id": 28,
+        "topic": "Child Protection Law (India)",
+        "title": "Responding to Disclosure",
+        "question": "If a child reports sexual abuse to you, what is one recommended immediate action?",
+        "options": [
+          "Confront the alleged abuser directly",
+          "Wait a few days to see if the child mentions it again",
+          "Call CHILDLINE at 1098",
+          "Post about it on social media to warn others"
+        ],
+        "correctAnswer": "Call CHILDLINE at 1098",
+        "feedback": "The document advises several steps, including listening patiently, raising concerns with those close to the child, calling CHILDLINE (1098), ensuring medical examination, and reporting to the police."
+      },
+      {
+        "id": 29,
+        "topic": "Child Protection Law (India)",
+        "title": "Offenders of Child Sexual Abuse",
+        "question": "Who can be considered an offender under the laws described for child sexual abuse?",
+        "options": [
+          "Only adults over 21 years old",
+          "Only strangers to the child",
+          "Any person (including another child) who commits the act, helps, or fails to report",
+          "Only family members"
+        ],
+        "correctAnswer": "Any person (including another child) who commits the act, helps, or fails to report",
+        "feedback": "Offenders include any person committing the abuse (irrespective of age), anyone who helps the offender, anyone who fails to report the offense, and police officers who fail to record the complaint."
+      },
+      {
+        "id": 30,
+        "topic": "Child Protection Law (India)",
+        "title": "Medical Emergency Procedure",
+        "question": "If a child victim needs urgent medical care, what should the police arrange according to the text?",
+        "options": [
+          "Wait for the court's permission",
+          "Take the child to the nearest hospital/medical facility within 24 hours",
+          "Provide first aid at the police station",
+          "Ask the parents to arrange medical care themselves"
+        ],
+        "correctAnswer": "Take the child to the nearest hospital/medical facility within 24 hours",
+        "feedback": "The police should arrange to take the child to the nearest hospital or medical care facility for emergency medical care within 24 hours of receiving information about the crime."
+      },
+      {
+        "id": 31,
+        "topic": "Child Protection Law (India)",
+        "title": "Medical Examination Requirement",
+        "question": "Does the medical examination of a child victim depend on whether an FIR or complaint has been registered?",
+        "options": [
+          "Yes, an FIR must be filed first",
+          "Yes, but only a preliminary check is done before FIR",
+          "No, the medical examination should be conducted irrespective of FIR registration",
+          "No, but parental consent is needed instead of an FIR"
+        ],
+        "correctAnswer": "No, the medical examination should be conducted irrespective of FIR registration",
+        "feedback": "The medical examination of the child should be conducted regardless of whether an FIR or complaint has been registered. For a girl child, it should be done by a woman doctor."
+      },
+      {
+        "id": 32,
+        "topic": "Child Protection Law (India)",
+        "title": "Where to File Complaint",
+        "question": "Where can a complaint regarding child sexual abuse be filed?",
+        "options": [
+          "Only at the High Court",
+          "Only with the Child Welfare Committee",
+          "At the Special Juvenile Police Unit or the local police station",
+          "Only through CHILDLINE"
+        ],
+        "correctAnswer": "At the Special Juvenile Police Unit or the local police station",
+        "feedback": "A complaint should be filed either with the Special Juvenile Police Unit (SJPU) or the local police."
+      },
+      {
+        "id": 33,
+        "topic": "Child Protection Law (India)",
+        "title": "Police Refusal to File Complaint",
+        "question": "Can a police officer legally refuse to file a complaint of child sexual abuse?",
+        "options": [
+          "Yes, if they believe the complaint is false",
+          "Yes, if the child does not have visible injuries",
+          "No, failure to record the crime is a punishable offense",
+          "No, but they can delay it pending investigation"
+        ],
+        "correctAnswer": "No, failure to record the crime is a punishable offense",
+        "feedback": "Police officers cannot refuse to file a complaint. Failure to record such a crime is itself a crime punishable by jail term and/or fine."
+      },
+      {
+        "id": 34,
+        "topic": "Child Protection Law (India)",
+        "title": "Role of CWC",
+        "question": "What is one key role of the Child Welfare Committee (CWC) mentioned in the document?",
+        "options": [
+          "To prosecute the offender in court",
+          "To provide a 'Support Person' to assist the child",
+          "To conduct the medical examination",
+          "To directly arrest the accused"
+        ],
+        "correctAnswer": "To provide a 'Support Person' to assist the child",
+        "feedback": "The CWC provides a 'Support Person' to assist the child through investigation and trial, ensures long-term rehabilitation, and can make decisions about the child's custody and placement."
+      },
+      {
+        "id": 35,
+        "topic": "Child Protection Law (India)",
+        "title": "Recording Child's Statement",
+        "question": "Who records the statement of the child victim, and where should it ideally happen?",
+        "options": [
+          "Only the Magistrate at the court",
+          "The parents at home",
+          "The police officer or Magistrate, preferably at the child's residence or chosen place",
+          "A social worker at the police station"
+        ],
+        "correctAnswer": "The police officer or Magistrate, preferably at the child's residence or chosen place",
+        "feedback": "The statement is recorded by a police officer or Magistrate, ideally at the place where the child resides or another place of the child's preference, not necessarily the police station."
+      },
+      {
+        "id": 36,
+        "topic": "Child Protection Law (India)",
+        "title": "Liability for False Information",
+        "question": "What happens if a person reports suspected child abuse in good faith, but the information later turns out to be false?",
+        "options": [
+          "They face criminal charges for false reporting",
+          "They face civil liability for defamation",
+          "The law imposes no criminal or civil liability for information given in good faith",
+          "They receive a warning from the police"
+        ],
+        "correctAnswer": "The law imposes no criminal or civil liability for information given in good faith",
+        "feedback": "The law protects individuals who report suspected abuse in good faith, imposing no criminal or civil liability even if the information is later found to be false."
+      },
+      {
+        "id": 37,
+        "topic": "Child Protection Law (India)",
+        "title": "Special Courts",
+        "question": "What are 'Special Courts' in the context of child sexual abuse cases?",
+        "options": [
+          "Courts exclusively for juvenile offenders",
+          "Family courts dealing with custody",
+          "Sessions Courts designated by the State Government for speedy trials",
+          "Mobile courts that travel to villages"
+        ],
+        "correctAnswer": "Sessions Courts designated by the State Government for speedy trials",
+        "feedback": "Special Courts are Sessions Courts designated by State Governments specifically to ensure speedy trials for offenses under acts like POCSO."
+      },
+      {
+        "id": 38,
+        "topic": "Child Protection Law (India)",
+        "title": "Services for Victims",
+        "question": "Which legal service is mentioned as being available to the child victim's family or guardian?",
+        "options": [
+          "Reimbursement for travel expenses",
+          "Assistance of a legal counsel of their choice (Free Legal Counsel)",
+          "Compensation for emotional distress paid by the state",
+          "Mandatory mediation sessions with the offender"
+        ],
+        "correctAnswer": "Assistance of a legal counsel of their choice (Free Legal Counsel)",
+        "feedback": "The family or guardian is entitled to the assistance of a legal counsel of their choice, implying access to free legal aid if needed."
+      },
+      {
+        "id": 39,
+        "topic": "Child Protection Law (India)",
+        "title": "Victim Confidentiality",
+        "question": "What is the rule regarding the media and the identity of a child victim of sexual abuse?",
+        "options": [
+          "Media can publish details if parents consent",
+          "Media must secure the identity and privacy; publishing identifying details is a crime",
+          "Media can publish names but not photos",
+          "Media only needs to protect identity until the trial begins"
+        ],
+        "correctAnswer": "Media must secure the identity and privacy; publishing identifying details is a crime",
+        "feedback": "The media is legally obligated to protect the child victim's identity and privacy. Disclosing or publishing identifying information (name, address, school, etc.) is a punishable offense."
+      },
+      {
+        "id": 40,
+        "topic": "Child Protection Law (India)",
+        "title": "CHILDLINE Helpline",
+        "question": "What is the nationwide helpline number for children in distress mentioned in the document?",
+        "options": [
+          "100",
+          "101",
+          "1098",
+          "181"
+        ],
+        "correctAnswer": "1098",
+        "feedback": "CHILDLINE, a helpline for children in need of care and protection, can be reached by dialing 1098."
+      },
+      {
+        "id": 41,
+        "topic": "Child Protection Law (India)",
+        "title": "Definition of Sexual Harassment",
+        "question": "Which act constitutes 'sexual harassment' of a child according to the text?",
+        "options": [
+          "Any form of physical penetration",
+          "Only verbal abuse without sexual intent",
+          "Repeatedly following or contacting a child with sexual intent",
+          "Failing to report an observed incident"
+        ],
+        "correctAnswer": "Repeatedly following or contacting a child with sexual intent",
+        "feedback": "Sexual harassment includes acts with sexual connotations, making a child exhibit their body, showing pornographic material, repeatedly following/watching/contacting the child (stalking), or enticing for pornographic purposes."
+      },
+      {
+        "id": 42,
+        "topic": "Child Protection Law (India)",
+        "title": "Definition of Sexual Assault",
+        "question": "How is 'sexual assault' primarily differentiated from 'penetrative sexual assault' in the text?",
+        "options": [
+          "Sexual assault involves words, penetrative assault involves actions",
+          "Sexual assault is committed by minors, penetrative assault by adults",
+          "Sexual assault involves physical acts without penetration",
+          "Sexual assault requires consent, penetrative assault does not"
+        ],
+        "correctAnswer": "Sexual assault involves physical acts without penetration",
+        "feedback": "Sexual assault is defined as acts of a physical nature *without* penetration (e.g., stalking, showing dirty pictures, touching private parts)."
+      },
+      {
+        "id": 43,
+        "topic": "Child Protection Law (India)",
+        "title": "Definition of Penetrative Sexual Assault",
+        "question": "What constitutes 'penetrative sexual assault'?",
+        "options": [
+          "Showing pornographic pictures",
+          "Stalking a child online",
+          "Any form of penetration into private parts or application of mouth to private parts",
+          "Making lewd gestures"
+        ],
+        "correctAnswer": "Any form of penetration into private parts or application of mouth to private parts",
+        "feedback": "Penetrative sexual assault involves any form of penetration (e.g., into vagina, urethra, anus, mouth) or applying the mouth to private parts, or forcing the child to penetrate someone else."
+      },
+      {
+        "id": 44,
+        "topic": "Child Protection Law (India)",
+        "title": "Gang Penetrative Sexual Assault",
+        "question": "When is an act considered 'gang penetrative sexual assault'?",
+        "options": [
+          "Any sexual assault committed outdoors",
+          "When multiple children are assaulted simultaneously",
+          "When a child is sexually assaulted by one or more persons acting together",
+          "When the assault involves crossing state lines"
+        ],
+        "correctAnswer": "When a child is sexually assaulted by one or more persons acting together",
+        "feedback": "It occurs when a child is subjected to sexual assault by one or more persons of a group acting in furtherance of a common intention."
+      },
+      {
+        "id": 45,
+        "topic": "Child Protection Law (India)",
+        "title": "Reporting Process Flowchart",
+        "question": "According to the flowchart, what is the first step in the process after an incident occurs?",
+        "options": [
+          "Recording statement by Magistrate",
+          "Medical Examination",
+          "Reporting the incident to local police / Special Juvenile Police Unit",
+          "Taking the child to a shelter home"
+        ],
+        "correctAnswer": "Reporting the incident to local police / Special Juvenile Police Unit",
+        "feedback": "The flowchart begins with 'Reporting the incident to local police/ Special Juvenile Police Unit'."
+      },
+      {
+        "id": 46,
+        "topic": "Child Protection Law (India)",
+        "title": "Reporting Process Flowchart",
+        "question": "Within what timeframe should the Special Juvenile Police Unit or Police record the initial statement, as per the flowchart?",
+        "options": [
+          "Immediately",
+          "Within 24 hours",
+          "Within 48 hours",
+          "Within one week"
+        ],
+        "correctAnswer": "Within 24 hours",
+        "feedback": "The second step in the flowchart indicates 'Recording of statement by Special Juvenile Police Unit or the Police within 24 hours'."
+      },
+      {
+        "id": 47,
+        "topic": "Child Protection Law (India)",
+        "title": "Reporting Process Flowchart",
+        "question": "The flowchart specifies that if a medical examination is needed, who should ideally conduct it?",
+        "options": [
+          "Any available doctor",
+          "A police officer",
+          "A Female Doctor",
+          "A child psychologist"
+        ],
+        "correctAnswer": "A Female Doctor",
+        "feedback": "The flowchart branch indicates taking the child 'For Medical Examination by Female Doctor'."
+      },
+      {
+        "id": 48,
+        "topic": "Child Protection Law (India)",
+        "title": "Reporting Process Flowchart",
+        "question": "What is the target timeframe for the Special Court (Child Friendly) to complete the trial, according to the flowchart?",
+        "options": [
+          "Within six months",
+          "Within one year",
+          "Within two years",
+          "As soon as possible"
+        ],
+        "correctAnswer": "Within one year",
+        "feedback": "The final step shown in the flowchart states 'Special Court (Child Friendly) shall complete trial within one year'."
+      },
+      {
+        "id": 49,
+        "topic": "Child Protection Law (India)",
+        "title": "Definition of Abatement",
+        "question": "What does 'abatement' mean in the context of child sexual offenses?",
+        "options": [
+          "Reducing the severity of the crime",
+          "The act of committing the crime itself",
+          "Intentionally instigating, aiding, or being part of a conspiracy to commit the offense",
+          "Reporting the crime after it has occurred"
+        ],
+        "correctAnswer": "Intentionally instigating, aiding, or being part of a conspiracy to commit the offense",
+        "feedback": "Abatement involves intentionally instigating, aiding (by act or illegal omission), or conspiring with others to commit the offense."
+      },
+      {
+        "id": 50,
+        "topic": "Child Protection Law (India)",
+        "title": "SJPU/Police Role in Child Protection",
+        "question": "If the police or SJPU believe a child needs care and protection, what action should they take?",
+        "options": [
+          "Send the child home with a warning",
+          "Wait for the CWC's instructions",
+          "Admit the child to a shelter home or hospital and report to CWC/Special Court",
+          "Conduct their own investigation before taking action"
+        ],
+        "correctAnswer": "Admit the child to a shelter home or hospital and report to CWC/Special Court",
+        "feedback": "If the SJPU or local police believe the child needs care and protection, they should record reasons and admit the child to a shelter home or hospital, reporting the matter immediately to the CWC and Special Court."
+      },
+      {
+        "id": 51,
+        "topic": "Cyber Law (India)",
+        "title": "Definition of Online Abuse",
+        "question": "According to the document, which of the following constitutes online abuse?",
+        "options": [
+          "Receiving spam emails",
+          "Forgetting your password",
+          "Creating fake accounts or sharing embarrassing videos of someone",
+          "Disagreeing with someone in an online forum"
+        ],
+        "correctAnswer": "Creating fake accounts or sharing embarrassing videos of someone",
+        "feedback": "Online abuse includes threatening messages, creating/sharing embarrassing images/videos, fake accounts, identity theft, and sexually explicit messages, often occurring on social media, chat platforms, or forums."
+      },
+      {
+        "id": 52,
+        "topic": "Cyber Law (India)",
+        "title": "Action Against Online Abuse",
+        "question": "What are the two main actions suggested in the document when facing online abuse?",
+        "options": [
+          "Ignore the abuser and block them",
+          "Engage with the abuser publicly and change your password",
+          "Report to the platform administrator and file an FIR with the police",
+          "Delete your account and contact a lawyer"
+        ],
+        "correctAnswer": "Report to the platform administrator and file an FIR with the police",
+        "feedback": "The document suggests checking the platform's policy to request action from the administrator and filing an FIR (First Information Report) at a police station."
+      },
+      {
+        "id": 53,
+        "topic": "Cyber Law (India)",
+        "title": "Unauthorized Account Access",
+        "question": "What legal offense is committed if someone accesses your online account without permission?",
+        "options": [
+          "Identity Theft",
+          "Violation of Privacy",
+          "Unauthorized Access (Sec 43(a) IT Act)",
+          "Criminal Intimidation"
+        ],
+        "correctAnswer": "Unauthorized Access (Sec 43(a) IT Act)",
+        "feedback": "Accessing someone's account without permission constitutes the offense of unauthorized access under Section 43(a) of the Information Technology Act."
+      },
+      {
+        "id": 54,
+        "topic": "Cyber Law (India)",
+        "title": "Penalty for Unauthorized Access",
+        "question": "What is the potential penalty for unauthorized access to someone's online account under the IT Act?",
+        "options": [
+          "A fine up to Rs 1 lakh",
+          "Imprisonment up to 1 year",
+          "Damages by compensation not exceeding one crore rupees",
+          "Community service"
+        ],
+        "correctAnswer": "Damages by compensation not exceeding one crore rupees",
+        "feedback": "An offender guilty of unauthorized access under Section 43(a) of the IT Act is liable to pay damages by way of compensation, potentially up to one crore rupees, to the affected person."
+      },
+      {
+        "id": 55,
+        "topic": "Cyber Law (India)",
+        "title": "Identity Theft Definition",
+        "question": "What action constitutes 'identity theft' as described in the document?",
+        "options": [
+          "Forgetting your own password",
+          "Using a common password across multiple sites",
+          "Dishonestly stealing someone's password or unique identifying feature",
+          "Sharing your account details with a friend"
+        ],
+        "correctAnswer": "Dishonestly stealing someone's password or unique identifying feature",
+        "feedback": "Identity theft involves dishonestly stealing someone's password, electronic signature, or other unique identifying feature."
+      },
+      {
+        "id": 56,
+        "topic": "Cyber Law (India)",
+        "title": "Reporting Identity Theft",
+        "question": "How can you report identity theft according to the text?",
+        "options": [
+          "By posting about it online",
+          "By contacting the website administrator only",
+          "By filing a criminal complaint in a police station",
+          "By changing your password immediately"
+        ],
+        "correctAnswer": "By filing a criminal complaint in a police station",
+        "feedback": "To report identity theft, you can file a criminal complaint at a police station."
+      },
+      {
+        "id": 57,
+        "topic": "Cyber Law (India)",
+        "title": "Circulating Private Pictures (IT Act)",
+        "question": "What is the legal consequence under the IT Act (Sec 66E) for sharing private pictures of someone without consent?",
+        "options": [
+          "A warning from the platform",
+          "Violation of privacy, punishable by imprisonment up to three years or fine up to two lakh rupees or both",
+          "Account suspension only",
+          "Mandatory public apology"
+        ],
+        "correctAnswer": "Violation of privacy, punishable by imprisonment up to three years or fine up to two lakh rupees or both",
+        "feedback": "Taking, sharing, or publishing private pictures without consent is a violation of privacy under Section 66E of the IT Act, punishable with imprisonment up to three years, a fine up to two lakh rupees, or both."
+      },
+      {
+        "id": 58,
+        "topic": "Cyber Law (India)",
+        "title": "Voyeurism (IPC)",
+        "question": "Under the Indian Penal Code (Sec 354C), what offense is committed by taking/circulating pictures of a woman in a private act without her knowledge?",
+        "options": [
+          "Defamation",
+          "Unauthorized Access",
+          "Voyeurism",
+          "Criminal Intimidation"
+        ],
+        "correctAnswer": "Voyeurism",
+        "feedback": "Taking and/or circulating pictures of a woman engaged in private acts without her knowledge is the offense of voyeurism under Section 354C of the Indian Penal Code."
+      },
+      {
+        "id": 59,
+        "topic": "Cyber Law (India)",
+        "title": "Obscene Material Online",
+        "question": "Is publishing or sharing obscene or sexually explicit material online considered a crime according to the document?",
+        "options": [
+          "No, it's protected free speech",
+          "Yes, but only if the victim is female",
+          "Yes, it is a crime punishable under law, applicable to victims of any gender",
+          "Only if it involves minors"
+        ],
+        "correctAnswer": "Yes, it is a crime punishable under law, applicable to victims of any gender",
+        "feedback": "Yes, publishing and sharing obscene or sexually explicit material online is a crime under information technology law, and the victims can be male or female."
+      },
+      {
+        "id": 60,
+        "topic": "Cyber Law (India)",
+        "title": "Online Threats (Criminal Intimidation)",
+        "question": "If someone threatens to kill you, hurt you, or destroy your property online, what offense might they be committing under the IPC?",
+        "options": [
+          "Cyberstalking",
+          "Defamation",
+          "Criminal Intimidation (Sec 503 IPC)",
+          "Unauthorized Access"
+        ],
+        "correctAnswer": "Criminal Intimidation (Sec 503 IPC)",
+        "feedback": "Threatening to cause death, grievous hurt, or property destruction constitutes criminal intimidation under Section 503 of the Indian Penal Code, for which a complaint can be filed."
+      },
+      {
+        "id": 61,
+        "topic": "Cyber Law (India)",
+        "title": "Punishment for Anonymous Threats",
+        "question": "What is the potential punishment mentioned for criminal intimidation committed by an anonymous person?",
+        "options": [
+          "A formal warning",
+          "Imprisonment up to six months",
+          "Imprisonment up to two years or a fine or both",
+          "Lifetime ban from the internet platform"
+        ],
+        "correctAnswer": "Imprisonment up to two years or a fine or both",
+        "feedback": "The punishment for criminal intimidation by an anonymous person can be imprisonment for up to two years, or a fine, or both."
+      },
+      {
+        "id": 62,
+        "topic": "Cyber Law (India)",
+        "title": "Threshold for Complaint",
+        "question": "Is there a minimum amount of abuse one must suffer before filing a complaint?",
+        "options": [
+          "Yes, at least three separate incidents",
+          "Yes, only if physical harm occurs",
+          "No, there is no minimum threshold",
+          "No, but reporting to the platform first is mandatory"
+        ],
+        "correctAnswer": "No, there is no minimum threshold",
+        "feedback": "The document explicitly states there is no minimum threshold for the amount of abuse or harassment required before filing a complaint."
+      },
+      {
+        "id": 63,
+        "topic": "Cyber Law (India)",
+        "title": "Filing FIR without Offender's Name",
+        "question": "Do you need to know the name of the person threatening you to lodge an FIR?",
+        "options": [
+          "Yes, the full name and address are required",
+          "Yes, at least the online username is needed",
+          "No, it is not necessary to know the name",
+          "Only if the threat involves physical harm"
+        ],
+        "correctAnswer": "No, it is not necessary to know the name",
+        "feedback": "It is not necessary to know the name of the person threatening you to lodge an FIR."
+      },
+      {
+        "id": 64,
+        "topic": "Cyber Law (India)",
+        "title": "Evidence for Complaint",
+        "question": "What kind of information is helpful to gather when filing a complaint about online abuse?",
+        "options": [
+          "Only the date and time of the incident",
+          "Your personal feelings about the abuse",
+          "Screenshots of messages, conversations, and comments",
+          "A list of witnesses who saw the abuse"
+        ],
+        "correctAnswer": "Screenshots of messages, conversations, and comments",
+        "feedback": "Gathering as much information as possible, especially taking screenshots of relevant messages, conversations, and comments, can significantly help your case."
+      },
+      {
+        "id": 65,
+        "topic": "Cyber Law (India)",
+        "title": "Reporting Online Crimes",
+        "question": "Which specialized police unit should typically be approached to report online crimes?",
+        "options": [
+          "Traffic Police",
+          "The cyber-crime branch",
+          "The local beat constable",
+          "Internal Affairs"
+        ],
+        "correctAnswer": "The cyber-crime branch",
+        "feedback": "For online crimes, you should approach the cyber-crime branch of the police."
+      },
+      {
+        "id": 66,
+        "topic": "Cyber Law (India)",
+        "title": "Cyber Crime Jurisdiction",
+        "question": "Are cyber-crime reports usually limited by the jurisdiction where the incident occurred?",
+        "options": [
+          "Yes, you must report it in the city where it happened",
+          "Yes, but only for financial cyber-crimes",
+          "No, you can usually report to the cyber-cell of any city",
+          "No, but international cyber-crimes cannot be reported locally"
+        ],
+        "correctAnswer": "No, you can usually report to the cyber-cell of any city",
+        "feedback": "Unlike many other crimes, cyber-crimes are typically not limited by jurisdiction within a state. You can report to the cyber-cell of any city, regardless of where the offense occurred."
+      },
+      {
+        "id": 67,
+        "topic": "Cyber Law (India)",
+        "title": "Alternative Complaint Venue",
+        "question": "What should you do if you are unable to file a complaint with the cyber cell?",
+        "options": [
+          "Wait until the cyber cell is available",
+          "File an FIR with the local police station",
+          "Contact the internet service provider directly",
+          "Give up on filing the complaint"
+        ],
+        "correctAnswer": "File an FIR with the local police station",
+        "feedback": "If you cannot file a complaint in the cyber cell, you can file an FIR with your local police station."
+      },
+      {
+        "id": 68,
+        "topic": "Cyber Law (India)",
+        "title": "Dedicated Cyber Cell for Women",
+        "question": "Which ministry has set up a dedicated cyber cell to help women facing online abuse?",
+        "options": [
+          "Ministry of Home Affairs",
+          "Ministry of Information Technology",
+          "Ministry of Women and Child Development",
+          "Ministry of Law and Justice"
+        ],
+        "correctAnswer": "Ministry of Women and Child Development",
+        "feedback": "The Women and Child Development Ministry has established a dedicated cyber cell specifically to assist women experiencing online abuse."
+      },
+      {
+        "id": 69,
+        "topic": "Domestic Violence",
+        "title": "Domestic Violence Definition",
+        "question": "According to the Protection of Women from Domestic Violence Act, 2005, what does 'Domestic Violence' primarily encompass?",
+        "options": [
+          "Only physical harm",
+          "Only financial disputes between spouses",
+          "Any act, omission, or conduct causing harm or endangering health, safety, or well-being (mental or physical)",
+          "Disagreements leading to divorce"
+        ],
+        "correctAnswer": "Any act, omission, or conduct causing harm or endangering health, safety, or well-being (mental or physical)",
+        "feedback": "The DV Act defines domestic violence broadly to include any act, omission, or conduct (including threats) that harms, injures, or endangers the victim's health, safety, or well-being, encompassing physical, sexual, verbal, emotional, and economic abuse."
+      },
+      {
+        "id": 70,
+        "topic": "Domestic Violence",
+        "title": "Types of Domestic Abuse",
+        "question": "Which category of abuse under the DV Act includes insults, ridicule, humiliation, and name-calling, especially regarding not having children?",
+        "options": [
+          "Physical Abuse",
+          "Sexual Abuse",
+          "Economic Abuse",
+          "Verbal and Emotional Abuse"
+        ],
+        "correctAnswer": "Verbal and Emotional Abuse",
+        "feedback": "Verbal and Emotional Abuse specifically includes insults, threats, ridicule, humiliation, and name-calling, such as insulting someone for not having a child or a male child."
+      },
+      {
+        "id": 71,
+        "topic": "Domestic Violence",
+        "title": "Economic Abuse Definition",
+        "question": "What constitutes 'Economic Abuse' under the DV Act?",
+        "options": [
+          "Refusing to speak to the partner",
+          "Criticizing spending habits",
+          "Depriving access to financial resources, non-payment of household expenses/rent, or disposing of shared assets",
+          "Having separate bank accounts"
+        ],
+        "correctAnswer": "Depriving access to financial resources, non-payment of household expenses/rent, or disposing of shared assets",
+        "feedback": "Economic abuse involves depriving the woman of entitled financial resources, failing to pay essential expenses, disposing of assets she has an interest in, or restricting access to resources she's entitled to use within the domestic relationship."
+      },
+      {
+        "id": 72,
+        "topic": "Domestic Violence",
+        "title": "Who Can File a Complaint (DV)",
+        "question": "Besides the woman victim herself, who else can initiate the process by providing information about domestic violence?",
+        "options": [
+          "Only a police officer",
+          "Only a registered lawyer",
+          "Any person who believes DV has occurred, is occurring, or is likely, but requires victim's consent for legal proceedings",
+          "Only a direct family member of the victim"
+        ],
+        "correctAnswer": "Any person who believes DV has occurred, is occurring, or is likely, but requires victim's consent for legal proceedings",
+        "feedback": "Any person can provide information if they believe domestic violence is happening, but a formal complaint based on this information can only proceed if the woman victim consents to initiate legal action."
+      },
+      {
+        "id": 73,
+        "topic": "Domestic Violence",
+        "title": "Domestic Relationship Definition",
+        "question": "Which relationship types qualify as a 'domestic relationship' under the DV Act, provided the persons live(d) together in a shared household?",
+        "options": [
+          "Only legally married couples",
+          "Only blood relatives living together",
+          "Relationships by blood, marriage, adoption, in the nature of marriage (like live-in), or joint family members",
+          "Only couples with children"
+        ],
+        "correctAnswer": "Relationships by blood, marriage, adoption, in the nature of marriage (like live-in), or joint family members",
+        "feedback": "A domestic relationship covers various connections (blood, marriage, marriage-like, adoption, joint family) between people who live or have lived together in a shared household."
+      },
+      {
+        "id": 74,
+        "topic": "Domestic Violence",
+        "title": "Shared Household Definition",
+        "question": "What defines a 'shared household' according to the DV Act?",
+        "options": [
+          "Any house owned by the husband",
+          "The place where the marriage ceremony took place",
+          "A household where the victim lives or has lived in a domestic relationship with the accused",
+          "Only a rented property occupied by the couple"
+        ],
+        "correctAnswer": "A household where the victim lives or has lived in a domestic relationship with the accused",
+        "feedback": "A shared household is specifically defined as the household where the person facing domestic violence currently lives or has previously lived in a domestic relationship with the person against whom the complaint is made."
+      },
+      {
+        "id": 75,
+        "topic": "Domestic Violence",
+        "title": "Against Whom Complaint Can Be Filed",
+        "question": "Against whom can a woman file a complaint under the Domestic Violence Act?",
+        "options": [
+          "Only against her husband",
+          "Only against adult male relatives",
+          "Against any adult male she is/was in a domestic relationship with, or relatives of the husband/male partner",
+          "Against any person living in the shared household"
+        ],
+        "correctAnswer": "Against any adult male she is/was in a domestic relationship with, or relatives of the husband/male partner",
+        "feedback": "A complaint can be filed against any adult male partner/husband with whom the victim has/had a domestic relationship, and also against relatives of that husband or male partner."
+      },
+      {
+        "id": 76,
+        "topic": "Domestic Violence",
+        "title": "Remedies under DV Act",
+        "question": "What immediate reliefs can a victim seek under the Protection of Women from Domestic Violence Act, 2005?",
+        "options": [
+          "Only financial compensation",
+          "Only a divorce decree",
+          "Protection orders, monetary relief, custody orders, shelter, and residence orders (right to live in shared household)",
+          "Immediate arrest of the accused"
+        ],
+        "correctAnswer": "Protection orders, monetary relief, custody orders, shelter, and residence orders (right to live in shared household)",
+        "feedback": "The DV Act provides several immediate remedies including protection orders, monetary relief, child custody orders, shelter home access, and orders securing the right to reside in the shared household."
+      },
+      {
+        "id": 77,
+        "topic": "Domestic Violence",
+        "title": "Reporting Domestic Violence",
+        "question": "To whom can a domestic violence complaint (Domestic Incident Report) be formally made?",
+        "options": [
+          "Only to the National Commission for Women",
+          "Only through a private lawyer",
+          "To a Protection Officer, registered Service Provider, the Police, or directly to the Magistrate",
+          "Only to the village elders or community leaders"
+        ],
+        "correctAnswer": "To a Protection Officer, registered Service Provider, the Police, or directly to the Magistrate",
+        "feedback": "A complaint, in the form of a Domestic Incident Report, can be made to the Protection Officer, a registered Service Provider, the Police, or submitted directly to the Magistrate."
+      },
+      {
+        "id": 78,
+        "topic": "Domestic Violence",
+        "title": "Consequence of Violating Court Order",
+        "question": "What happens if the accused violates a protection order or any other order passed by the court under the DV Act?",
+        "options": [
+          "The order is automatically cancelled",
+          "A warning letter is issued",
+          "It is considered a criminal offense, and the accused can be arrested upon complaint",
+          "The victim has to file a new case from scratch"
+        ],
+        "correctAnswer": "It is considered a criminal offense, and the accused can be arrested upon complaint",
+        "feedback": "Violating a court order under the DV Act is a criminal offense. The victim can complain to the magistrate, police, or Protection Officer, potentially leading to the accused's arrest."
+      },
+      {
+        "id": 79,
+        "topic": "Domestic Violence",
+        "title": "Role of NGOs",
+        "question": "Can a formal complaint under the DV Act be lodged with any NGO providing support to women?",
+        "options": [
+          "Yes, any NGO working for women's rights can accept complaints",
+          "Yes, but only NGOs located in the same district",
+          "No, complaints can only be lodged with Service Providers specifically registered under the DV Act",
+          "No, NGOs are only for counseling, not for legal complaints"
+        ],
+        "correctAnswer": "No, complaints can only be lodged with Service Providers specifically registered under the DV Act",
+        "feedback": "While many NGOs offer support, formal complaints under the DV Act can only be lodged with 'Service Providers' officially registered under the Act."
+      },
+      {
+        "id": 80,
+        "topic": "Domestic Violence",
+        "title": "Arrest Procedure in DV Cases",
+        "question": "If a domestic violence complaint is filed, is the accused arrested immediately?",
+        "options": [
+          "Yes, arrest is mandatory upon filing the complaint",
+          "Yes, if the complaint involves physical abuse",
+          "No, an arrest can only happen after a warrant is issued by the magistrate",
+          "No, arrest only happens if the accused violates a court order"
+        ],
+        "correctAnswer": "No, an arrest can only happen after a warrant is issued by the magistrate",
+        "feedback": "Immediate arrest upon complaint is not the norm. While investigation can begin, the accused can typically only be arrested after a magistrate issues an arrest warrant."
+      },
+      {
+        "id": 81,
+        "topic": "Domestic Violence",
+        "title": "Role of Protection Officer",
+        "question": "What is a primary role of the Protection Officer (PO) under the DV Act?",
+        "options": [
+          "To act as the judge in the case",
+          "To arrest the accused",
+          "To assist the complainant with filing the complaint, inform her of rights, and help access legal aid, medical aid, or shelter",
+          "To mediate between the victim and the accused"
+        ],
+        "correctAnswer": "To assist the complainant with filing the complaint, inform her of rights, and help access legal aid, medical aid, or shelter",
+        "feedback": "The Protection Officer's duties include assisting the victim in filing the complaint (Domestic Incident Report), explaining her rights, preparing a safety plan, and facilitating access to legal aid, medical help, and shelter homes."
+      },
+      {
+        "id": 82,
+        "topic": "Domestic Violence",
+        "title": "Approaching Protection Officer",
+        "question": "Is it mandatory for a victim of domestic violence to approach a Protection Officer first to file a complaint?",
+        "options": [
+          "Yes, all complaints must go through the Protection Officer",
+          "Yes, unless the victim has a private lawyer",
+          "No, the victim can approach the magistrate directly through a lawyer",
+          "No, but the police must be approached first"
+        ],
+        "correctAnswer": "No, the victim can approach the magistrate directly through a lawyer",
+        "feedback": "It is not compulsory to approach a Protection Officer first; a victim can directly file a case with the magistrate through a lawyer. However, if other authorities (police, court, hospital) are approached first, they should connect the victim with a PO."
+      },
+      {
+        "id": 83,
+        "topic": "Domestic Violence",
+        "title": "Police Refusal to File Complaint",
+        "question": "What recourse does a victim have if a police officer refuses to register their domestic violence complaint?",
+        "options": [
+          "They must accept the refusal",
+          "They can only complain to the Protection Officer",
+          "They can contact the Superintendent of Police (SP) of the region or approach the Court directly",
+          "They have to find another police station"
+        ],
+        "correctAnswer": "They can contact the Superintendent of Police (SP) of the region or approach the Court directly",
+        "feedback": "If the police refuse to take the complaint, the victim can escalate the matter by contacting the regional Superintendent of Police (SP) or by approaching the Court, which can then take charge or direct the police."
+      },
+      {
+        "id": 84,
+        "topic": "Domestic Violence",
+        "title": "Section 498A IPC",
+        "question": "What does Section 498A of the Indian Penal Code specifically punish?",
+        "options": [
+          "Violation of protection orders",
+          "Economic abuse only",
+          "Cruelty towards a woman by her husband or his relatives",
+          "Failure to pay maintenance"
+        ],
+        "correctAnswer": "Cruelty towards a woman by her husband or his relatives",
+        "feedback": "Section 498A of the IPC deals with the criminal offense of subjecting a married woman to cruelty by her husband or the husband's relatives."
+      },
+      {
+        "id": 85,
+        "topic": "Domestic Violence",
+        "title": "Cruelty under Section 498A",
+        "question": "Which of the following acts is mentioned as constituting 'cruelty' under Section 498A of the IPC?",
+        "options": [
+          "Simple arguments between spouses",
+          "Refusal to do household chores",
+          "Driving the woman to commit suicide, causing grave injury (mental or physical), or making dowry demands",
+          "Disagreements over child-rearing"
+        ],
+        "correctAnswer": "Driving the woman to commit suicide, causing grave injury (mental or physical), or making dowry demands",
+        "feedback": "Cruelty under Section 498A includes conduct likely to drive the woman to suicide, cause grave injury or danger to her life or health (mental or physical), and harassment related to unlawful demands like dowry. Extra-marital affairs are also mentioned."
+      },
+      {
+        "id": 86,
+        "topic": "Domestic Violence",
+        "title": "Nature of Offence (Sec 498A)",
+        "question": "What is the nature of the offense under Section 498A (cruelty by husband or relatives) regarding bail?",
+        "options": [
+          "Bailable",
+          "Non-bailable",
+          "Compoundable",
+          "Cognizable but bailable"
+        ],
+        "correctAnswer": "Non-bailable",
+        "feedback": "The document explicitly states that the offense under Section 498A of the IPC is non-bailable."
+      },
+      {
+        "id": 87,
+        "topic": "Dowry",
+        "title": "Definition of Dowry",
+        "question": "What best defines 'Dowry' according to the document?",
+        "options": [
+          "Voluntary gifts given only after marriage",
+          "Property or valuable items given pursuant to a demand by one party to the marriage",
+          "Traditional presents exchanged between families without any demand",
+          "Financial support provided by parents to their daughter"
+        ],
+        "correctAnswer": "Property or valuable items given pursuant to a demand by one party to the marriage",
+        "feedback": "Dowry is defined as property or items of value (like cash, property, vehicles) given by one party to the other *pursuant to a demand* in connection with the marriage."
+      },
+      {
+        "id": 88,
+        "topic": "Dowry",
+        "title": "Gifts vs. Dowry",
+        "question": "When can gifts given at, before, or after marriage be considered Dowry?",
+        "options": [
+          "Only if they are very expensive",
+          "If they are given voluntarily by parents",
+          "If they are given directly or indirectly in connection with the marriage, potentially seen as linked to a demand",
+          "Only if they are given by the bride's side"
+        ],
+        "correctAnswer": "If they are given directly or indirectly in connection with the marriage, potentially seen as linked to a demand",
+        "feedback": "Gifts given by parents or relatives of one party to the other, directly or indirectly, around the time of marriage or in connection with it, can be seen as dowry, implying a link to a demand or expectation."
+      },
+      {
+        "id": 89,
+        "topic": "Dowry",
+        "title": "Exclusions from Dowry",
+        "question": "Which of the following is explicitly mentioned as NOT constituting 'Dowry' under the law described?",
+        "options": [
+          "Expensive cars given by the bride's family",
+          "Property transferred before the marriage",
+          "Mahr given under Muslim Personal Law",
+          "Cash given to the groom to start a business"
+        ],
+        "correctAnswer": "Mahr given under Muslim Personal Law",
+        "feedback": "The document specifically states that Mahr, given under Muslim Personal Law (Shariat), does not constitute dowry. Voluntary presents are also excluded."
+      },
+      {
+        "id": 90,
+        "topic": "Dowry",
+        "title": "Rules for Wedding Presents",
+        "question": "What procedural requirement exists for presents received at the time of marriage to distinguish them from dowry?",
+        "options": [
+          "They must be below a certain monetary value",
+          "They must be approved by a Dowry Prohibition Officer",
+          "A list must be prepared immediately, signed by the bride and groom, and notarized",
+          "They must only be traditional items"
+        ],
+        "correctAnswer": "A list must be prepared immediately, signed by the bride and groom, and notarized",
+        "feedback": "To ensure presents are not misconstrued as dowry, the law requires a list of presents received at the time of marriage to be prepared immediately, signed by both spouses, and notarized."
+      },
+      {
+        "id": 91,
+        "topic": "Dowry",
+        "title": "Conditions for Gifts from Bride's Side",
+        "question": "What conditions should presents given by the bride or her relatives meet to avoid being seen as dowry?",
+        "options": [
+          "They must be given secretly",
+          "They should not put financial strain on the giver and should be customary",
+          "They must be matched in value by the groom's side",
+          "They must be given only after the first year of marriage"
+        ],
+        "correctAnswer": "They should not put financial strain on the giver and should be customary",
+        "feedback": "Presents from the bride's side might be seen as dowry unless they are customary in nature and do not impose a financial strain on the person giving them."
+      },
+      {
+        "id": 92,
+        "topic": "Dowry",
+        "title": "Reclaiming Wedding Gifts",
+        "question": "Can a person legally get back gifts made to them at the time of marriage?",
+        "options": [
+          "No, all gifts become joint property",
+          "Only if the marriage ends in divorce",
+          "Yes, provided a list of gifts exchanged was made during the ceremonies",
+          "Only gifts given by their own parents"
+        ],
+        "correctAnswer": "Yes, provided a list of gifts exchanged was made during the ceremonies",
+        "feedback": "The document indicates that you can receive gifts back, provided a list of gifts exchanged during the marriage ceremonies was properly made."
+      },
+      {
+        "id": 93,
+        "topic": "Dowry",
+        "title": "Dowry Offenses",
+        "question": "Which actions related to dowry are considered offenses under the law?",
+        "options": [
+          "Only taking dowry",
+          "Only demanding dowry",
+          "Giving, taking, demanding, or helping in the giving/taking of dowry",
+          "Only giving dowry"
+        ],
+        "correctAnswer": "Giving, taking, demanding, or helping in the giving/taking of dowry",
+        "feedback": "The law treats giving, taking, demanding, and even abetting (helping in) the giving or taking of dowry as offenses."
+      },
+      {
+        "id": 94,
+        "topic": "Dowry",
+        "title": "Complaint by Dowry Giver",
+        "question": "If a person gave dowry under pressure and wants to file a complaint, can they be arrested for the act of giving?",
+        "options": [
+          "Yes, because giving dowry is an offense",
+          "Yes, but only if the amount was very large",
+          "No, their statements to police/courts cannot be used against them in this context",
+          "Only if the taker files a counter-complaint"
+        ],
+        "correctAnswer": "No, their statements to police/courts cannot be used against them in this context",
+        "feedback": "Even though giving dowry is an offense, a person who gave dowry can file a complaint against the takers. The law provides protection by stating that their statements made during the complaint process cannot be used against them."
+      },
+      {
+        "id": 95,
+        "topic": "Dowry",
+        "title": "Who Can File a Complaint",
+        "question": "Who is eligible to file a complaint regarding dowry demands or harassment?",
+        "options": [
+          "Only the woman subjected to the demand",
+          "Only the parents of the woman",
+          "The aggrieved person, their parent/relative, or a recognized welfare institution/organization",
+          "Only a police officer"
+        ],
+        "correctAnswer": "The aggrieved person, their parent/relative, or a recognized welfare institution/organization",
+        "feedback": "Complaints can be filed by the person aggrieved by the dowry offense, their parent or relative, or a welfare institution/organization recognized by the State Government."
+      },
+      {
+        "id": 96,
+        "topic": "Dowry",
+        "title": "How to Register a Complaint",
+        "question": "Where can a dowry-related complaint be registered?",
+        "options": [
+          "Only directly with the High Court",
+          "Only through a registered mail to the accused",
+          "At the local police station, Crime Against Women Cell, District Dowry Prohibition Officer, or a recognized welfare organization",
+          "Only with the National Commission for Women"
+        ],
+        "correctAnswer": "At the local police station, Crime Against Women Cell, District Dowry Prohibition Officer, or a recognized welfare organization",
+        "feedback": "Complaints can be filed at the local police station or Crime Against Women Cell, or by approaching the district Dowry Prohibition Officer or a recognized welfare institution/organization."
+      },
+      {
+        "id": 97,
+        "topic": "Dowry",
+        "title": "Arrest Procedure for Dowry Demand",
+        "question": "If a complaint is filed against someone for demanding dowry, are they arrested immediately?",
+        "options": [
+          "Yes, immediate arrest is mandatory",
+          "Yes, if the demand was made in writing",
+          "No, investigation can start, but arrest requires a warrant from the magistrate",
+          "Only if the complainant requests immediate arrest"
+        ],
+        "correctAnswer": "No, investigation can start, but arrest requires a warrant from the magistrate",
+        "feedback": "Similar to domestic violence cases mentioned earlier, an immediate arrest does not automatically follow a complaint for demanding dowry. An arrest typically requires a warrant issued by a magistrate after due process."
+      },
+      {
+        "id": 98,
+        "topic": "Dowry",
+        "title": "Appropriate Judicial Authority",
+        "question": "Which judicial authority is competent to try offenses related to dowry harassment?",
+        "options": [
+          "Family Court Judge",
+          "High Court Judge",
+          "Metropolitan Magistrate or Magistrate of the first class",
+          "District Collector"
+        ],
+        "correctAnswer": "Metropolitan Magistrate or Magistrate of the first class",
+        "feedback": "Offenses related to dowry harassment are typically tried by a Metropolitan Magistrate or a Magistrate of the first class."
+      },
+      {
+        "id": 99,
+        "topic": "Dowry",
+        "title": "Dowry Prohibition Officer (AP)",
+        "question": "Who typically acts as the Dowry Prohibition Officer (DPO) in Andhra Pradesh, according to the text?",
+        "options": [
+          "The District Superintendent of Police (SP)",
+          "The Project Director, DW&CDA",
+          "The Revenue Divisional Officer (RDO) / Sub Collector",
+          "A specially appointed judicial officer"
+        ],
+        "correctAnswer": "The Revenue Divisional Officer (RDO) / Sub Collector",
+        "feedback": "The document states that in Andhra Pradesh, either the Revenue Divisional Officer (RDO) or the Sub Collector acts as the Dowry Prohibition Officer."
+      },
+      {
+        "id": 100,
+        "topic": "Dowry",
+        "title": "Role of Dowry Prohibition Officer",
+        "question": "What is a key function of the Dowry Prohibition Officer (DPO)?",
+        "options": [
+          "To preside over marriage ceremonies",
+          "To provide marriage counseling",
+          "To collect evidence, conduct preliminary inquiries, and help victims register cases with the police",
+          "To issue arrest warrants"
+        ],
+        "correctAnswer": "To collect evidence, conduct preliminary inquiries, and help victims register cases with the police",
+        "feedback": "The DPO's role includes preventing dowry demands, collecting evidence upon receiving complaints, conducting preliminary inquiries, preparing case histories, and assisting victims in getting their cases registered with the police."
+      },
+      {
+        "id": 101,
+        "topic": "Dowry",
+        "title": "Police Refusal to File Complaint",
+        "question": "If the police refuse to take down a dowry complaint, what alternative actions can the complainant take?",
+        "options": [
+          "They have no other option",
+          "They must hire a private detective",
+          "Contact the Superintendent of Police (SP), approach the Court, or seek help from media/NGOs",
+          "Wait for 30 days and try again"
+        ],
+        "correctAnswer": "Contact the Superintendent of Police (SP), approach the Court, or seek help from media/NGOs",
+        "feedback": "If the police refuse the complaint, the victim can contact the SP, go to Court (which can direct the police), or seek assistance from local media and NGOs."
+      },
+      {
+        "id": 102,
+        "topic": "Dowry",
+        "title": "Section 498A and Dowry",
+        "question": "How does Section 498A of the Indian Penal Code relate to dowry?",
+        "options": [
+          "It defines the procedure for returning dowry",
+          "It lists permissible dowry items",
+          "It punishes cruelty by husband/relatives, which includes harassment for dowry demands",
+          "It specifies the amount of dowry allowed"
+        ],
+        "correctAnswer": "It punishes cruelty by husband/relatives, which includes harassment for dowry demands",
+        "feedback": "Section 498A IPC punishes cruelty by a husband or his relatives towards a married woman. This definition of cruelty explicitly includes harassment related to making unlawful demands for property or valuables (dowry)."
+      },
+      {
+        "id": 103,
+        "topic": "Sexual Harassment at Workplace",
+        "title": "Definition of Sexual Harassment",
+        "question": "What constitutes sexual harassment according to the provided text?",
+        "options": [
+          "Only physical conduct of a sexual nature",
+          "Only requests for sexual favors",
+          "Unwelcome sexual advances, requests for sexual favors, and other verbal or physical conduct of a sexual nature",
+          "Any disagreement between male and female colleagues"
+        ],
+        "correctAnswer": "Unwelcome sexual advances, requests for sexual favors, and other verbal or physical conduct of a sexual nature",
+        "feedback": "The definition provided includes unwelcome sexual advances, requests for sexual favors, and other verbal or physical conduct of a sexual nature."
+      },
+      {
+        "id": 104,
+        "topic": "Sexual Harassment at Workplace",
+        "title": "Protected Persons",
+        "question": "Who is protected from sexual harassment at the workplace under the Act described?",
+        "options": [
+          "Only full-time permanent employees",
+          "Only women employees, excluding visitors or interns",
+          "Any woman visiting or working (part-time, contract, volunteer, intern, domestic help, etc.) at a workplace",
+          "Only women in management positions"
+        ],
+        "correctAnswer": "Any woman visiting or working (part-time, contract, volunteer, intern, domestic help, etc.) at a workplace",
+        "feedback": "Protection extends to any woman working (part-time, contractual, daily basis, agency hire, volunteer, intern) or even just visiting a workplace."
+      },
+      {
+        "id": 105,
+        "topic": "Sexual Harassment at Workplace",
+        "title": "Definition of Employer",
+        "question": "Who is considered an 'employer' responsible for preventing sexual harassment under the Act?",
+        "options": [
+          "Only the CEO of the company",
+          "The direct supervisor of the complainant",
+          "Anyone responsible for the management, supervision, and control of the workplace",
+          "The Human Resources department head only"
+        ],
+        "correctAnswer": "Anyone responsible for the management, supervision, and control of the workplace",
+        "feedback": "An employer is defined as someone responsible for the management, supervision, and control of the workplace."
+      },
+      {
+        "id": 106,
+        "topic": "Sexual Harassment at Workplace",
+        "title": "Definition of Workplace",
+        "question": "What constitutes a 'Workplace' according to the Act?",
+        "options": [
+          "Only the main office building",
+          "Only places owned by Indian companies",
+          "Any place visited during or arising out of employment, including employer-provided transport",
+          "Only the employee's designated desk or work area"
+        ],
+        "correctAnswer": "Any place visited during or arising out of employment, including employer-provided transport",
+        "feedback": "A workplace includes any place visited due to employment (even transport provided by the employer) and covers workplaces of both Indian and foreign companies in India."
+      },
+      {
+        "id": 107,
+        "topic": "Sexual Harassment at Workplace",
+        "title": "Complaint Venues",
+        "question": "Where can a woman file a complaint about sexual harassment at the workplace?",
+        "options": [
+          "Only with the company CEO",
+          "Only through a civil court lawsuit",
+          "With the Internal Complaints Committee (ICC), Local Complaints Committee (LCC), Police (criminal case), or Civil Court",
+          "Only with the Human Resources department"
+        ],
+        "correctAnswer": "With the Internal Complaints Committee (ICC), Local Complaints Committee (LCC), Police (criminal case), or Civil Court",
+        "feedback": "Complaints can be filed with the workplace's Internal Complaints Committee (ICC), the district's Local Complaints Committee (LCC) if no ICC exists, as a criminal case with the police, or as a civil suit for damages."
+      },
+      {
+        "id": 108,
+        "topic": "Sexual Harassment at Workplace",
+        "title": "Filing Complaint as Visitor",
+        "question": "Does a woman need to be employed at the specific workplace where the harassment occurred to file a complaint with its Internal Complaints Committee?",
+        "options": [
+          "Yes, only employees can file with the ICC",
+          "Yes, but only if she was there for official work",
+          "No, a visitor sexually harassed at a workplace can file a complaint with that workplace's ICC",
+          "No, but she must file with the Local Complaints Committee instead"
+        ],
+        "correctAnswer": "No, a visitor sexually harassed at a workplace can file a complaint with that workplace's ICC",
+        "feedback": "You do not have to be employed at the workplace where the harassment occurred. A visitor can file a complaint with the Internal Complaints Committee of that specific workplace."
+      },
+      {
+        "id": 109,
+        "topic": "Sexual Harassment at Workplace",
+        "title": "Timeframe for Complaint",
+        "question": "What is the standard time limit for filing a sexual harassment complaint with the ICC or LCC?",
+        "options": [
+          "Within 1 month of the incident",
+          "Within 3 months of the last incident",
+          "Within 6 months of the incident",
+          "Within 1 year of the incident"
+        ],
+        "correctAnswer": "Within 3 months of the last incident",
+        "feedback": "The complaint should generally be filed within 3 months from the date of the last incident of sexual harassment."
+      },
+      {
+        "id": 110,
+        "topic": "Sexual Harassment at Workplace",
+        "title": "Complaint Filing Extension",
+        "question": "Can the 3-month time limit for filing a complaint with the Committee be extended?",
+        "options": [
+          "No, the deadline is strict",
+          "Yes, automatically extended by 1 month if requested",
+          "Yes, the Committee can extend it by another 3 months if satisfied with the reason for delay",
+          "Yes, but only if the employer agrees"
+        ],
+        "correctAnswer": "Yes, the Committee can extend it by another 3 months if satisfied with the reason for delay",
+        "feedback": "The Committee has the discretion to extend the time limit by another 3 months if it finds that the complainant could not file earlier due to valid circumstances."
+      },
+      {
+        "id": 111,
+        "topic": "Sexual Harassment at Workplace",
+        "title": "Complaint Requirements",
+        "question": "What is required when submitting a formal complaint to the Committee?",
+        "options": [
+          "Only a verbal statement",
+          "A single copy of the complaint",
+          "Six copies of the drafted complaint, supporting documents, and names/addresses of witnesses",
+          "The complaint signed by the employer"
+        ],
+        "correctAnswer": "Six copies of the drafted complaint, supporting documents, and names/addresses of witnesses",
+        "feedback": "To file a complaint, one should draft it, make six copies, submit supporting documents, and provide names and addresses of any witnesses."
+      },
+      {
+        "id": 112,
+        "topic": "Sexual Harassment at Workplace",
+        "title": "Benefits of Filing with Committee",
+        "question": "What is one reason mentioned for filing a complaint with the Complaints Committee?",
+        "options": [
+          "To get the accused immediately fired",
+          "To seek interim reliefs like stopping the accused from evaluating the victim's work performance",
+          "To receive immediate financial compensation",
+          "To force a public apology"
+        ],
+        "correctAnswer": "To seek interim reliefs like stopping the accused from evaluating the victim's work performance",
+        "feedback": "Filing with the Committee allows the victim to request interim measures, such as preventing the accused from reporting on her work performance, to ensure a safer work environment during the inquiry."
+      },
+      {
+        "id": 113,
+        "topic": "Sexual Harassment at Workplace",
+        "title": "Conciliation Process",
+        "question": "Who can initiate the process of settling a sexual harassment matter through conciliation via the Committee?",
+        "options": [
+          "Only the employer",
+          "Only the accused person",
+          "Only the victim (complainant)",
+          "Any member of the Committee"
+        ],
+        "correctAnswer": "Only the victim (complainant)",
+        "feedback": "The right to request the Committee to settle the matter through conciliation rests solely with the complainant (victim)."
+      },
+      {
+        "id": 114,
+        "topic": "Sexual Harassment at Workplace",
+        "title": "Absence from Hearings",
+        "question": "What can the Committee do if either party is absent for three consecutive hearings after proper notice?",
+        "options": [
+          "Dismiss the case automatically",
+          "Postpone indefinitely",
+          "End the inquiry or make a decision/order after giving 15 days written notice",
+          "Refer the case directly to the police"
+        ],
+        "correctAnswer": "End the inquiry or make a decision/order after giving 15 days written notice",
+        "feedback": "If a party is absent for three consecutive hearings, the Committee can terminate the inquiry or give an ex-parte decision, provided they have given a 15-day written notice to the absent party."
+      },
+      {
+        "id": 115,
+        "topic": "Sexual Harassment at Workplace",
+        "title": "Parallel Proceedings",
+        "question": "Can a complainant approach the police or courts even after filing a complaint with the Internal/Local Complaints Committee under the Act?",
+        "options": [
+          "No, the Committee process is the only option",
+          "No, choosing one path excludes the other",
+          "Yes, the Act allows pursuing remedies through the Committee, criminal courts, or both simultaneously or alternatively",
+          "Yes, but only after the Committee finishes its inquiry"
+        ],
+        "correctAnswer": "Yes, the Act allows pursuing remedies through the Committee, criminal courts, or both simultaneously or alternatively",
+        "feedback": "The Act provides a choice. A complainant can approach the Committee, file a criminal complaint, or pursue both avenues."
+      },
+      {
+        "id": 116,
+        "topic": "Sexual Harassment at Workplace",
+        "title": "Teacher Filing Against Student",
+        "question": "Can a woman teacher or professor file a sexual harassment case against a student?",
+        "options": [
+          "No, the Act only protects employees from employers/colleagues",
+          "No, students are not covered under workplace harassment laws",
+          "Yes, specific UGC regulations allow teachers/professors to file cases against students in higher educational institutions",
+          "Yes, but only if the student is over 18"
+        ],
+        "correctAnswer": "Yes, specific UGC regulations allow teachers/professors to file cases against students in higher educational institutions",
+        "feedback": "Yes, specific University Grants Commission (UGC) regulations under the main Act allow women teachers/professors in higher educational institutions to file sexual harassment cases against students."
+      },
+      {
+        "id": 117,
+        "topic": "Sexual Harassment at Workplace",
+        "title": "Police Refusal to File Complaint",
+        "question": "What should a person do if a police officer denies taking down their sexual harassment complaint?",
+        "options": [
+          "Accept the refusal as final",
+          "Complain only to the Internal Complaints Committee",
+          "Contact the Superintendent of Police (SP) of the region or approach the Court",
+          "File a complaint with a different police station in another district"
+        ],
+        "correctAnswer": "Contact the Superintendent of Police (SP) of the region or approach the Court",
+        "feedback": "If a police officer refuses to take the complaint, the complainant can contact the regional Superintendent of Police (SP) or approach the Court directly."
+      },
+      {
+        "id": 118,
+        "topic": "Stalking",
+        "title": "Definition of Eve Teasing",
+        "question": "What constitutes 'eve teasing' according to the document?",
+        "options": [
+          "Following a woman home",
+          "Unwanted sexual remarks or advances by a man in a public place to insult a woman",
+          "Taking pictures without consent",
+          "Touching forcefully without consent"
+        ],
+        "correctAnswer": "Unwanted sexual remarks or advances by a man in a public place to insult a woman",
+        "feedback": "Eve teasing is defined as obscene actions like unwanted sexual remarks or sexual advances by a man intended to insult a woman in a public place."
+      },
+      {
+        "id": 119,
+        "topic": "Stalking",
+        "title": "Punishment for Eve Teasing (Sec 294/509 IPC)",
+        "question": "What is the potential punishment mentioned for insulting a woman through obscene acts/words (eve teasing) under Sections 294 and 509 of the IPC?",
+        "options": [
+          "A warning only",
+          "Fine up to Rs 10,000",
+          "Imprisonment up to three months (Sec 294) or up to three years (Sec 509)",
+          "Community service"
+        ],
+        "correctAnswer": "Imprisonment up to three months (Sec 294) or up to three years (Sec 509)",
+        "feedback": "Section 294 IPC punishes obscene acts/words in public with imprisonment up to 3 months. Section 509 IPC punishes acts/words intended to insult a woman's modesty with imprisonment up to 3 years."
+      },
+      {
+        "id": 120,
+        "topic": "Stalking",
+        "title": "Definition of Stalking",
+        "question": "How is 'stalking' defined in the provided text?",
+        "options": [
+          "Watching someone from afar",
+          "A man following a woman or trying to contact her without her consent",
+          "Sending unwanted gifts",
+          "Making sexually coloured remarks"
+        ],
+        "correctAnswer": "A man following a woman or trying to contact her without her consent",
+        "feedback": "Stalking is specifically defined as a man following a woman or attempting to contact her without her consent."
+      },
+      {
+        "id": 121,
+        "topic": "Stalking",
+        "title": "Definition of Voyeurism",
+        "question": "What act constitutes 'voyeurism'?",
+        "options": [
+          "Following someone repeatedly",
+          "Making unwelcome sexual advances",
+          "A man watching or photographing a woman during her private moments without her knowledge",
+          "Touching someone inappropriately"
+        ],
+        "correctAnswer": "A man watching or photographing a woman during her private moments without her knowledge",
+        "feedback": "Voyeurism is committed when a man watches or photographs a woman during her private moments without her knowledge or consent."
+      },
+      {
+        "id": 122,
+        "topic": "Stalking",
+        "title": "Definition of Sexual Harassment (IPC Context)",
+        "question": "Which acts are listed as constituting 'sexual harassment' in this context?",
+        "options": [
+          "Only physical contact",
+          "Stalking and following",
+          "Unwelcome sexual advances, requests for sexual favours, sexually coloured remarks, showing pornography without consent",
+          "Forcefully disrobing someone"
+        ],
+        "correctAnswer": "Unwelcome sexual advances, requests for sexual favours, sexually coloured remarks, showing pornography without consent",
+        "feedback": "Sexual harassment here includes unwelcome sexual advances, requests for sexual favors, making sexually coloured remarks, and showing pornography without the woman’s consent."
+      },
+      {
+        "id": 123,
+        "topic": "Stalking",
+        "title": "Definition of Molestation",
+        "question": "What act defines 'molestation' according to the document?",
+        "options": [
+          "Making obscene gestures",
+          "Watching someone undress",
+          "A man forcefully touching a woman without her consent",
+          "Following a woman persistently"
+        ],
+        "correctAnswer": "A man forcefully touching a woman without her consent",
+        "feedback": "Molestation is defined as a man forcefully touching a woman without her consent."
+      },
+      {
+        "id": 124,
+        "topic": "Stalking",
+        "title": "Definition of Sexual Assault (IPC Context)",
+        "question": "What is described as 'sexual assault' in this document?",
+        "options": [
+          "Making sexually coloured remarks",
+          "Following a woman online",
+          "A man sexually touching a woman or compelling her to be naked forcefully without consent",
+          "Showing pornography"
+        ],
+        "correctAnswer": "A man sexually touching a woman or compelling her to be naked forcefully without consent",
+        "feedback": "Sexual assault is defined here as an act where a man sexually touches a woman or forces her to be naked without her consent."
+      },
+      {
+        "id": 125,
+        "topic": "Stalking",
+        "title": "Reporting Procedure",
+        "question": "What is the primary action a victim should take if subjected to stalking or related crimes mentioned?",
+        "options": [
+          "Confront the perpetrator directly",
+          "Post about it on social media",
+          "Register a complaint and FIR at the local police station",
+          "Ignore it and hope it stops"
+        ],
+        "correctAnswer": "Register a complaint and FIR at the local police station",
+        "feedback": "The document advises victims of these crimes to register a complaint and FIR (First Information Report) at their local police station."
+      },
+      {
+        "id": 126,
+        "topic": "Stalking",
+        "title": "Police Refusal to Register FIR",
+        "question": "Can the police legally refuse to register an FIR for these offenses?",
+        "options": [
+          "Yes, if they don't believe the victim",
+          "Yes, if there are no witnesses",
+          "No, the police can never refuse to register an FIR",
+          "Only if the complaint seems minor"
+        ],
+        "correctAnswer": "No, the police can never refuse to register an FIR",
+        "feedback": "The document explicitly states that the police can never refuse to register an FIR."
+      },
+      {
+        "id": 127,
+        "topic": "Stalking",
+        "title": "Recourse if Police Refuse FIR",
+        "question": "If a police officer refuses to register the complaint/FIR, what can the victim do?",
+        "options": [
+          "Give up on the complaint",
+          "Only file a civil case",
+          "Contact the Superintendent of Police (SP), approach the Court, or seek help from media/NGOs",
+          "Wait and try again later"
+        ],
+        "correctAnswer": "Contact the Superintendent of Police (SP), approach the Court, or seek help from media/NGOs",
+        "feedback": "If the police refuse, the victim can contact the regional SP, go to Court (which can direct the police), or seek help from local media and NGOs."
+      },
+      {
+        "id": 128,
+        "topic": "Stalking",
+        "title": "Limitation Period for FIR",
+        "question": "According to Section 468(2)(c) CrPC mentioned, what is the limitation period for reporting offenses punishable with imprisonment up to three years?",
+        "options": [
+          "One year",
+          "Two years",
+          "Three years",
+          "No limitation period"
+        ],
+        "correctAnswer": "Three years",
+        "feedback": "Section 468(2)(c) of the CrPC specifies a limitation period of three years for offenses punishable with imprisonment for a term exceeding one year but not exceeding three years."
+      },
+      {
+        "id": 129,
+        "topic": "Stalking",
+        "title": "IPC Section 354 - Outraging Modesty",
+        "question": "What is the range of imprisonment for assault or criminal force on a woman with intent to outrage her modesty (Section 354 IPC)?",
+        "options": [
+          "Up to 6 months",
+          "Up to 1 year",
+          "1 year to 5 years, plus fine",
+          "5 years to 10 years"
+        ],
+        "correctAnswer": "1 year to 5 years, plus fine",
+        "feedback": "Section 354 IPC prescribes imprisonment for a term not less than one year but which may extend to five years, along with a fine."
+      },
+      {
+        "id": 130,
+        "topic": "Stalking",
+        "title": "IPC Section 354A - Sexual Harassment (Physical/Demand)",
+        "question": "What is the punishment for sexual harassment involving unwelcome physical contact/advances or demand/request for sexual favours (Section 354A IPC)?",
+        "options": [
+          "Fine only",
+          "Imprisonment up to 1 year or fine or both",
+          "Imprisonment up to 3 years or fine or both",
+          "Imprisonment up to 5 years"
+        ],
+        "correctAnswer": "Imprisonment up to 3 years or fine or both",
+        "feedback": "This specific type of sexual harassment under Section 354A is punishable with imprisonment up to 3 years, or with a fine, or both."
+      },
+      {
+        "id": 131,
+        "topic": "Stalking",
+        "title": "IPC Section 354A - Sexual Harassment (Remarks)",
+        "question": "What is the punishment for sexual harassment involving making sexually coloured remarks (Section 354A IPC)?",
+        "options": [
+          "Fine only",
+          "Imprisonment up to 1 year or fine or both",
+          "Imprisonment up to 3 years or fine or both",
+          "Imprisonment up to 5 years"
+        ],
+        "correctAnswer": "Imprisonment up to 1 year or fine or both",
+        "feedback": "Making sexually coloured remarks under Section 354A is punishable with imprisonment up to 1 year, or with a fine, or both."
+      },
+      {
+        "id": 132,
+        "topic": "Stalking",
+        "title": "IPC Section 354B - Intent to Disrobe",
+        "question": "What is the punishment for assault or use of criminal force on a woman with intent to disrobe her (Section 354B IPC)?",
+        "options": [
+          "1 to 3 years imprisonment and fine",
+          "3 to 7 years imprisonment and fine",
+          "5 to 10 years imprisonment and fine",
+          "Fine only"
+        ],
+        "correctAnswer": "3 to 7 years imprisonment and fine",
+        "feedback": "Section 354B IPC mandates imprisonment for a term not less than three years but which may extend to seven years, along with a fine."
+      },
+      {
+        "id": 133,
+        "topic": "Stalking",
+        "title": "IPC Section 354C - Voyeurism (First Conviction)",
+        "question": "What is the punishment for voyeurism (Section 354C IPC) on first conviction?",
+        "options": [
+          "Fine only",
+          "Imprisonment of 1 year to 3 years and fine",
+          "Imprisonment of 3 years to 7 years and fine",
+          "Imprisonment up to 1 year"
+        ],
+        "correctAnswer": "Imprisonment of 1 year to 3 years and fine",
+        "feedback": "For a first conviction of voyeurism under Section 354C, the punishment is imprisonment for a term not less than one year but which may extend to three years, and also a fine."
+      },
+      {
+        "id": 134,
+        "topic": "Stalking",
+        "title": "IPC Section 354C - Voyeurism (Second Conviction)",
+        "question": "Is voyeurism (Section 354C IPC) bailable or non-bailable upon a second conviction?",
+        "options": [
+          "Bailable",
+          "Non-bailable",
+          "Depends on the magistrate",
+          "Compoundable"
+        ],
+        "correctAnswer": "Non-bailable",
+        "feedback": "While voyeurism is bailable on first conviction, the table indicates it becomes non-bailable upon a second conviction under Section 354C."
+      },
+      {
+        "id": 135,
+        "topic": "Stalking",
+        "title": "IPC Section 354D - Stalking (First Conviction)",
+        "question": "What is the maximum imprisonment for stalking (Section 354D IPC) on first conviction?",
+        "options": [
+          "1 year",
+          "3 years",
+          "5 years",
+          "7 years"
+        ],
+        "correctAnswer": "3 years",
+        "feedback": "For a first conviction of stalking under Section 354D, the punishment is imprisonment for a term which may extend to three years, and also includes a fine."
+      },
+      {
+        "id": 136,
+        "topic": "Stalking",
+        "title": "IPC Section 354D - Stalking (Second Conviction)",
+        "question": "Is stalking (Section 354D IPC) bailable or non-bailable upon a second or subsequent conviction?",
+        "options": [
+          "Bailable",
+          "Non-bailable",
+          "Depends on the severity",
+          "Always bailable"
+        ],
+        "correctAnswer": "Non-bailable",
+        "feedback": "Stalking is bailable on first conviction, but the table shows it becomes non-bailable upon a second or subsequent conviction under Section 354D."
+      },
+      {
+        "id": 137,
+        "topic": "Stalking",
+        "title": "Nature of Offenses (Cognizable)",
+        "question": "Are the offenses listed under sections 354, 354A, 354B, 354C, and 354D generally cognizable or non-cognizable?",
+        "options": [
+          "Non-cognizable (police cannot arrest without warrant)",
+          "Cognizable (police can arrest without warrant)",
+          "Some are cognizable, some are not",
+          "Depends on the state"
+        ],
+        "correctAnswer": "Cognizable (police can arrest without warrant)",
+        "feedback": "The table indicates that all these specific offenses (354, 354A, 354B, 354C, 354D) are cognizable, meaning the police have the authority to arrest the accused without a warrant."
+      },
+      {
+        "id": 138,
+        "topic": "Trafficking of Women and Children",
+        "title": "Brothel Definition",
+        "question": "What is the definition of a 'brothel' according to the provided text?",
+        "options": [
+          "Any private residence where multiple people live",
+          "A place specifically licensed for adult entertainment",
+          "Any house, room, conveyance, or place used for sexual exploitation/abuse for commercial gain",
+          "A shelter home for victims of trafficking"
+        ],
+        "correctAnswer": "Any house, room, conveyance, or place used for sexual exploitation/abuse for commercial gain",
+        "feedback": "A brothel includes any place (house, room, vehicle, etc.) used for sexual exploitation or abuse for the commercial gain of another person or the mutual gain of prostitutes."
+      },
+      {
+        "id": 139,
+        "topic": "Trafficking of Women and Children",
+        "title": "Offenders Related to Brothels",
+        "question": "Who is considered an offender under the law concerning brothels?",
+        "options": [
+          "Only the prostitutes working there",
+          "Only the clients visiting the brothel",
+          "Anyone keeping, managing, assisting in management, or knowingly allowing premises to be used as a brothel",
+          "Only the person who owns the physical property"
+        ],
+        "correctAnswer": "Anyone keeping, managing, assisting in management, or knowingly allowing premises to be used as a brothel",
+        "feedback": "Offenders include those who keep or manage a brothel, assist in its management, or being a tenant, owner, landlord, etc., knowingly allow premises to be used as a brothel."
+      },
+      {
+        "id": 140,
+        "topic": "Trafficking of Women and Children",
+        "title": "Prostitution Definition",
+        "question": "How is 'prostitution' defined in the document?",
+        "options": [
+          "Any sexual activity outside of marriage",
+          "Abusing a person sexually for commercial purposes (money or other kind)",
+          "Visiting a brothel",
+          "Living with multiple sexual partners"
+        ],
+        "correctAnswer": "Abusing a person sexually for commercial purposes (money or other kind)",
+        "feedback": "Prostitution is defined as sexually abusing a person for commercial purposes, which can involve money or other forms of payment."
+      },
+      {
+        "id": 141,
+        "topic": "Trafficking of Women and Children",
+        "title": "Legality of Prostitution Earnings",
+        "question": "According to the text, when is living off the earnings of prostitution illegal?",
+        "options": [
+          "It is never illegal",
+          "Only if the person earning is under 18",
+          "When anyone over 18 knowingly lives on the earnings of another person's prostitution",
+          "Only if the earnings exceed a certain amount"
+        ],
+        "correctAnswer": "When anyone over 18 knowingly lives on the earnings of another person's prostitution",
+        "feedback": "The law makes it illegal for anyone over 18 years of age to knowingly live on the earnings derived from the prostitution of another person."
+      },
+      {
+        "id": 142,
+        "topic": "Trafficking of Women and Children",
+        "title": "Evidence of Living on Prostitution Earnings",
+        "question": "Which factor suggests someone is living on the earnings of another's prostitution?",
+        "options": [
+          "Being married to the person",
+          "Providing financial advice",
+          "Acting as a pimp or exercising control/influence over the prostitute",
+          "Sharing a house with the person"
+        ],
+        "correctAnswer": "Acting as a pimp or exercising control/influence over the prostitute",
+        "feedback": "Factors indicating someone lives on prostitution earnings include living/always being with the prostitute, exercising control/influence to aid/compel prostitution, or acting as a pimp."
+      },
+      {
+        "id": 143,
+        "topic": "Trafficking of Women and Children",
+        "title": "Pimp Definition",
+        "question": "What is a 'pimp' as defined in the text?",
+        "options": [
+          "A client who frequently visits prostitutes",
+          "A person who owns a brothel",
+          "Someone who controls prostitutes, arranges clients, and takes a share of their earnings",
+          "A police officer investigating prostitution"
+        ],
+        "correctAnswer": "Someone who controls prostitutes, arranges clients, and takes a share of their earnings",
+        "feedback": "A pimp is defined as someone who controls prostitutes, arranges clients for them, and takes a percentage of their earnings in return."
+      },
+      {
+        "id": 144,
+        "topic": "Trafficking of Women and Children",
+        "title": "Trafficking Definition",
+        "question": "What constitutes 'trafficking' according to this document?",
+        "options": [
+          "Helping someone find employment abroad",
+          "Arranging travel for prostitutes",
+          "Compelling or taking a person without consent for the purpose of prostitution",
+          "Employing someone in a brothel"
+        ],
+        "correctAnswer": "Compelling or taking a person without consent for the purpose of prostitution",
+        "feedback": "Trafficking is defined as compelling a person or taking them without consent specifically for the purpose of prostitution."
+      },
+      {
+        "id": 145,
+        "topic": "Trafficking of Women and Children",
+        "title": "Punishment for Trafficking Adults",
+        "question": "What is the punishment mentioned for trafficking adults?",
+        "options": [
+          "A fine only",
+          "Imprisonment for 1 to 3 years",
+          "Rigorous imprisonment for three to seven years (with or without fine)",
+          "Life imprisonment"
+        ],
+        "correctAnswer": "Rigorous imprisonment for three to seven years (with or without fine)",
+        "feedback": "A person found guilty of trafficking adults faces rigorous imprisonment for a term ranging from three to seven years, potentially with a fine."
+      },
+      {
+        "id": 146,
+        "topic": "Trafficking of Women and Children",
+        "title": "Punishment for Trafficking Children",
+        "question": "What is the punishment range mentioned for trafficking children?",
+        "options": [
+          "3 to 7 years imprisonment",
+          "5 to 10 years imprisonment",
+          "7 to 14 years imprisonment",
+          "Life imprisonment"
+        ],
+        "correctAnswer": "7 to 14 years imprisonment",
+        "feedback": "If the victim of trafficking is a child, the punishment is significantly higher, ranging from seven to fourteen years of imprisonment."
+      },
+      {
+        "id": 147,
+        "topic": "Trafficking of Women and Children",
+        "title": "Legality of Visiting Brothels",
+        "question": "Is visiting a brothel for the purpose of sexually exploiting a trafficking victim illegal?",
+        "options": [
+          "No, only owning or managing a brothel is illegal",
+          "Yes, it is a punishable offense under law",
+          "Only if the visitor is aware the person is trafficked",
+          "It depends on the specific state laws"
+        ],
+        "correctAnswer": "Yes, it is a punishable offense under law",
+        "feedback": "Yes, the law punishes any person who visits or is found in a brothel specifically for the purpose of sexually exploiting a victim of trafficking."
+      },
+      {
+        "id": 148,
+        "topic": "Trafficking of Women and Children",
+        "title": "Spouse's Guilt in Prostitution",
+        "question": "When is a spouse considered guilty of prostitution in relation to the other spouse?",
+        "options": [
+          "If they encourage their spouse to work",
+          "If they leave their spouse in a brothel or premises for sexual intercourse with another person",
+          "If they live separately from their spouse",
+          "If they are aware their spouse visits prostitutes"
+        ],
+        "correctAnswer": "If they leave their spouse in a brothel or premises for sexual intercourse with another person",
+        "feedback": "A spouse is guilty of prostitution if they leave the other spouse in any premises or a brothel specifically for the purpose of having sexual intercourse with someone else."
+      },
+      {
+        "id": 149,
+        "topic": "Trafficking of Women and Children",
+        "title": "Taking Someone to a Brothel",
+        "question": "Is it a crime to take someone to a brothel, even if that person consents?",
+        "options": [
+          "No, if the person consents, it is not a crime",
+          "Only if the person is under 18",
+          "Yes, it is a crime irrespective of the person's consent",
+          "Only if force is used"
+        ],
+        "correctAnswer": "Yes, it is a crime irrespective of the person's consent",
+        "feedback": "The document states that taking someone to a brothel is a crime, regardless of whether that person consents to go."
+      },
+      {
+        "id": 150,
+        "topic": "Trafficking of Women and Children",
+        "title": "Filing a Complaint",
+        "question": "Who should be approached to file a complaint regarding trafficking or related offenses?",
+        "options": [
+          "Only NGOs working against trafficking",
+          "The local police station or the district magistrate",
+          "The National Human Rights Commission directly",
+          "The Ministry of Women and Child Development"
+        ],
+        "correctAnswer": "The local police station or the district magistrate",
+        "feedback": "To file a complaint, one should approach either the local police station or their district magistrate."
+      },
+      {
+        "id": 151,
+        "topic": "Trafficking of Women and Children",
+        "title": "Special Police Officers",
+        "question": "Are there special police officers designated to deal with offenses related to trafficking and prostitution?",
+        "options": [
+          "No, all police officers handle these cases",
+          "Only in major metropolitan cities",
+          "Yes, the State Government appoints special police officers for these offenses in designated areas",
+          "Yes, but they only handle cases involving children"
+        ],
+        "correctAnswer": "Yes, the State Government appoints special police officers for these offenses in designated areas",
+        "feedback": "Yes, the State Government appoints special police officers specifically to deal with these offenses within their respective areas."
+      },
+      {
+        "id": 152,
+        "topic": "Trafficking of Women and Children",
+        "title": "Reliefs from Magistrate",
+        "question": "What kind of relief can a victim of forced prostitution seek from a Magistrate?",
+        "options": [
+          "Immediate financial compensation only",
+          "An order to be kept in a protective home or be provided care and protection by the court for rehabilitation",
+          "A job guarantee from the government",
+          "Arrest warrant for the clients"
+        ],
+        "correctAnswer": "An order to be kept in a protective home or be provided care and protection by the court for rehabilitation",
+        "feedback": "A victim can apply to the Magistrate for an order to be placed in a protective home or to receive care and protection from the court to assist in their rehabilitation."
+      },
+      {
+        "id": 153,
+        "topic": "Trafficking of Women and Children",
+        "title": "Protective Home Definition",
+        "question": "What is a 'protective home' as described in the text?",
+        "options": [
+          "A regular prison facility",
+          "A place providing temporary shelter for anyone",
+          "A place specifically for persons in need of care and protection (like trafficking victims)",
+          "A halfway house for former offenders"
+        ],
+        "correctAnswer": "A place specifically for persons in need of care and protection (like trafficking victims)",
+        "feedback": "A protective home is defined as a place intended for individuals who are in need of care and protection, relevant in the context of victims rescued from prostitution or trafficking."
+      },
+      {
+        "id": 154,
+        "topic": "Property rights of Women in Andhra Pradesh",
+        "title": "Ancestral Property Definition",
+        "question": "What is defined as 'ancestral property' in the context of this document?",
+        "options": [
+          "Property purchased by an individual",
+          "Property inherited up to four generations of male members",
+          "Property received through a will",
+          "Property acquired from the division of any property"
+        ],
+        "correctAnswer": "Property inherited up to four generations of male members",
+        "feedback": "Ancestral property is defined as property that has been inherited through up to four generations of male lineage."
+      },
+      {
+        "id": 155,
+        "topic": "Property rights of Women in Andhra Pradesh",
+        "title": "Self-Acquired Property Definition",
+        "question": "Which of the following is considered 'self-acquired property'?",
+        "options": [
+          "Only property inherited through four male generations",
+          "Property purchased by an individual from their own resources",
+          "Property held jointly by a family without division",
+          "Property exclusively owned by the government"
+        ],
+        "correctAnswer": "Property purchased by an individual from their own resources",
+        "feedback": "Self-acquired property includes property purchased by an individual with their own funds, property received after dividing ancestral property, or property acquired as a legal heir or through a will."
+      },
+      {
+        "id": 156,
+        "topic": "Property rights of Women in Andhra Pradesh",
+        "title": "Intestate Succession Definition",
+        "question": "What is 'intestate succession'?",
+        "options": [
+          "Distribution of property according to a written will",
+          "Transfer of property during a person's lifetime",
+          "Distribution of a person's property between spouse and heirs when they die without a valid will",
+          "Division of ancestral property among male members only"
+        ],
+        "correctAnswer": "Distribution of a person's property between spouse and heirs when they die without a valid will",
+        "feedback": "Intestate succession refers to the process of distributing a person's assets to their spouse and heirs when the person dies without leaving a valid will."
+      },
+      {
+        "id": 157,
+        "topic": "Property rights of Women in Andhra Pradesh",
+        "title": "Hindu Daughter's Rights (Ancestral)",
+        "question": "Under Hindu Law, how does a daughter's right in ancestral property compare to a son's?",
+        "options": [
+          "She has no right",
+          "She has half the right of a son",
+          "She has the same right and liabilities as the son",
+          "She only has rights if there are no sons"
+        ],
+        "correctAnswer": "She has the same right and liabilities as the son",
+        "feedback": "According to Hindu Law, a daughter has the same rights and liabilities concerning ancestral property as a son."
+      },
+      {
+        "id": 158,
+        "topic": "Property rights of Women in Andhra Pradesh",
+        "title": "Hindu Daughter's Rights (Intestate)",
+        "question": "In intestate succession under Hindu Law, what property rights does a Hindu woman or girl have?",
+        "options": [
+          "No rights if male relatives exist",
+          "Rights only to self-acquired property",
+          "Equal property rights along with other male relatives",
+          "Rights determined by the eldest male relative"
+        ],
+        "correctAnswer": "Equal property rights along with other male relatives",
+        "feedback": "A Hindu woman or girl possesses equal property rights alongside male relatives in any partition arising from intestate succession."
+      },
+      {
+        "id": 159,
+        "topic": "Property rights of Women in Andhra Pradesh",
+        "title": "Hindu Married Daughter's Rights",
+        "question": "Under Hindu Law, what right does a married daughter have if she is deserted, widowed, or divorced?",
+        "options": [
+          "Right to maintenance from parents",
+          "Right to demand a share of parental self-acquired property",
+          "Right of residence (shelter)",
+          "No specific rights mentioned"
+        ],
+        "correctAnswer": "Right of residence (shelter)",
+        "feedback": "A deserted, widowed, or divorced married daughter under Hindu Law retains the right of residence in her parental home, although not the right to maintenance from them."
+      },
+      {
+        "id": 160,
+        "topic": "Property rights of Women in Andhra Pradesh",
+        "title": "Muslim Daughter's Inheritance Share",
+        "question": "Under Muslim Law, what is a daughter's share of inheritance from her father's estate compared to a son's share?",
+        "options": [
+          "Equal to the son's share",
+          "One-half of the son's share",
+          "One-third of the son's share",
+          "No share if sons exist"
+        ],
+        "correctAnswer": "One-half of the son's share",
+        "feedback": "Muslim daughters have the right to inherit a share equal to one-half of what a son inherits from their father's estate."
+      },
+      {
+        "id": 161,
+        "topic": "Property rights of Women in Andhra Pradesh",
+        "title": "Muslim Daughter's Control Over Property",
+        "question": "What control does a daughter have over her inherited share under Muslim Law?",
+        "options": [
+          "No control, managed by male relatives",
+          "Control only with husband's permission",
+          "Full control to manage and dispose of her share as she wishes",
+          "Control limited to using income, not disposal"
+        ],
+        "correctAnswer": "Full control to manage and dispose of her share as she wishes",
+        "feedback": "A Muslim daughter has full legal control over her share of property, including the right to manage and dispose of it during her lifetime or after death."
+      },
+      {
+        "id": 162,
+        "topic": "Property rights of Women in Andhra Pradesh",
+        "title": "Muslim Daughter's Right Before Marriage",
+        "question": "Under Muslim Law, what right does an unmarried daughter have regarding her parents' home?",
+        "options": [
+          "Right to maintenance only",
+          "Right of residence and support until she gets married",
+          "Right to a share of the house ownership",
+          "No specific rights mentioned"
+        ],
+        "correctAnswer": "Right of residence and support until she gets married",
+        "feedback": "An unmarried Muslim daughter has the right of residence in her parents' home and the right to receive support from them until she marries."
+      },
+      {
+        "id": 163,
+        "topic": "Property rights of Women in Andhra Pradesh",
+        "title": "Muslim Married Daughter's Maintenance (Post-Divorce)",
+        "question": "If a married Muslim daughter gets divorced, who is primarily responsible for her maintenance after the 'iddat' period, according to the text?",
+        "options": [
+          "Her ex-husband indefinitely",
+          "The state government",
+          "Her parents (unless she has children capable of supporting her)",
+          "She has no right to maintenance"
+        ],
+        "correctAnswer": "Her parents (unless she has children capable of supporting her)",
+        "feedback": "After the iddat period (approx. three months) post-divorce, the responsibility for a Muslim daughter's maintenance falls back on her parents, unless she has children who are capable of supporting her."
+      },
+      {
+        "id": 164,
+        "topic": "Property rights of Women in Andhra Pradesh",
+        "title": "Christian Daughter's Inheritance Share",
+        "question": "Under Christian Law as described, how do daughters inherit property compared to brothers?",
+        "options": [
+          "They get no share if brothers exist",
+          "They get half the share of brothers",
+          "They inherit equally with any brothers",
+          "Their share depends on the father's will only"
+        ],
+        "correctAnswer": "They inherit equally with any brothers",
+        "feedback": "Christian daughters inherit equally alongside any brothers from their father's or mother's estate."
+      },
+      {
+        "id": 165,
+        "topic": "Property rights of Women in Andhra Pradesh",
+        "title": "Christian Daughter's Rights Before Marriage",
+        "question": "What rights does a Christian daughter have from her parents before marriage?",
+        "options": [
+          "Right to inherit only",
+          "Right to shelter and maintenance until marriage",
+          "Right to dispose of parental property",
+          "No rights until she reaches majority"
+        ],
+        "correctAnswer": "Right to shelter and maintenance until marriage",
+        "feedback": "A Christian daughter has the right to shelter and maintenance from her parents until she gets married, but this right ceases after marriage."
+      },
+      {
+        "id": 166,
+        "topic": "Property rights of Women in Andhra Pradesh",
+        "title": "Hindu Wife's Right Over Own Property",
+        "question": "Under Hindu Law, what rights does a married woman have over property she earned, inherited, or received as a gift?",
+        "options": [
+          "Joint ownership with husband",
+          "Husband manages the property",
+          "She is the sole owner with full rights",
+          "Requires permission from in-laws to dispose"
+        ],
+        "correctAnswer": "She is the sole owner with full rights",
+        "feedback": "A married Hindu woman has full rights and is the sole owner of her property, regardless of whether it was gifted, inherited, or self-earned."
+      },
+      {
+        "id": 167,
+        "topic": "Property rights of Women in Andhra Pradesh",
+        "title": "Hindu Wife's Right to Maintenance",
+        "question": "From whom does a married Hindu woman have the right to claim maintenance and shelter?",
+        "options": [
+          "Only from her parents",
+          "From her husband, and potentially his joint family if applicable",
+          "Only from her adult children",
+          "From the state"
+        ],
+        "correctAnswer": "From her husband, and potentially his joint family if applicable",
+        "feedback": "A Hindu wife has the right to maintenance and shelter from her husband. If the husband is part of a joint family, this right extends to the joint family."
+      },
+      {
+        "id": 168,
+        "topic": "Property rights of Women in Andhra Pradesh",
+        "title": "Hindu Wife's Share in Partition",
+        "question": "If a joint family property is partitioned between her husband and his sons, what share is a Hindu wife entitled to?",
+        "options": [
+          "No share",
+          "A fixed nominal amount",
+          "A share equal to any other person (like her husband or a son)",
+          "Half of her husband's share"
+        ],
+        "correctAnswer": "A share equal to any other person (like her husband or a son)",
+        "feedback": "In a partition of joint family property involving her husband and sons, a Hindu wife is entitled to a share equal to that of any other person receiving a share."
+      },
+      {
+        "id": 169,
+        "topic": "Property rights of Women in Andhra Pradesh",
+        "title": "Hindu Widow's Inheritance",
+        "question": "Upon her husband's death under Hindu Law, what inheritance right does a widow have in his property?",
+        "options": [
+          "Only right to maintenance",
+          "A life interest only",
+          "Right to an equal share of his portion, jointly with her children and his mother",
+          "The entire share if there are no children"
+        ],
+        "correctAnswer": "Right to an equal share of his portion, jointly with her children and his mother",
+        "feedback": "A Hindu widow inherits an equal share of her deceased husband's part of the property, along with her children and the husband's mother (if alive)."
+      },
+      {
+        "id": 170,
+        "topic": "Property rights of Women in Andhra Pradesh",
+        "title": "Muslim Wife's Right to Mehr",
+        "question": "What specific financial right does a Muslim wife have based on the marriage contract?",
+        "options": [
+          "Monthly maintenance only",
+          "Share in husband's earnings",
+          "Right to 'Mehr' as per the terms agreed upon at the wedding",
+          "Equal share in ancestral property"
+        ],
+        "correctAnswer": "Right to 'Mehr' as per the terms agreed upon at the wedding",
+        "feedback": "A Muslim wife has the right to receive 'Mehr' according to the terms of the contract accepted during the marriage ceremony."
+      },
+      {
+        "id": 171,
+        "topic": "Property rights of Women in Andhra Pradesh",
+        "title": "Muslim Wife's Inheritance Share",
+        "question": "What is a Muslim wife's inheritance share from her deceased husband's property?",
+        "options": [
+          "Always one-half",
+          "Always one-third",
+          "One-fourth if no children, one-eighth if there are children",
+          "Equal share with the children"
+        ],
+        "correctAnswer": "One-fourth if no children, one-eighth if there are children",
+        "feedback": "A Muslim wife inherits one-fourth of her husband's estate if there are no children, and one-eighth if there are children."
+      },
+      {
+        "id": 172,
+        "topic": "Property rights of Women in Andhra Pradesh",
+        "title": "Christian Wife's Maintenance Rights",
+        "question": "Under Christian Law, what recourse does a wife have if her husband fails to provide maintenance?",
+        "options": [
+          "She can claim from his parents",
+          "She can ask for a divorce",
+          "She must rely on her children",
+          "She has no specific recourse mentioned"
+        ],
+        "correctAnswer": "She can ask for a divorce",
+        "feedback": "If a Christian husband fails to provide maintenance, his wife has the right to seek a divorce on these grounds."
+      },
+      {
+        "id": 173,
+        "topic": "Property rights of Women in Andhra Pradesh",
+        "title": "Christian Widow's Inheritance Share",
+        "question": "Upon her husband's death, what share of his estate does a Christian wife typically receive?",
+        "options": [
+          "The entire estate",
+          "One-half of the estate",
+          "One-third of the estate (with the rest divided among children)",
+          "One-fourth of the estate"
+        ],
+        "correctAnswer": "One-third of the estate (with the rest divided among children)",
+        "feedback": "A Christian widow is generally entitled to a one-third share of her deceased husband's estate, with the remaining two-thirds being divided equally among his children."
+      },
+      {
+        "id": 174,
+        "topic": "Property rights of Women in Andhra Pradesh",
+        "title": "Hindu Mother's Maintenance Rights",
+        "question": "From whom can a Hindu mother claim maintenance?",
+        "options": [
+          "Only from her husband",
+          "From her children who are capable of supporting her",
+          "Only from the government",
+          "She has no right to maintenance"
+        ],
+        "correctAnswer": "From her children who are capable of supporting her",
+        "feedback": "A Hindu mother has the right to receive maintenance from her children who have the means to support her. She is a Class I heir."
+      },
+      {
+        "id": 175,
+        "topic": "Property rights of Women in Andhra Pradesh",
+        "title": "Hindu Mother's Share in Partition",
+        "question": "In a joint family property partition, what share can a widowed Hindu mother claim?",
+        "options": [
+          "No share",
+          "Half the share of a son",
+          "A share equal to the share of her son",
+          "A fixed maintenance amount"
+        ],
+        "correctAnswer": "A share equal to the share of her son",
+        "feedback": "A widowed Hindu mother is entitled to take a share equal to that of her son during the partition of a joint family property."
+      },
+      {
+        "id": 176,
+        "topic": "Property rights of Women in Andhra Pradesh",
+        "title": "Muslim Mother's Inheritance Share",
+        "question": "What share of her deceased child's property does a Muslim mother inherit?",
+        "options": [
+          "One-third",
+          "One-fourth",
+          "One-sixth",
+          "One-eighth"
+        ],
+        "correctAnswer": "One-sixth",
+        "feedback": "A Muslim mother has the right to inherit a one-sixth share of her deceased child's property."
+      },
+      {
+        "id": 177,
+        "topic": "Property rights of Women in Andhra Pradesh",
+        "title": "Christian Mother's Maintenance Rights",
+        "question": "Does a Christian mother have the right to receive maintenance from her children?",
+        "options": [
+          "Yes, always",
+          "Yes, if the children are financially stable",
+          "No, the document states she doesn't have this right",
+          "Only if she is widowed"
+        ],
+        "correctAnswer": "No, the document states she doesn't have this right",
+        "feedback": "According to the provided text for Christian Law, the mother does not have the right to receive maintenance from her children."
+      },
+      {
+        "id": 178,
+        "topic": "Property rights of Women in Andhra Pradesh",
+        "title": "Christian Mother's Inheritance",
+        "question": "Under what condition may a Christian mother inherit property from her deceased child?",
+        "options": [
+          "She always inherits one-third",
+          "She inherits only if the child was unmarried",
+          "She may inherit one-fourth if the child dies without a spouse or any living child",
+          "She does not inherit from her children"
+        ],
+        "correctAnswer": "She may inherit one-fourth if the child dies without a spouse or any living child",
+        "feedback": "A Christian mother can inherit one-fourth of her child's property only if the child dies without leaving behind a spouse or any living children."
+      },
+      {
+        "id": 179,
+        "topic": "FIR",
+        "title": "Definition of FIR",
+        "question": "What is a First Information Report (FIR)?",
+        "options": [
+          "A final judgment by a court",
+          "A request for bail",
+          "A written document prepared by police upon receiving information about a cognizable offense",
+          "An internal police memo"
+        ],
+        "correctAnswer": "A written document prepared by police upon receiving information about a cognizable offense",
+        "feedback": "An FIR is the initial written report prepared by the police when they first receive information about the commission of a cognizable offense."
+      },
+      {
+        "id": 180,
+        "topic": "FIR",
+        "title": "Who Prepares the FIR?",
+        "question": "Who prepares the First Information Report (FIR)?",
+        "options": [
+          "The victim",
+          "A lawyer",
+          "The police",
+          "A magistrate"
+        ],
+        "correctAnswer": "The police",
+        "feedback": "The FIR is a document prepared by the police based on the information they receive about a cognizable offense."
+      },
+      {
+        "id": 181,
+        "topic": "FIR",
+        "title": "Format of Initial Report",
+        "question": "In what formats can the initial information leading to an FIR be given to the police?",
+        "options": [
+          "Only in writing",
+          "Only orally",
+          "Orally, in writing, or even via telephone",
+          "Only through a lawyer"
+        ],
+        "correctAnswer": "Orally, in writing, or even via telephone",
+        "feedback": "Information about a cognizable offense can be reported orally, in writing, and even a telephonic message can be treated as an FIR."
+      },
+      {
+        "id": 182,
+        "topic": "FIR",
+        "title": "Cognizable Offence Definition",
+        "question": "What is a key characteristic of a 'cognizable offence'?",
+        "options": [
+          "Police need court permission to investigate",
+          "Police cannot arrest without a warrant",
+          "Police may arrest a person without a warrant",
+          "It is a minor offense only punishable by fine"
+        ],
+        "correctAnswer": "Police may arrest a person without a warrant",
+        "feedback": "A cognizable offense is one where the police have the authority to arrest a person without a warrant and can start the investigation without court orders."
+      },
+      {
+        "id": 183,
+        "topic": "FIR",
+        "title": "Non-Cognizable Offence Definition",
+        "question": "What defines a 'non-cognizable offence'?",
+        "options": [
+          "Police can arrest without a warrant",
+          "Police can investigate without court permission",
+          "Police have no authority to arrest without a warrant and need court permission to investigate",
+          "It is always a serious crime"
+        ],
+        "correctAnswer": "Police have no authority to arrest without a warrant and need court permission to investigate",
+        "feedback": "In a non-cognizable offense, police cannot arrest without a warrant and require the court's permission to begin an investigation."
+      },
+      {
+        "id": 184,
+        "topic": "FIR",
+        "title": "Importance of FIR",
+        "question": "Why is registering an FIR considered important?",
+        "options": [
+          "It automatically proves the accused is guilty",
+          "It allows the victim to claim compensation immediately",
+          "It sets the process of criminal justice in motion and enables police investigation",
+          "It serves as the final evidence in court"
+        ],
+        "correctAnswer": "It sets the process of criminal justice in motion and enables police investigation",
+        "feedback": "The FIR is crucial because it initiates the criminal justice process, and police investigation typically begins only after the FIR is registered."
+      },
+      {
+        "id": 185,
+        "topic": "FIR",
+        "title": "Who Can Lodge an FIR?",
+        "question": "Who is eligible to lodge an FIR about a cognizable offence?",
+        "options": [
+          "Only the victim",
+          "Only a direct witness",
+          "Anyone who knows about the commission of the offense (victim, witness, person with knowledge, police officer)",
+          "Only a lawyer representing the victim"
+        ],
+        "correctAnswer": "Anyone who knows about the commission of the offense (victim, witness, person with knowledge, police officer)",
+        "feedback": "Anyone with knowledge of a cognizable offense, including the victim, a witness, someone informed about it, or even a police officer themselves, can lodge an FIR."
+      },
+      {
+        "id": 186,
+        "topic": "FIR",
+        "title": "FIR Filing Procedure (Oral Information)",
+        "question": "What must the police do if information about a cognizable offense is given orally?",
+        "options": [
+          "Tell the person to submit it in writing",
+          "Record it only if a witness is present",
+          "Write it down",
+          "Immediately arrest the suspect"
+        ],
+        "correctAnswer": "Write it down",
+        "feedback": "The procedure requires the police to write down the information if it is given orally."
+      },
+      {
+        "id": 187,
+        "topic": "FIR",
+        "title": "Complainant's Rights During FIR Filing",
+        "question": "What right does the person giving information for an FIR have regarding the recorded statement?",
+        "options": [
+          "To receive payment for the information",
+          "To demand it be kept confidential from the accused",
+          "To demand that the information recorded be read over to them",
+          "To dictate the exact legal sections to be included"
+        ],
+        "correctAnswer": "To demand that the information recorded be read over to them",
+        "feedback": "The person lodging the complaint has the right to demand that the information recorded by the police is read back to them to ensure accuracy."
+      },
+      {
+        "id": 188,
+        "topic": "FIR",
+        "title": "Signing the FIR",
+        "question": "When should the person giving the information sign the FIR?",
+        "options": [
+          "Immediately upon arrival at the station",
+          "Only after consulting a lawyer",
+          "Only after verifying that the recorded information accurately reflects what they stated",
+          "They are not required to sign it"
+        ],
+        "correctAnswer": "Only after verifying that the recorded information accurately reflects what they stated",
+        "feedback": "The informant should sign the report only after ensuring that the police have recorded the information correctly as per the details provided by them."
+      },
+      {
+        "id": 189,
+        "topic": "FIR",
+        "title": "Right to a Copy of FIR",
+        "question": "Does the person lodging the FIR have a right to receive a copy?",
+        "options": [
+          "No, it's an internal police document",
+          "Yes, but they have to pay a fee for it",
+          "Yes, they have the right to get a copy free of cost",
+          "Only if the case goes to court"
+        ],
+        "correctAnswer": "Yes, they have the right to get a copy free of cost",
+        "feedback": "It is the right of the person lodging the FIR to receive a copy of it from the police, free of cost."
+      },
+      {
+        "id": 190,
+        "topic": "FIR",
+        "title": "Information Required in FIR",
+        "question": "Which detail is essential to mention in an FIR?",
+        "options": [
+          "The potential punishment for the crime",
+          "The informant's opinion on the motive",
+          "Date, time, and location of the incident",
+          "Previous criminal record of the accused (if known)"
+        ],
+        "correctAnswer": "Date, time, and location of the incident",
+        "feedback": "Essential details to include in an FIR are the informant's name/address, date/time/location of the incident, true facts, names/descriptions of persons involved, and any witnesses."
+      },
+      {
+        "id": 191,
+        "topic": "FIR",
+        "title": "Recourse if FIR Not Registered (Police Hierarchy)",
+        "question": "If the local police station refuses to register an FIR, who is the first higher police authority the complainant can approach?",
+        "options": [
+          "The Chief Minister",
+          "The District Judge",
+          "The Superintendent of Police (SP) or other higher officers (DIG, IG)",
+          "The National Security Advisor"
+        ],
+        "correctAnswer": "The Superintendent of Police (SP) or other higher officers (DIG, IG)",
+        "feedback": "If an FIR is not registered, the complainant can approach senior police officers, starting with the Superintendent of Police (SP) of the concerned district."
+      },
+      {
+        "id": 192,
+        "topic": "FIR",
+        "title": "Recourse if FIR Not Registered (Written Complaint)",
+        "question": "Besides meeting higher officers, how else can a complaint be escalated within the police department if an FIR is not registered?",
+        "options": [
+          "By protesting outside the police station",
+          "By sending the complaint in writing and by post to the Superintendent of Police",
+          "By filing a Public Interest Litigation",
+          "By contacting the media immediately"
+        ],
+        "correctAnswer": "By sending the complaint in writing and by post to the Superintendent of Police",
+        "feedback": "A written complaint can be sent by post to the concerned Superintendent of Police, who, if satisfied, can investigate or order an investigation."
+      },
+      {
+        "id": 193,
+        "topic": "FIR",
+        "title": "Recourse if FIR Not Registered (Court)",
+        "question": "What legal action outside the police department can be taken if an FIR is not registered?",
+        "options": [
+          "Appeal to the Supreme Court directly",
+          "File a private complaint before the court having jurisdiction",
+          "Seek mediation through a Lok Adalat",
+          "Request arbitration"
+        ],
+        "correctAnswer": "File a private complaint before the court having jurisdiction",
+        "feedback": "If the police fail to register the FIR, the complainant has the option of filing a private complaint directly before the jurisdictional court."
+      },
+      {
+        "id": 194,
+        "topic": "FIR",
+        "title": "Recourse if FIR Not Registered (Human Rights Commission)",
+        "question": "Which commission(s) can be approached if the police fail to enforce the law or act improperly regarding an FIR?",
+        "options": [
+          "The Election Commission",
+          "The Union Public Service Commission",
+          "The State Human Rights Commission or the National Human Rights Commission",
+          "The Competition Commission"
+        ],
+        "correctAnswer": "The State Human Rights Commission or the National Human Rights Commission",
+        "feedback": "If police inaction or improper conduct occurs regarding FIR registration, a complaint can be made to the State Human Rights Commission or the National Human Rights Commission."
+      }
+      
+    ]
+  }
