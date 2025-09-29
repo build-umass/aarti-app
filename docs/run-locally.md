@@ -33,6 +33,9 @@ cd apps/mobile_client
 npx expo prebuild
 npx expo run:android
 ```
+If you want to run it in an ios simulator with Xcode
+
+> This option is no longer valid, always run it in either android/ios emulator
 
 2. if you want to run on the web
 
