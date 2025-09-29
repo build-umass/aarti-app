@@ -21,6 +21,9 @@ export default function RootLayout() {
     SpaceMono: require('../assets/fonts/SpaceMono-Regular.ttf'),
   });
 
+  // Always call the hook at the top level - this is required by Rules of Hooks
+  const { success, error } = useDatabaseMigrations();
+
   // Initialize database first
   useEffect(() => {
     if (loaded && !dbInitialized) {
@@ -32,9 +35,6 @@ export default function RootLayout() {
       }
     }
   }, [loaded, dbInitialized]);
-
-  // Handle database migrations after database is initialized
-  const { success, error } = dbInitialized ? useDatabaseMigrations() : { success: false, error: null };
 
   useEffect(() => {
     if (loaded && dbInitialized) {
@@ -63,15 +63,6 @@ export default function RootLayout() {
     }
   }, [appIsReady]);
 
-  // Show migration error
-  if (error) {
-    return (
-      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-        <Text>Migration error: {error.message}</Text>
-      </View>
-    );
-  }
-
   // Show database initialization in progress
   if (!dbInitialized) {
     return (
@@ -81,11 +72,11 @@ export default function RootLayout() {
     );
   }
 
-  // Show migration in progress
-  if (!success) {
+  // Show migration error if any
+  if (error) {
     return (
       <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-        <Text>Migration is in progress...</Text>
+        <Text>Migration error: {error.message}</Text>
       </View>
     );
   }

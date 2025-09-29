@@ -16,6 +16,15 @@ import { QuizService } from '@/services/QuizService';
 export default function ProfileScreen() {
   const [activeTab, setActiveTab] = useState<'quiz' | 'resource'>('quiz'); // valid options: quiz, resource
   const [username, setUsername] = useState<string>('Loading...');
+  
+  // Move all hooks to the top level to follow Rules of Hooks
+  const [stats, setStats] = useState<{
+    total: number;
+    completed: number;
+    percentage: number;
+  }>({ total: 0, completed: 0, percentage: 0 });
+  
+  const [topics, setTopics] = useState<string[]>([]);
 
   useEffect(() => {
     const loadUserData = async () => {
@@ -29,6 +38,22 @@ export default function ProfileScreen() {
     };
     
     loadUserData();
+  }, []);
+
+  // Load quiz stats when component mounts
+  useEffect(() => {
+    const loadStats = async () => {
+      try {
+        const completionStats = await QuizService.getCompletionStats();
+        const allTopics = await QuizService.getTopics();
+        setStats(completionStats);
+        setTopics(allTopics.map(t => t.name));
+      } catch (error) {
+        console.error('Failed to load quiz stats:', error);
+      }
+    };
+    
+    loadStats();
   }, []);
 
   return (
@@ -60,44 +85,28 @@ export default function ProfileScreen() {
         </Pressable>
       </View>
 
-      {renderStats(activeTab)}
+      {renderStats(activeTab, stats, topics)}
 
     </View>
   );
 }
 
-const renderStats = (activeTab: 'quiz' | 'resource') => {
+const renderStats = (
+  activeTab: 'quiz' | 'resource', 
+  stats: { total: number; completed: number; percentage: number }, 
+  topics: string[]
+) => {
   return (
     <View style={styles.statsOutline}>
-      {activeTab === 'quiz' ? renderQuizStats() : renderResourceStats()}
+      {activeTab === 'quiz' ? renderQuizStats(stats, topics) : renderResourceStats()}
     </View>
   );
 };
 
-const renderQuizStats = () => {
-  const [stats, setStats] = useState<{
-    total: number;
-    completed: number;
-    percentage: number;
-  }>({ total: 0, completed: 0, percentage: 0 });
-  
-  const [topics, setTopics] = useState<string[]>([]);
-
-  useEffect(() => {
-    const loadStats = async () => {
-      try {
-        const completionStats = await QuizService.getCompletionStats();
-        const allTopics = await QuizService.getTopics();
-        setStats(completionStats);
-        setTopics(allTopics.map(t => t.name));
-      } catch (error) {
-        console.error('Failed to load quiz stats:', error);
-      }
-    };
-    
-    loadStats();
-  }, []);
-
+const renderQuizStats = (
+  stats: { total: number; completed: number; percentage: number }, 
+  topics: string[]
+) => {
   return (
     <View style={styles.statsContent}>
       <ProgressBar progressFunc={() => stats.percentage} backgroundColor={"#ffffff"} />
