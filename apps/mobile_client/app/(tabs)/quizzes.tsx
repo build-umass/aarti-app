@@ -1,11 +1,11 @@
 import React from 'react';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { StyleSheet, ViewStyle, TextStyle, Text, View, Pressable, ScrollView, PressableStateCallbackType } from 'react-native';
-import { MMKV } from 'react-native-mmkv';
 import Ionicons from '@expo/vector-icons/Ionicons';
-import { QuizItem } from '@aarti-app/types';
-import quizDataFile from '../../assets/quizData.json';
+import { QuizItem } from '../../../../types';
 import ProgressBar from '@/components/ProgressBar';
+import { QuizService } from '@/services/QuizService';
+import { BookmarkService } from '@/services/BookmarkService';
 
 interface SelectedAnswers {
   [key: number]: string;
@@ -15,7 +15,7 @@ interface BookmarkedQuestions {
   [key: number]: boolean;
 }
 
-export const quizData: QuizItem[] = quizDataFile.quizzes;
+// Quiz data will be loaded from SQLite database
 
 interface ShadowOffset {
   width: number;
@@ -38,78 +38,121 @@ interface ViewStyleWithBorder extends ViewStyle {
   borderLeftColor?: string;
 }
 
-// Storage instances - will be initialized in useEffect
-let bookmarkedQuestionsStorage: MMKV | null = null;
-let generalQuestionsStorage: MMKV | null = null;
-
-// Function to get bookmarked questions storage instance
-const getBookmarkedQuestionsStorage = () => {
-  if (!bookmarkedQuestionsStorage) {
-    bookmarkedQuestionsStorage = new MMKV();
-  }
-  return bookmarkedQuestionsStorage;
-};
-
-// Function to get general questions storage instance
-export const getGeneralQuestionsStorage = () => {
-  if (!generalQuestionsStorage) {
-    generalQuestionsStorage = new MMKV();
-  }
-  return generalQuestionsStorage;
-};
-
-// Add this new function to load selected answers from storage
-const loadSelectedAnswers = () => {
-  const storage = getGeneralQuestionsStorage();
-  const storedAnswers = storage.getString('selectedAnswers');
-  return storedAnswers ? JSON.parse(storedAnswers) : {};
-};
+// Drizzle ORM services are imported above
 
 export default function QuizPage() {
-  const [selectedAnswers, setSelectedAnswers] = useState<SelectedAnswers>(loadSelectedAnswers());
+  const [selectedAnswers, setSelectedAnswers] = useState<SelectedAnswers>({});
   const [expandedQuestion, setExpandedQuestion] = useState<number | null>(null);
   const [hasStarted, setHasStarted] = useState<boolean>(false);
   const [selectedTopic, setSelectedTopic] = useState<string>('All');
+  const [completedQuestions, setCompletedQuestions] = useState<Set<number>>(new Set());
+  const [bookmarkedQuestions, setBookmarkedQuestions] = useState<BookmarkedQuestions>({});
+  const [quizData, setQuizData] = useState<QuizItem[]>([]);
+  const [topics, setTopics] = useState<string[]>(['All', 'Bookmarked']);
+  const [loading, setLoading] = useState(true);
 
-  // Load completed questions from storage
-  const loadCompletedQuestions = (): Set<number> => {
-    const storage = getGeneralQuestionsStorage();
-    const storedProgress = storage.getString('completedQuestions');
-    const storedTopicProgress = storage.getString(`completedQuestions_${selectedTopic}`);
+  // Load initial data
+  useEffect(() => {
+    const loadInitialData = async () => {
+      try {
+        setLoading(true);
+        
+        // Load quiz data from database
+        const questions = await QuizService.getQuizQuestions();
+        const formattedQuestions: QuizItem[] = questions.map(q => ({
+          id: q.id,
+          topic: '', // We'll get this from topics table
+          title: q.title,
+          question: q.question,
+          options: JSON.parse(q.options),
+          correctAnswer: q.correctAnswer,
+          feedback: q.feedback
+        }));
+        
+        // Load topics and map them to questions
+        const topicData = await QuizService.getTopics();
+        const topicMap = new Map(topicData.map(t => [t.id, t.name]));
+        
+        // Update questions with topic names
+        formattedQuestions.forEach(q => {
+          const question = questions.find(qu => qu.id === q.id);
+          if (question) {
+            q.topic = topicMap.get(question.topicId) || '';
+          }
+        });
+        
+        setQuizData(formattedQuestions);
+        
+        // Load topics
+        setTopics(['All', 'Bookmarked', ...topicData.map(t => t.name)]);
+        
+        // Load selected answers
+        const answers = await QuizService.getSelectedAnswers();
+        setSelectedAnswers(answers);
+        
+        // Load completed questions
+        const completed = await QuizService.getCompletedQuestions();
+        setCompletedQuestions(new Set(completed));
+        
+        // Load bookmarks
+        const bookmarkIds = await BookmarkService.getBookmarkedQuestionIds();
+        const bookmarks: BookmarkedQuestions = {};
+        bookmarkIds.forEach(id => {
+          bookmarks[id] = true;
+        });
+        setBookmarkedQuestions(bookmarks);
+        
+        // Check if user has started
+        if (completed.length > 0) {
+          setHasStarted(true);
+        }
+        
+      } catch (error) {
+        console.error('Failed to load quiz data:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+    
+    loadInitialData();
+  }, []);
 
-    if (selectedTopic === 'All' || selectedTopic === 'Bookmarked') {
-      return storedProgress ? new Set(JSON.parse(storedProgress)) : new Set();
+  // Update data when topic changes
+  useEffect(() => {
+    const loadTopicData = async () => {
+      try {
+        let completed: number[] = [];
+        
+        if (selectedTopic === 'All') {
+          completed = await QuizService.getCompletedQuestions();
+        } else if (selectedTopic === 'Bookmarked') {
+          // For bookmarked, we need to get completed questions that are also bookmarked
+          const allCompleted = await QuizService.getCompletedQuestions();
+          const bookmarkedIds = await BookmarkService.getBookmarkedQuestionIds();
+          completed = allCompleted.filter(id => bookmarkedIds.includes(id));
+        } else {
+          // Get topic ID and filter completed questions for this topic
+          const topicData = await QuizService.getTopics();
+          const topic = topicData.find(t => t.name === selectedTopic);
+          if (topic) {
+            completed = await QuizService.getCompletedQuestions(topic.id);
+          }
+        }
+        
+        setCompletedQuestions(new Set(completed));
+        
+        // Check if user has started for this topic
+        setHasStarted(completed.length > 0);
+        
+      } catch (error) {
+        console.error('Failed to load topic data:', error);
+      }
+    };
+    
+    if (!loading) {
+      loadTopicData();
     }
-    return storedTopicProgress ? new Set(JSON.parse(storedTopicProgress)) : new Set();
-  };
-
-  const [completedQuestions, setCompletedQuestions] = useState<Set<number>>(loadCompletedQuestions());
-
-  // Update storage when completed questions change
-  const updateCompletedQuestionsStorage = (newCompletedQuestions: Set<number>) => {
-    const storage = getGeneralQuestionsStorage();
-    // Store overall progress
-    storage.set('completedQuestions', JSON.stringify([...newCompletedQuestions]));
-
-    // Store topic-specific progress
-    if (selectedTopic !== 'All' && selectedTopic !== 'Bookmarked') {
-      storage.set(
-        `completedQuestions_${selectedTopic}`,
-        JSON.stringify([...newCompletedQuestions])
-      );
-    }
-  };
-
-  // Load bookmarked questions from the dedicated storage
-  const loadBookmarkedQuestions = (): BookmarkedQuestions => {
-    const storage = getBookmarkedQuestionsStorage();
-    const storedBookmarks = storage.getString('bookmarkedQuestions');
-    return storedBookmarks ? JSON.parse(storedBookmarks) : {};
-  };
-
-  const [bookmarkedQuestions, setBookmarkedQuestions] = useState<BookmarkedQuestions>(loadBookmarkedQuestions());
-
-  const topics: string[] = ['All', 'Bookmarked', ...new Set(quizData.map(quiz => quiz.topic))];
+  }, [selectedTopic, loading]);
 
   const filteredQuizData: QuizItem[] = React.useMemo(() => {
     if (selectedTopic === 'All') {
@@ -119,7 +162,7 @@ export default function QuizPage() {
       return quizData.filter(quiz => bookmarkedQuestions[quiz.id]);
     }
     return quizData.filter(quiz => quiz.topic === selectedTopic);
-  }, [selectedTopic, bookmarkedQuestions]);
+  }, [selectedTopic, bookmarkedQuestions, quizData]);
 
   const calculateProgress = () => {
     if (!hasStarted && calculateCompletion() === 0) return 0;
@@ -147,26 +190,35 @@ export default function QuizPage() {
     return relevantQuestions.filter(quiz => completedQuestions.has(quiz.id)).length;
   };
 
-  const handleAnswer = (questionId: number, selectedOption: string): void => {
-    if (!completedQuestions.has(questionId)) {
-      setHasStarted(true);
-      const newSelectedAnswers = {
-        ...selectedAnswers,
-        [questionId]: selectedOption
-      };
-      setSelectedAnswers(newSelectedAnswers);
-      getGeneralQuestionsStorage().set('selectedAnswers', JSON.stringify(newSelectedAnswers));
+  const handleAnswer = async (questionId: number, selectedOption: string): Promise<void> => {
+    try {
+      if (!completedQuestions.has(questionId)) {
+        setHasStarted(true);
+        
+        // Save to database
+        await QuizService.saveQuizAnswer(questionId, selectedOption);
+        
+        // Update local state
+        const newSelectedAnswers = {
+          ...selectedAnswers,
+          [questionId]: selectedOption
+        };
+        setSelectedAnswers(newSelectedAnswers);
 
-      const newCompletedQuestions = new Set([...completedQuestions, questionId]);
-      setCompletedQuestions(newCompletedQuestions);
-      updateCompletedQuestionsStorage(newCompletedQuestions);
-    } else if (calculateCompletion() === 100) {
-      const newSelectedAnswers = {
-        ...selectedAnswers,
-        [questionId]: selectedOption
-      };
-      setSelectedAnswers(newSelectedAnswers);
-      getGeneralQuestionsStorage().set('selectedAnswers', JSON.stringify(newSelectedAnswers));
+        const newCompletedQuestions = new Set([...completedQuestions, questionId]);
+        setCompletedQuestions(newCompletedQuestions);
+      } else if (calculateCompletion() === 100) {
+        // Allow editing answers when all questions are completed
+        await QuizService.saveQuizAnswer(questionId, selectedOption);
+        
+        const newSelectedAnswers = {
+          ...selectedAnswers,
+          [questionId]: selectedOption
+        };
+        setSelectedAnswers(newSelectedAnswers);
+      }
+    } catch (error) {
+      console.error('Failed to save quiz answer:', error);
     }
   };
 
@@ -174,27 +226,30 @@ export default function QuizPage() {
     setExpandedQuestion(expandedQuestion === questionId ? null : questionId);
   };
 
-  const toggleBookmark = (questionId: number): void => {
-    const updatedBookmarks = {
-      ...bookmarkedQuestions,
-      [questionId]: !bookmarkedQuestions[questionId]
-    };
-    setBookmarkedQuestions(updatedBookmarks);
-    // Save updated bookmarks to the dedicated MMKV storage
-    getBookmarkedQuestionsStorage().set('bookmarkedQuestions', JSON.stringify(updatedBookmarks));
+  const toggleBookmark = async (questionId: number): Promise<void> => {
+    try {
+      // Toggle in database
+      const isNowBookmarked = await BookmarkService.toggleBookmark(questionId);
+      
+      // Update local state
+      const updatedBookmarks = {
+        ...bookmarkedQuestions,
+        [questionId]: isNowBookmarked
+      };
+      setBookmarkedQuestions(updatedBookmarks);
+    } catch (error) {
+      console.error('Failed to toggle bookmark:', error);
+    }
   };
 
-  // Update completedQuestions when topic changes
-  React.useEffect(() => {
-    setCompletedQuestions(loadCompletedQuestions());
-  }, [selectedTopic]);
-
-  // Add effect to update hasStarted based on completion
-  React.useEffect(() => {
-    if (calculateCompletion() > 0) {
-      setHasStarted(true);
-    }
-  }, [selectedTopic]);
+  // Loading state
+  if (loading) {
+    return (
+      <View style={[styles.container, { justifyContent: 'center', alignItems: 'center' }]}>
+        <Text>Loading quiz data...</Text>
+      </View>
+    );
+  }
 
   return (
     <ScrollView style={styles.container}>
