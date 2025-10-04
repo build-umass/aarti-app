@@ -1,20 +1,84 @@
 import React from 'react';
-import { drizzle } from 'drizzle-orm/expo-sqlite';
-import { openDatabaseSync } from 'expo-sqlite';
-import * as schema from '../db/schema';
+import { openDatabaseAsync, type SQLiteDatabase } from 'expo-sqlite';
 import quizDataFile from '../assets/quizData.json';
 
 // Database instance
-let db: ReturnType<typeof drizzle> | null = null;
+let db: SQLiteDatabase | null = null;
 
-// Initialize database
-export const initializeDatabase = () => {
+// Initialize database - using async API for all platforms
+export const initializeDatabase = async () => {
   if (!db) {
-    const expoDb = openDatabaseSync('aarti_app.db');
-    db = drizzle(expoDb, { schema });
+    // Use async API for all platforms (web and native)
+    db = await openDatabaseAsync('aarti_app.db');
+    
+    // Create tables if they don't exist
+    await createTables();
   }
   return db;
 };
+
+// Create database tables
+async function createTables() {
+  if (!db) throw new Error('Database not initialized');
+  
+  await db.execAsync(`
+    -- User settings table
+    CREATE TABLE IF NOT EXISTS user_settings (
+      id INTEGER PRIMARY KEY DEFAULT 1,
+      username TEXT NOT NULL DEFAULT 'Example User',
+      created_at TEXT DEFAULT CURRENT_TIMESTAMP,
+      updated_at TEXT DEFAULT CURRENT_TIMESTAMP,
+      CHECK (id = 1)
+    );
+    
+    -- Topics table
+    CREATE TABLE IF NOT EXISTS topics (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      name TEXT NOT NULL UNIQUE,
+      created_at TEXT DEFAULT CURRENT_TIMESTAMP
+    );
+    
+    -- Quiz questions table
+    CREATE TABLE IF NOT EXISTS quiz_questions (
+      id INTEGER PRIMARY KEY,
+      topic_id INTEGER NOT NULL,
+      title TEXT NOT NULL,
+      question TEXT NOT NULL,
+      options TEXT NOT NULL,
+      correct_answer TEXT NOT NULL,
+      feedback TEXT NOT NULL,
+      created_at TEXT DEFAULT CURRENT_TIMESTAMP,
+      FOREIGN KEY (topic_id) REFERENCES topics(id)
+    );
+    
+    -- Quiz progress table
+    CREATE TABLE IF NOT EXISTS quiz_progress (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      question_id INTEGER NOT NULL UNIQUE,
+      selected_answer TEXT,
+      is_completed INTEGER DEFAULT 0,
+      completed_at TEXT,
+      created_at TEXT DEFAULT CURRENT_TIMESTAMP,
+      updated_at TEXT DEFAULT CURRENT_TIMESTAMP,
+      FOREIGN KEY (question_id) REFERENCES quiz_questions(id)
+    );
+    
+    -- Bookmarks table
+    CREATE TABLE IF NOT EXISTS bookmarks (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      question_id INTEGER NOT NULL UNIQUE,
+      created_at TEXT DEFAULT CURRENT_TIMESTAMP,
+      FOREIGN KEY (question_id) REFERENCES quiz_questions(id)
+    );
+    
+    -- Create indexes for better performance
+    CREATE INDEX IF NOT EXISTS idx_quiz_questions_topic_id ON quiz_questions(topic_id);
+    CREATE INDEX IF NOT EXISTS idx_quiz_progress_question_id ON quiz_progress(question_id);
+    CREATE INDEX IF NOT EXISTS idx_bookmarks_question_id ON bookmarks(question_id);
+  `);
+  
+  console.log('Database tables created successfully');
+}
 
 // Simple migration status hook that doesn't violate Rules of Hooks
 export const useDatabaseMigrations = () => {
@@ -50,61 +114,52 @@ export const seedInitialData = async () => {
   
   try {
     // Check if data already exists
-    const existingUser = await database.select().from(schema.userSettings).limit(1);
-    if (existingUser.length > 0) {
+    const existingUser = await database.getFirstAsync('SELECT * FROM user_settings LIMIT 1');
+    if (existingUser) {
       return; // Data already seeded
     }
 
     // Insert default user
-    await database.insert(schema.userSettings).values({
-      id: 1,
-      username: 'Example User',
-    });
+    await database.runAsync(
+      'INSERT OR IGNORE INTO user_settings (id, username) VALUES (?, ?)',
+      [1, 'Example User']
+    );
 
     // Insert topics
     const topics = [...new Set(quizDataFile.quizzes.map((quiz: any) => quiz.topic))];
-    const topicInserts = topics.map(topic => ({ name: topic }));
-    await database.insert(schema.topics).values(topicInserts);
+    for (const topic of topics) {
+      await database.runAsync(
+        'INSERT OR IGNORE INTO topics (name) VALUES (?)',
+        [topic]
+      );
+    }
 
     // Get topic IDs
-    const topicRecords = await database.select().from(schema.topics);
+    const topicRecords = await database.getAllAsync<{ id: number; name: string }>('SELECT id, name FROM topics');
     const topicMap = new Map(topicRecords.map(t => [t.name, t.id]));
 
     // Insert quiz questions
-    const questionInserts: Array<{
-      id: number;
-      topicId: number;
-      title: string;
-      question: string;
-      options: string;
-      correctAnswer: string;
-      feedback: string;
-    }> = [];
-
     for (const quiz of quizDataFile.quizzes) {
       const topicId = topicMap.get(quiz.topic);
       if (topicId) {
-        questionInserts.push({
-          id: quiz.id,
-          topicId,
-          title: quiz.title,
-          question: quiz.question,
-          options: JSON.stringify(quiz.options),
-          correctAnswer: quiz.correctAnswer,
-          feedback: quiz.feedback,
-        });
+        await database.runAsync(
+          'INSERT OR IGNORE INTO quiz_questions (id, topic_id, title, question, options, correct_answer, feedback) VALUES (?, ?, ?, ?, ?, ?, ?)',
+          [
+            quiz.id,
+            topicId,
+            quiz.title,
+            quiz.question,
+            JSON.stringify(quiz.options),
+            quiz.correctAnswer,
+            quiz.feedback
+          ]
+        );
       }
-    }
-
-    if (questionInserts.length > 0) {
-      await database.insert(schema.quizQuestions).values(questionInserts);
     }
     
     console.log('Database seeded successfully');
   } catch (error) {
     console.error('Error seeding database:', error);
+    throw error;
   }
 };
-
-// Export schema for use in other files
-export { schema };

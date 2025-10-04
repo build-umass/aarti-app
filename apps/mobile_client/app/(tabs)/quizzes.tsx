@@ -38,7 +38,7 @@ interface ViewStyleWithBorder extends ViewStyle {
   borderLeftColor?: string;
 }
 
-// Drizzle ORM services are imported above
+// SQLite services using raw SQL are imported above
 
 export default function QuizPage() {
   const [selectedAnswers, setSelectedAnswers] = useState<SelectedAnswers>({});
@@ -65,7 +65,7 @@ export default function QuizPage() {
           title: q.title,
           question: q.question,
           options: JSON.parse(q.options),
-          correctAnswer: q.correctAnswer,
+          correctAnswer: q.correct_answer,
           feedback: q.feedback
         }));
         
@@ -77,7 +77,7 @@ export default function QuizPage() {
         formattedQuestions.forEach(q => {
           const question = questions.find(qu => qu.id === q.id);
           if (question) {
-            q.topic = topicMap.get(question.topicId) || '';
+            q.topic = topicMap.get(question.topic_id) || '';
           }
         });
         

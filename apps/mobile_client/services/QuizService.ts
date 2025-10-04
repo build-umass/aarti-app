@@ -1,6 +1,31 @@
-import { eq, and, sql } from 'drizzle-orm';
-import { getDatabase, schema } from '../lib/database';
-import type { QuizQuestion, QuizProgress, Topic } from '../db/schema';
+import { getDatabase } from '../lib/database';
+
+export interface Topic {
+  id: number;
+  name: string;
+  created_at: string | null;
+}
+
+export interface QuizQuestion {
+  id: number;
+  topic_id: number;
+  title: string;
+  question: string;
+  options: string; // JSON string
+  correct_answer: string;
+  feedback: string;
+  created_at: string | null;
+}
+
+export interface QuizProgress {
+  id: number;
+  question_id: number;
+  selected_answer: string | null;
+  is_completed: number; // SQLite boolean (0 or 1)
+  completed_at: string | null;
+  created_at: string | null;
+  updated_at: string | null;
+}
 
 export class QuizService {
   /**
@@ -8,7 +33,7 @@ export class QuizService {
    */
   static async getTopics(): Promise<Topic[]> {
     const db = getDatabase();
-    return await db.select().from(schema.topics).orderBy(schema.topics.name);
+    return await db.getAllAsync<Topic>('SELECT * FROM topics ORDER BY name');
   }
 
   /**
@@ -18,13 +43,13 @@ export class QuizService {
     const db = getDatabase();
     
     if (topicId) {
-      return await db.select()
-        .from(schema.quizQuestions)
-        .where(eq(schema.quizQuestions.topicId, topicId))
-        .orderBy(schema.quizQuestions.id);
+      return await db.getAllAsync<QuizQuestion>(
+        'SELECT * FROM quiz_questions WHERE topic_id = ? ORDER BY id',
+        [topicId]
+      );
     }
     
-    return await db.select().from(schema.quizQuestions).orderBy(schema.quizQuestions.id);
+    return await db.getAllAsync<QuizQuestion>('SELECT * FROM quiz_questions ORDER BY id');
   }
 
   /**
@@ -32,12 +57,10 @@ export class QuizService {
    */
   static async getQuizQuestion(questionId: number): Promise<QuizQuestion | null> {
     const db = getDatabase();
-    const questions = await db.select()
-      .from(schema.quizQuestions)
-      .where(eq(schema.quizQuestions.id, questionId))
-      .limit(1);
-    
-    return questions[0] || null;
+    return await db.getFirstAsync<QuizQuestion>(
+      'SELECT * FROM quiz_questions WHERE id = ?',
+      [questionId]
+    );
   }
 
   /**
@@ -45,12 +68,10 @@ export class QuizService {
    */
   static async getQuizProgress(questionId: number): Promise<QuizProgress | null> {
     const db = getDatabase();
-    const progress = await db.select()
-      .from(schema.quizProgress)
-      .where(eq(schema.quizProgress.questionId, questionId))
-      .limit(1);
-    
-    return progress[0] || null;
+    return await db.getFirstAsync<QuizProgress>(
+      'SELECT * FROM quiz_progress WHERE question_id = ?',
+      [questionId]
+    );
   }
 
   /**
@@ -58,53 +79,26 @@ export class QuizService {
    */
   static async getAllQuizProgress(): Promise<QuizProgress[]> {
     const db = getDatabase();
-    return await db.select().from(schema.quizProgress).orderBy(schema.quizProgress.questionId);
+    return await db.getAllAsync<QuizProgress>('SELECT * FROM quiz_progress');
   }
 
   /**
-   * Save quiz answer and mark as completed
+   * Save quiz answer
    */
   static async saveQuizAnswer(questionId: number, selectedAnswer: string): Promise<void> {
     const db = getDatabase();
+    const now = new Date().toISOString();
     
-    await db.insert(schema.quizProgress)
-      .values({
-        questionId,
-        selectedAnswer,
-        isCompleted: true,
-        completedAt: new Date().toISOString(),
-      })
-      .onConflictDoUpdate({
-        target: schema.quizProgress.questionId,
-        set: {
-          selectedAnswer,
-          isCompleted: true,
-          completedAt: new Date().toISOString(),
-          updatedAt: new Date().toISOString(),
-        },
-      });
-  }
-
-  /**
-   * Get selected answers for all questions
-   */
-  static async getSelectedAnswers(): Promise<Record<number, string>> {
-    const db = getDatabase();
-    const progress = await db.select({
-      questionId: schema.quizProgress.questionId,
-      selectedAnswer: schema.quizProgress.selectedAnswer,
-    })
-    .from(schema.quizProgress)
-    .where(sql`${schema.quizProgress.selectedAnswer} IS NOT NULL`);
-    
-    const answers: Record<number, string> = {};
-    progress.forEach(p => {
-      if (p.selectedAnswer) {
-        answers[p.questionId] = p.selectedAnswer;
-      }
-    });
-    
-    return answers;
+    await db.runAsync(
+      `INSERT INTO quiz_progress (question_id, selected_answer, is_completed, completed_at, updated_at)
+       VALUES (?, ?, 1, ?, ?)
+       ON CONFLICT(question_id) DO UPDATE SET
+         selected_answer = excluded.selected_answer,
+         is_completed = 1,
+         completed_at = excluded.completed_at,
+         updated_at = excluded.updated_at`,
+      [questionId, selectedAnswer, now, now]
+    );
   }
 
   /**
@@ -113,55 +107,51 @@ export class QuizService {
   static async getCompletedQuestions(topicId?: number): Promise<number[]> {
     const db = getDatabase();
     
-    let query = db.select({ questionId: schema.quizProgress.questionId })
-      .from(schema.quizProgress)
-      .where(eq(schema.quizProgress.isCompleted, true));
-    
     if (topicId) {
-      query = query.innerJoin(
-        schema.quizQuestions,
-        eq(schema.quizProgress.questionId, schema.quizQuestions.id)
-      ).where(
-        and(
-          eq(schema.quizProgress.isCompleted, true),
-          eq(schema.quizQuestions.topicId, topicId)
-        )
+      const results = await db.getAllAsync<{ question_id: number }>(
+        `SELECT qp.question_id 
+         FROM quiz_progress qp
+         JOIN quiz_questions qq ON qp.question_id = qq.id
+         WHERE qp.is_completed = 1 AND qq.topic_id = ?`,
+        [topicId]
       );
+      return results.map(r => r.question_id);
     }
     
-    const results = await query.orderBy(schema.quizProgress.questionId);
-    return results.map(r => r.questionId);
+    const results = await db.getAllAsync<{ question_id: number }>(
+      'SELECT question_id FROM quiz_progress WHERE is_completed = 1'
+    );
+    return results.map(r => r.question_id);
   }
 
   /**
-   * Get completion statistics
+   * Get selected answers
    */
-  static async getCompletionStats(topicId?: number): Promise<{
-    total: number;
-    completed: number;
-    percentage: number;
-  }> {
+  static async getSelectedAnswers(): Promise<Record<number, string>> {
+    const db = getDatabase();
+    const results = await db.getAllAsync<{ question_id: number; selected_answer: string }>(
+      'SELECT question_id, selected_answer FROM quiz_progress WHERE selected_answer IS NOT NULL'
+    );
+    
+    const answers: Record<number, string> = {};
+    results.forEach(row => {
+      answers[row.question_id] = row.selected_answer;
+    });
+    return answers;
+  }
+
+  /**
+   * Get completion stats
+   */
+  static async getCompletionStats(): Promise<{ total: number; completed: number; percentage: number }> {
     const db = getDatabase();
     
-    let totalQuery = db.select({ count: sql<number>`count(*)` }).from(schema.quizQuestions);
-    let completedQuery = db.select({ count: sql<number>`count(*)` })
-      .from(schema.quizProgress)
-      .where(eq(schema.quizProgress.isCompleted, true));
-    
-    if (topicId) {
-      totalQuery = totalQuery.where(eq(schema.quizQuestions.topicId, topicId));
-      completedQuery = completedQuery
-        .innerJoin(schema.quizQuestions, eq(schema.quizProgress.questionId, schema.quizQuestions.id))
-        .where(
-          and(
-            eq(schema.quizProgress.isCompleted, true),
-            eq(schema.quizQuestions.topicId, topicId)
-          )
-        );
-    }
-    
-    const [totalResult] = await totalQuery;
-    const [completedResult] = await completedQuery;
+    const totalResult = await db.getFirstAsync<{ count: number }>(
+      'SELECT COUNT(*) as count FROM quiz_questions'
+    );
+    const completedResult = await db.getFirstAsync<{ count: number }>(
+      'SELECT COUNT(*) as count FROM quiz_progress WHERE is_completed = 1'
+    );
     
     const total = totalResult?.count || 0;
     const completed = completedResult?.count || 0;
@@ -171,40 +161,43 @@ export class QuizService {
   }
 
   /**
-   * Get correct answers count for a topic
+   * Reset quiz progress
    */
-  static async getCorrectAnswersCount(topicId?: number): Promise<number> {
+  static async resetProgress(): Promise<void> {
     const db = getDatabase();
-    
-    let query = db.select({ count: sql<number>`count(*)` })
-      .from(schema.quizProgress)
-      .innerJoin(schema.quizQuestions, eq(schema.quizProgress.questionId, schema.quizQuestions.id))
-      .where(
-        and(
-          eq(schema.quizProgress.isCompleted, true),
-          sql`${schema.quizProgress.selectedAnswer} = ${schema.quizQuestions.correctAnswer}`
-        )
-      );
-    
-    if (topicId) {
-      query = query.where(
-        and(
-          eq(schema.quizProgress.isCompleted, true),
-          eq(schema.quizQuestions.topicId, topicId),
-          sql`${schema.quizProgress.selectedAnswer} = ${schema.quizQuestions.correctAnswer}`
-        )
-      );
-    }
-    
-    const [result] = await query;
-    return result?.count || 0;
+    await db.runAsync('DELETE FROM quiz_progress');
   }
 
   /**
-   * Clear all progress (for testing/reset)
+   * Reset progress for a specific question
    */
-  static async clearAllProgress(): Promise<void> {
+  static async resetQuestionProgress(questionId: number): Promise<void> {
     const db = getDatabase();
-    await db.delete(schema.quizProgress);
+    await db.runAsync('DELETE FROM quiz_progress WHERE question_id = ?', [questionId]);
+  }
+
+  /**
+   * Get quiz progress by topic
+   */
+  static async getProgressByTopic(topicId: number): Promise<{ total: number; completed: number }> {
+    const db = getDatabase();
+    
+    const totalResult = await db.getFirstAsync<{ count: number }>(
+      'SELECT COUNT(*) as count FROM quiz_questions WHERE topic_id = ?',
+      [topicId]
+    );
+    
+    const completedResult = await db.getFirstAsync<{ count: number }>(
+      `SELECT COUNT(*) as count 
+       FROM quiz_progress qp
+       JOIN quiz_questions qq ON qp.question_id = qq.id
+       WHERE qp.is_completed = 1 AND qq.topic_id = ?`,
+      [topicId]
+    );
+    
+    return {
+      total: totalResult?.count || 0,
+      completed: completedResult?.count || 0,
+    };
   }
 }

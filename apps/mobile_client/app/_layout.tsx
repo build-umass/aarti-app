@@ -24,15 +24,18 @@ export default function RootLayout() {
   // Always call the hook at the top level - this is required by Rules of Hooks
   const { success, error } = useDatabaseMigrations();
 
-  // Initialize database first
+  // Initialize database first - now async to support web
   useEffect(() => {
     if (loaded && !dbInitialized) {
-      try {
-        initializeDatabase();
-        setDbInitialized(true);
-      } catch (error) {
-        console.error('Failed to initialize database:', error);
-      }
+      const initDb = async () => {
+        try {
+          await initializeDatabase();
+          setDbInitialized(true);
+        } catch (error) {
+          console.error('Failed to initialize database:', error);
+        }
+      };
+      initDb();
     }
   }, [loaded, dbInitialized]);
 

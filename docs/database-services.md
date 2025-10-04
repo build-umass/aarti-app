@@ -1,6 +1,6 @@
 # Database & Service Architecture
 
-This document covers the database schema, service layer architecture, and best practices for the Aarti mobile application using Drizzle ORM and SQLite.
+This document covers the database schema, service layer architecture, and best practices for the Aarti mobile application using SQLite with raw SQL queries via Expo SQLite's async API.
 
 ## Table of Contents
 
@@ -32,64 +32,68 @@ The Aarti database schema supports a quiz-based learning application with the fo
 ### Table Definitions
 
 #### 1. user_settings
-```typescript
-export const userSettings = sqliteTable('user_settings', {
-  id: integer('id').primaryKey({ autoIncrement: false }).default(1),
-  username: text('username').notNull().default('Example User'),
-  createdAt: text('created_at').default(sql`CURRENT_TIMESTAMP`).notNull(),
-  updatedAt: text('updated_at').default(sql`CURRENT_TIMESTAMP`).notNull(),
-});
+```sql
+CREATE TABLE user_settings (
+  id INTEGER PRIMARY KEY DEFAULT 1,
+  username TEXT NOT NULL DEFAULT 'Example User',
+  created_at TEXT DEFAULT CURRENT_TIMESTAMP,
+  updated_at TEXT DEFAULT CURRENT_TIMESTAMP,
+  CHECK (id = 1)  -- Ensures single user
+);
 ```
 
 #### 2. topics
-```typescript
-export const topics = sqliteTable('topics', {
-  id: integer('id').primaryKey({ autoIncrement: true }),
-  name: text('name').notNull().unique(),
-  createdAt: text('created_at').default(sql`CURRENT_TIMESTAMP`).notNull(),
-});
+```sql
+CREATE TABLE topics (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  name TEXT NOT NULL UNIQUE,
+  created_at TEXT DEFAULT CURRENT_TIMESTAMP
+);
 ```
 
 #### 3. quiz_questions
-```typescript
-export const quizQuestions = sqliteTable('quiz_questions', {
-  id: integer('id').primaryKey({ autoIncrement: false }),
-  topicId: integer('topic_id').notNull().references(() => topics.id),
-  title: text('title').notNull(),
-  question: text('question').notNull(),
-  options: text('options').notNull(), // JSON string
-  correctAnswer: text('correct_answer').notNull(),
-  feedback: text('feedback').notNull(),
-  createdAt: text('created_at').default(sql`CURRENT_TIMESTAMP`).notNull(),
-}, (table) => ({
-  topicIdx: index('idx_quiz_questions_topic_id').on(table.topicId),
-}));
+```sql
+CREATE TABLE quiz_questions (
+  id INTEGER PRIMARY KEY,
+  topic_id INTEGER NOT NULL,
+  title TEXT NOT NULL,
+  question TEXT NOT NULL,
+  options TEXT NOT NULL,  -- JSON array stored as text
+  correct_answer TEXT NOT NULL,
+  feedback TEXT NOT NULL,
+  created_at TEXT DEFAULT CURRENT_TIMESTAMP,
+  FOREIGN KEY (topic_id) REFERENCES topics(id)
+);
+
+CREATE INDEX idx_quiz_questions_topic_id ON quiz_questions(topic_id);
 ```
 
 #### 4. quiz_progress
-```typescript
-export const quizProgress = sqliteTable('quiz_progress', {
-  id: integer('id').primaryKey({ autoIncrement: true }),
-  questionId: integer('question_id').notNull().references(() => quizQuestions.id),
-  selectedAnswer: text('selected_answer'),
-  isCompleted: integer('is_completed', { mode: 'boolean' }).default(false).notNull(),
-  completedAt: text('completed_at'),
-  createdAt: text('created_at').default(sql`CURRENT_TIMESTAMP`).notNull(),
-  updatedAt: text('updated_at').default(sql`CURRENT_TIMESTAMP`).notNull(),
-}, (table) => ({
-  questionIdUnique: uniqueIndex('idx_quiz_progress_question_id_unique').on(table.questionId),
-}));
+```sql
+CREATE TABLE quiz_progress (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  question_id INTEGER NOT NULL UNIQUE,
+  selected_answer TEXT,
+  is_completed INTEGER DEFAULT 0,  -- Boolean (0/1)
+  completed_at TEXT,
+  created_at TEXT DEFAULT CURRENT_TIMESTAMP,
+  updated_at TEXT DEFAULT CURRENT_TIMESTAMP,
+  FOREIGN KEY (question_id) REFERENCES quiz_questions(id)
+);
+
+CREATE INDEX idx_quiz_progress_question_id ON quiz_progress(question_id);
 ```
 
 #### 5. bookmarks
-```typescript
-export const bookmarks = sqliteTable('bookmarks', {
-  id: integer('id').primaryKey({ autoIncrement: true }),
-  questionId: integer('question_id').notNull().references(() => quizQuestions.id),
-  createdAt: text('created_at').default(sql`CURRENT_TIMESTAMP`).notNull(),
-}, (table) => ({
-  questionIdUnique: uniqueIndex('idx_bookmarks_question_id_unique').on(table.questionId),
-}));
+```sql
+CREATE TABLE bookmarks (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  question_id INTEGER NOT NULL UNIQUE,
+  created_at TEXT DEFAULT CURRENT_TIMESTAMP,
+  FOREIGN KEY (question_id) REFERENCES quiz_questions(id)
+);
+
+CREATE INDEX idx_bookmarks_question_id ON bookmarks(question_id);
 ```
 
 ### Relationships
@@ -115,7 +119,7 @@ The service layer provides a clean abstraction between the UI components and the
 
 - **Separation of Concerns**: Business logic separated from UI logic
 - **Reusability**: Services can be used across multiple components
-- **Type Safety**: Full TypeScript support with Drizzle ORM
+- **Type Safety**: Full TypeScript support with typed interfaces
 - **Error Handling**: Centralized error management
 - **Testing**: Easier unit testing of business logic
 
@@ -126,10 +130,10 @@ The service layer provides a clean abstraction between the UI components and the
 ```
 ┌─────────────────┐    ┌──────────────────┐    ┌─────────────────┐
 │   Components    │───▶│   Service Layer  │───▶│  Database Layer │
-│                 │    │                  │    │   (Drizzle ORM) │
+│                 │    │                  │    │   (Raw SQL)     │
 │ - QuizPage      │    │ - UserService    │    │                 │
 │ - ProfileScreen │    │ - QuizService    │    │ - SQLite DB     │
-│ - BookmarkList  │    │ - BookmarkService│    │ - Schema        │
+│ - BookmarkList  │    │ - BookmarkService│    │ - Expo SQLite   │
 └─────────────────┘    └──────────────────┘    └─────────────────┘
 ```
 
@@ -150,47 +154,55 @@ The service layer provides a clean abstraction between the UI components and the
 **Purpose**: Manages user settings and profile data.
 
 ```typescript
-import { getDatabase } from '@/lib/database';
-import { userSettings } from '@/db/schema';
-import { eq } from 'drizzle-orm';
+import { getDatabase } from '../lib/database';
 
 export interface UserSettings {
   id: number;
   username: string;
-  createdAt: string;
-  updatedAt: string;
+  created_at: string | null;
+  updated_at: string | null;
 }
 
-export const UserService = {
-  async getUserSettings(): Promise<UserSettings> {
+export class UserService {
+  static async getUserSettings(): Promise<UserSettings> {
     const db = getDatabase();
-    let user = await db.select().from(userSettings).where(eq(userSettings.id, 1)).get();
-
+    const user = await db.getFirstAsync<UserSettings>(
+      'SELECT * FROM user_settings WHERE id = 1'
+    );
+    
     if (!user) {
       // Fallback: create default user
-      await db.insert(userSettings).values({ id: 1, username: 'Example User' });
-      user = await db.select().from(userSettings).where(eq(userSettings.id, 1)).get();
+      await db.runAsync(
+        'INSERT OR IGNORE INTO user_settings (id, username) VALUES (?, ?)',
+        [1, 'Example User']
+      );
+      
+      const newUser = await db.getFirstAsync<UserSettings>(
+        'SELECT * FROM user_settings WHERE id = 1'
+      );
+      if (!newUser) throw new Error('Failed to create default user');
+      return newUser;
     }
-    return user!;
-  },
+    
+    return user;
+  }
 
-  async updateUsername(username: string): Promise<void> {
+  static async updateUsername(username: string): Promise<void> {
     const db = getDatabase();
-    await db.update(userSettings)
-      .set({ 
-        username, 
-        updatedAt: new Date().toISOString() 
-      })
-      .where(eq(userSettings.id, 1));
-  },
-};
+    await db.runAsync(
+      'UPDATE user_settings SET username = ?, updated_at = ? WHERE id = 1',
+      [username, new Date().toISOString()]
+    );
+  }
+}
 ```
 
 **Key Features**:
 - **Singleton User**: Manages a single user record with ID 1
 - **Fallback Creation**: Creates default user if none exists
-- **Timestamp Updates**: Automatically updates `updatedAt` field
+- **Timestamp Updates**: Automatically updates `updated_at` field
 - **Type Safety**: Full TypeScript interface definitions
+- **Async API**: Uses `getFirstAsync` and `runAsync` for web compatibility
 
 ### 2. QuizService
 
@@ -199,9 +211,7 @@ export const UserService = {
 **Purpose**: Handles all quiz-related operations including questions, progress, and statistics.
 
 ```typescript
-import { getDatabase } from '@/lib/database';
-import { quizQuestions, quizProgress, topics } from '@/db/schema';
-import { eq, count, sql } from 'drizzle-orm';
+import { getDatabase } from '../lib/database';
 
 export interface QuizQuestion {
   id: number;
@@ -220,92 +230,91 @@ export interface Topic {
   createdAt: string;
 }
 
-export const QuizService = {
-  async getQuizQuestions(): Promise<QuizQuestion[]> {
+export class QuizService {
+  static async getQuizQuestions(topicId?: number): Promise<QuizQuestion[]> {
     const db = getDatabase();
-    return db.select().from(quizQuestions).all();
-  },
-
-  async getTopics(): Promise<Topic[]> {
-    const db = getDatabase();
-    return db.select().from(topics).all();
-  },
-
-  async saveQuizAnswer(questionId: number, selectedAnswer: string): Promise<void> {
-    const db = getDatabase();
-    const question = await db.select()
-      .from(quizQuestions)
-      .where(eq(quizQuestions.id, questionId))
-      .get();
-
-    if (!question) {
-      console.warn(`Question with ID ${questionId} not found.`);
-      return;
-    }
-
-    await db.insert(quizProgress)
-      .values({
-        questionId,
-        selectedAnswer,
-        isCompleted: true,
-        completedAt: new Date().toISOString(),
-        updatedAt: new Date().toISOString(),
-      })
-      .onConflictDoUpdate({
-        target: quizProgress.questionId,
-        set: {
-          selectedAnswer,
-          isCompleted: true,
-          completedAt: new Date().toISOString(),
-          updatedAt: new Date().toISOString(),
-        },
-      });
-  },
-
-  async getSelectedAnswers(): Promise<Record<number, string>> {
-    const db = getDatabase();
-    const progress = await db.select().from(quizProgress).all();
-    return progress.reduce((acc, item) => {
-      if (item.selectedAnswer) {
-        acc[item.questionId] = item.selectedAnswer;
-      }
-      return acc;
-    }, {} as Record<number, string>);
-  },
-
-  async getCompletedQuestions(topicId?: number): Promise<number[]> {
-    const db = getDatabase();
-    let query = db.select({ id: quizProgress.questionId })
-      .from(quizProgress)
-      .where(eq(quizProgress.isCompleted, true));
-
+    
     if (topicId) {
-      query = query.innerJoin(quizQuestions, eq(quizProgress.questionId, quizQuestions.id))
-                   .where(eq(quizQuestions.topicId, topicId));
+      return await db.getAllAsync<QuizQuestion>(
+        'SELECT * FROM quiz_questions WHERE topic_id = ? ORDER BY id',
+        [topicId]
+      );
     }
     
-    const result = await query.all();
-    return result.map(item => item.id);
-  },
+    return await db.getAllAsync<QuizQuestion>('SELECT * FROM quiz_questions ORDER BY id');
+  }
 
-  async getCompletionStats(): Promise<{ total: number; completed: number; percentage: number }> {
+  static async getTopics(): Promise<Topic[]> {
     const db = getDatabase();
-    const totalQuestionsResult = await db.select({ count: count() })
-      .from(quizQuestions)
-      .get();
+    return await db.getAllAsync<Topic>('SELECT * FROM topics ORDER BY name');
+  }
+
+  static async saveQuizAnswer(questionId: number, selectedAnswer: string): Promise<void> {
+    const db = getDatabase();
+    const now = new Date().toISOString();
     
-    const completedQuestionsResult = await db.select({ count: count() })
-      .from(quizProgress)
-      .where(eq(quizProgress.isCompleted, true))
-      .get();
+    await db.runAsync(
+      `INSERT INTO quiz_progress (question_id, selected_answer, is_completed, completed_at, updated_at)
+       VALUES (?, ?, 1, ?, ?)
+       ON CONFLICT(question_id) DO UPDATE SET
+         selected_answer = excluded.selected_answer,
+         is_completed = 1,
+         completed_at = excluded.completed_at,
+         updated_at = excluded.updated_at`,
+      [questionId, selectedAnswer, now, now]
+    );
+  }
 
-    const total = totalQuestionsResult?.count || 0;
-    const completed = completedQuestionsResult?.count || 0;
+  static async getCompletionStats(): Promise<{ total: number; completed: number; percentage: number }> {
+    const db = getDatabase();
+    
+    const totalResult = await db.getFirstAsync<{ count: number }>(
+      'SELECT COUNT(*) as count FROM quiz_questions'
+    );
+    const completedResult = await db.getFirstAsync<{ count: number }>(
+      'SELECT COUNT(*) as count FROM quiz_progress WHERE is_completed = 1'
+    );
+    
+    const total = totalResult?.count || 0;
+    const completed = completedResult?.count || 0;
     const percentage = total > 0 ? Math.round((completed / total) * 100) : 0;
-
+    
     return { total, completed, percentage };
-  },
-};
+  }
+  
+  static async getSelectedAnswers(): Promise<Record<number, string>> {
+    const db = getDatabase();
+    const results = await db.getAllAsync<{ question_id: number; selected_answer: string }>(
+      'SELECT question_id, selected_answer FROM quiz_progress WHERE selected_answer IS NOT NULL'
+    );
+    
+    const answers: Record<number, string> = {};
+    results.forEach(row => {
+      answers[row.question_id] = row.selected_answer;
+    });
+    return answers;
+  }
+
+  static async getCompletedQuestions(topicId?: number): Promise<number[]> {
+    const db = getDatabase();
+    
+    if (topicId) {
+      const results = await db.getAllAsync<{ question_id: number }>(
+        `SELECT qp.question_id 
+         FROM quiz_progress qp
+         JOIN quiz_questions qq ON qp.question_id = qq.id
+         WHERE qp.is_completed = 1 AND qq.topic_id = ?`,
+        [topicId]
+      );
+      return results.map(r => r.question_id);
+    }
+    
+    const results = await db.getAllAsync<{ question_id: number }>(
+      'SELECT question_id FROM quiz_progress WHERE is_completed = 1'
+    );
+    return results.map(r => r.question_id);
+  }
+}
 ```
 
 **Key Features**:
@@ -322,43 +331,52 @@ export const QuizService = {
 **Purpose**: Manages user bookmarks for quiz questions.
 
 ```typescript
-import { getDatabase } from '@/lib/database';
-import { bookmarks } from '@/db/schema';
-import { eq } from 'drizzle-orm';
+import { getDatabase } from '../lib/database';
 
-export const BookmarkService = {
-  async getBookmarkedQuestionIds(): Promise<number[]> {
-    const db = getDatabase();
-    const result = await db.select({ id: bookmarks.questionId })
-      .from(bookmarks)
-      .all();
-    return result.map(item => item.id);
-  },
+export interface Bookmark {
+  id: number;
+  question_id: number;
+  created_at: string | null;
+}
 
-  async isBookmarked(questionId: number): Promise<boolean> {
+export class BookmarkService {
+  static async getBookmarkedQuestionIds(): Promise<number[]> {
     const db = getDatabase();
-    const bookmark = await db.select()
-      .from(bookmarks)
-      .where(eq(bookmarks.questionId, questionId))
-      .get();
-    return !!bookmark;
-  },
+    const results = await db.getAllAsync<{ question_id: number }>(
+      'SELECT question_id FROM bookmarks'
+    );
+    return results.map(r => r.question_id);
+  }
 
-  async toggleBookmark(questionId: number): Promise<boolean> {
+  static async isBookmarked(questionId: number): Promise<boolean> {
     const db = getDatabase();
+    const result = await db.getFirstAsync(
+      'SELECT id FROM bookmarks WHERE question_id = ?',
+      [questionId]
+    );
+    return result !== null;
+  }
+
+  static async toggleBookmark(questionId: number): Promise<boolean> {
     const isCurrentlyBookmarked = await this.isBookmarked(questionId);
-
+    
     if (isCurrentlyBookmarked) {
-      await db.delete(bookmarks)
-        .where(eq(bookmarks.questionId, questionId));
-      return false;
+      const db = getDatabase();
+      await db.runAsync(
+        'DELETE FROM bookmarks WHERE question_id = ?',
+        [questionId]
+      );
+      return false; // Now not bookmarked
     } else {
-      await db.insert(bookmarks)
-        .values({ questionId });
-      return true;
+      const db = getDatabase();
+      await db.runAsync(
+        'INSERT OR IGNORE INTO bookmarks (question_id) VALUES (?)',
+        [questionId]
+      );
+      return true; // Now bookmarked
     }
-  },
-};
+  }
+}
 ```
 
 **Key Features**:
@@ -375,34 +393,47 @@ All services follow a consistent pattern for database access:
 
 ```typescript
 // 1. Import dependencies
-import { getDatabase } from '@/lib/database';
-import { tableName } from '@/db/schema';
-import { eq, and, or } from 'drizzle-orm';
+import { getDatabase } from '../lib/database';
 
 // 2. Define TypeScript interfaces
 export interface ServiceData {
   id: number;
+  name: string;
   // ... other fields
 }
 
-// 3. Implement service methods
-export const ServiceName = {
-  async methodName(): Promise<ServiceData[]> {
+// 3. Implement service class with static methods
+export class ServiceName {
+  static async getAll(): Promise<ServiceData[]> {
     const db = getDatabase();
-    return await db.select().from(tableName).all();
-  },
+    return await db.getAllAsync<ServiceData>('SELECT * FROM table_name');
+  }
   
-  // ... other methods
-};
+  static async getById(id: number): Promise<ServiceData | null> {
+    const db = getDatabase();
+    return await db.getFirstAsync<ServiceData>(
+      'SELECT * FROM table_name WHERE id = ?',
+      [id]
+    );
+  }
+  
+  static async create(data: Omit<ServiceData, 'id'>): Promise<void> {
+    const db = getDatabase();
+    await db.runAsync(
+      'INSERT INTO table_name (name) VALUES (?)',
+      [data.name]
+    );
+  }
+}
 ```
 
 ### Query Building
 
-Services use Drizzle ORM's query builder for type-safe operations:
+Services use raw SQL with parameterized queries for type-safe operations:
 
 ```typescript
-// Simple queries
-const users = await db.select().from(usersTable).all();
+// Simple SELECT queries
+const users = await db.getAllAsync<User>('SELECT * FROM users');
 
 // Filtered queries
 const user = await db.select()
@@ -750,4 +781,4 @@ export const AnalyticsService = {
 
 ---
 
-*This documentation covers the database schema, service architecture, and React Hooks best practices for the Aarti mobile application using Drizzle ORM and SQLite*
+*This documentation covers the database schema, service architecture, and React Hooks best practices for the Aarti mobile application using SQLite with raw SQL queries via Expo SQLite's async API*

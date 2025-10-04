@@ -1,6 +1,11 @@
-import { eq } from 'drizzle-orm';
-import { getDatabase, schema } from '../lib/database';
-import type { UserSettings, NewUserSettings } from '../db/schema';
+import { getDatabase } from '../lib/database';
+
+export interface UserSettings {
+  id: number;
+  username: string;
+  created_at: string | null;
+  updated_at: string | null;
+}
 
 export class UserService {
   /**
@@ -8,20 +13,21 @@ export class UserService {
    */
   static async getUserSettings(): Promise<UserSettings> {
     const db = getDatabase();
-    const user = await db.select().from(schema.userSettings).where(eq(schema.userSettings.id, 1)).limit(1);
+    const user = await db.getFirstAsync<UserSettings>('SELECT * FROM user_settings WHERE id = 1');
     
-    if (user.length === 0) {
+    if (!user) {
       // Create default user if none exists
-      await db.insert(schema.userSettings).values({
-        id: 1,
-        username: 'Example User',
-      });
+      await db.runAsync(
+        'INSERT OR IGNORE INTO user_settings (id, username) VALUES (?, ?)',
+        [1, 'Example User']
+      );
       
-      const newUser = await db.select().from(schema.userSettings).where(eq(schema.userSettings.id, 1)).limit(1);
-      return newUser[0];
+      const newUser = await db.getFirstAsync<UserSettings>('SELECT * FROM user_settings WHERE id = 1');
+      if (!newUser) throw new Error('Failed to create default user');
+      return newUser;
     }
     
-    return user[0];
+    return user;
   }
 
   /**
@@ -29,12 +35,10 @@ export class UserService {
    */
   static async updateUsername(username: string): Promise<void> {
     const db = getDatabase();
-    await db.update(schema.userSettings)
-      .set({ 
-        username,
-        updatedAt: new Date().toISOString()
-      })
-      .where(eq(schema.userSettings.id, 1));
+    await db.runAsync(
+      'UPDATE user_settings SET username = ?, updated_at = ? WHERE id = 1',
+      [username, new Date().toISOString()]
+    );
   }
 
   /**
@@ -50,7 +54,7 @@ export class UserService {
    */
   static async userExists(): Promise<boolean> {
     const db = getDatabase();
-    const user = await db.select().from(schema.userSettings).where(eq(schema.userSettings.id, 1)).limit(1);
-    return user.length > 0;
+    const user = await db.getFirstAsync('SELECT id FROM user_settings WHERE id = 1');
+    return user !== null;
   }
 }

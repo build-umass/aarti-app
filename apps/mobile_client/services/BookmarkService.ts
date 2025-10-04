@@ -1,27 +1,18 @@
-import { eq, and, sql } from 'drizzle-orm';
-import { getDatabase, schema } from '../lib/database';
-import type { Bookmark } from '../db/schema';
+import { getDatabase } from '../lib/database';
+
+export interface Bookmark {
+  id: number;
+  question_id: number;
+  created_at: string | null;
+}
 
 export class BookmarkService {
   /**
    * Get all bookmarks
    */
-  static async getBookmarks(): Promise<Bookmark[]> {
+  static async getAllBookmarks(): Promise<Bookmark[]> {
     const db = getDatabase();
-    return await db.select().from(schema.bookmarks).orderBy(schema.bookmarks.createdAt);
-  }
-
-  /**
-   * Check if a question is bookmarked
-   */
-  static async isBookmarked(questionId: number): Promise<boolean> {
-    const db = getDatabase();
-    const bookmark = await db.select()
-      .from(schema.bookmarks)
-      .where(eq(schema.bookmarks.questionId, questionId))
-      .limit(1);
-    
-    return bookmark.length > 0;
+    return await db.getAllAsync<Bookmark>('SELECT * FROM bookmarks ORDER BY created_at DESC');
   }
 
   /**
@@ -29,81 +20,67 @@ export class BookmarkService {
    */
   static async getBookmarkedQuestionIds(): Promise<number[]> {
     const db = getDatabase();
-    const bookmarks = await db.select({ questionId: schema.bookmarks.questionId })
-      .from(schema.bookmarks);
-    
-    return bookmarks.map(b => b.questionId);
+    const results = await db.getAllAsync<{ question_id: number }>(
+      'SELECT question_id FROM bookmarks'
+    );
+    return results.map(r => r.question_id);
   }
 
   /**
-   * Toggle bookmark for a question
+   * Check if a question is bookmarked
+   */
+  static async isBookmarked(questionId: number): Promise<boolean> {
+    const db = getDatabase();
+    const result = await db.getFirstAsync(
+      'SELECT id FROM bookmarks WHERE question_id = ?',
+      [questionId]
+    );
+    return result !== null;
+  }
+
+  /**
+   * Add a bookmark
+   */
+  static async addBookmark(questionId: number): Promise<void> {
+    const db = getDatabase();
+    await db.runAsync(
+      'INSERT OR IGNORE INTO bookmarks (question_id) VALUES (?)',
+      [questionId]
+    );
+  }
+
+  /**
+   * Remove a bookmark
+   */
+  static async removeBookmark(questionId: number): Promise<void> {
+    const db = getDatabase();
+    await db.runAsync(
+      'DELETE FROM bookmarks WHERE question_id = ?',
+      [questionId]
+    );
+  }
+
+  /**
+   * Toggle bookmark (add if not exists, remove if exists)
    */
   static async toggleBookmark(questionId: number): Promise<boolean> {
-    const db = getDatabase();
+    const isCurrentlyBookmarked = await this.isBookmarked(questionId);
     
-    // Check if already bookmarked
-    const existing = await db.select()
-      .from(schema.bookmarks)
-      .where(eq(schema.bookmarks.questionId, questionId))
-      .limit(1);
-    
-    if (existing.length > 0) {
-      // Remove bookmark
-      await db.delete(schema.bookmarks).where(eq(schema.bookmarks.questionId, questionId));
-      return false;
+    if (isCurrentlyBookmarked) {
+      await this.removeBookmark(questionId);
+      return false; // Now not bookmarked
     } else {
-      // Add bookmark
-      await db.insert(schema.bookmarks).values({ questionId });
-      return true;
+      await this.addBookmark(questionId);
+      return true; // Now bookmarked
     }
   }
 
   /**
-   * Add bookmark for a question
-   */
-  static async addBookmark(questionId: number): Promise<void> {
-    const db = getDatabase();
-    await db.insert(schema.bookmarks).values({ questionId }).onConflictDoNothing();
-  }
-
-  /**
-   * Remove bookmark for a question
-   */
-  static async removeBookmark(questionId: number): Promise<void> {
-    const db = getDatabase();
-    await db.delete(schema.bookmarks).where(eq(schema.bookmarks.questionId, questionId));
-  }
-
-  /**
-   * Get bookmarks with question details
-   */
-  static async getBookmarksWithDetails(): Promise<Array<{
-    bookmarkId: number;
-    questionId: number;
-    title: string;
-    topic: string;
-    createdAt: string;
-  }>> {
-    const db = getDatabase();
-    return await db.select({
-      bookmarkId: schema.bookmarks.id,
-      questionId: schema.bookmarks.questionId,
-      title: schema.quizQuestions.title,
-      topic: schema.topics.name,
-      createdAt: schema.bookmarks.createdAt,
-    })
-    .from(schema.bookmarks)
-    .innerJoin(schema.quizQuestions, eq(schema.bookmarks.questionId, schema.quizQuestions.id))
-    .innerJoin(schema.topics, eq(schema.quizQuestions.topicId, schema.topics.id))
-    .orderBy(schema.bookmarks.createdAt);
-  }
-
-  /**
-   * Clear all bookmarks (for testing/reset)
+   * Clear all bookmarks
    */
   static async clearAllBookmarks(): Promise<void> {
     const db = getDatabase();
-    await db.delete(schema.bookmarks);
+    await db.runAsync('DELETE FROM bookmarks');
   }
 
   /**
@@ -111,7 +88,22 @@ export class BookmarkService {
    */
   static async getBookmarkCount(): Promise<number> {
     const db = getDatabase();
-    const [result] = await db.select({ count: sql<number>`count(*)` }).from(schema.bookmarks);
+    const result = await db.getFirstAsync<{ count: number }>(
+      'SELECT COUNT(*) as count FROM bookmarks'
+    );
     return result?.count || 0;
+  }
+
+  /**
+   * Get bookmarked questions with details
+   */
+  static async getBookmarkedQuestionsWithDetails(): Promise<any[]> {
+    const db = getDatabase();
+    return await db.getAllAsync(
+      `SELECT qq.*, b.created_at as bookmarked_at
+       FROM bookmarks b
+       JOIN quiz_questions qq ON b.question_id = qq.id
+       ORDER BY b.created_at DESC`
+    );
   }
 }
