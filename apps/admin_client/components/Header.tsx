@@ -81,7 +81,7 @@ export default function Header({ isSignedIn }: HeaderProps) {
             {isLoading ? 'Signing Out...' : 'Sign Out'}
           </Button>
         ) : (
-          <Link href="/signin" passHref>
+          <Link href="/signin" passHref legacyBehavior>
             <Button variant="outline" className="flex items-center gap-2">
               <LogIn className="h-4 w-4" />
               Sign In
