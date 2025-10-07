@@ -33,6 +33,7 @@ cd apps/mobile_client
 npx expo prebuild
 npx expo run:android
 ```
+If you want to run it in an ios simulator with Xcode
 
 2. if you want to run on the web
 
@@ -58,5 +59,3 @@ if the mobile app isn't working, here are some things you can try:
 `npx expo install --check` will make sure your packages are up to date and are the right versions to work with each other
 
 If you make major changes or add new packages, it is best to prebuild again
-
-We are using native packages such as react native mmkv. This means that you cannot use expo go on the emulator. If you want to run without creating a development build with `run:android`, you can only view the app on the web.

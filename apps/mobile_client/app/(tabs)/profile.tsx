@@ -3,8 +3,8 @@ import { useState, useEffect } from 'react';
 import { Colors } from '@/constants/Colors';
 import ProgressBar from '../../components/ProgressBar';
 import FontAwesome from '@expo/vector-icons/FontAwesome';
-import { getGeneralQuestionsStorage, quizData } from './quizzes';
-import { getSettingsStorage } from '../_layout';
+import { UserService } from '@/services/UserService';
+import { QuizService } from '@/services/QuizService';
 
 // TODO:
 // fix child key console warning
@@ -16,14 +16,44 @@ import { getSettingsStorage } from '../_layout';
 export default function ProfileScreen() {
   const [activeTab, setActiveTab] = useState<'quiz' | 'resource'>('quiz'); // valid options: quiz, resource
   const [username, setUsername] = useState<string>('Loading...');
+  
+  // Move all hooks to the top level to follow Rules of Hooks
+  const [stats, setStats] = useState<{
+    total: number;
+    completed: number;
+    percentage: number;
+  }>({ total: 0, completed: 0, percentage: 0 });
+  
+  const [topics, setTopics] = useState<string[]>([]);
 
   useEffect(() => {
-    // Load username from storage
-    const storage = getSettingsStorage();
-    const storedUsername = storage.getString("username");
-    if (storedUsername) {
-      setUsername(storedUsername);
-    }
+    const loadUserData = async () => {
+      try {
+        const userSettings = await UserService.getUserSettings();
+        setUsername(userSettings.username);
+      } catch (error) {
+        console.error('Failed to load user data:', error);
+        setUsername('User');
+      }
+    };
+    
+    loadUserData();
+  }, []);
+
+  // Load quiz stats when component mounts
+  useEffect(() => {
+    const loadStats = async () => {
+      try {
+        const completionStats = await QuizService.getCompletionStats();
+        const allTopics = await QuizService.getTopics();
+        setStats(completionStats);
+        setTopics(allTopics.map(t => t.name));
+      } catch (error) {
+        console.error('Failed to load quiz stats:', error);
+      }
+    };
+    
+    loadStats();
   }, []);
 
   return (
@@ -55,34 +85,37 @@ export default function ProfileScreen() {
         </Pressable>
       </View>
 
-      {renderStats(activeTab)}
+      {renderStats(activeTab, stats, topics)}
 
     </View>
   );
 }
 
-const renderStats = (activeTab: 'quiz' | 'resource') => {
+const renderStats = (
+  activeTab: 'quiz' | 'resource', 
+  stats: { total: number; completed: number; percentage: number }, 
+  topics: string[]
+) => {
   return (
     <View style={styles.statsOutline}>
-      {activeTab === 'quiz' ? renderQuizStats() : renderResourceStats()}
+      {activeTab === 'quiz' ? renderQuizStats(stats, topics) : renderResourceStats()}
     </View>
   );
 };
 
-const renderQuizStats = () => {
-  // get overall progress
-  // get categories
-  // get progress per category
-
+const renderQuizStats = (
+  stats: { total: number; completed: number; percentage: number }, 
+  topics: string[]
+) => {
   return (
     <View style={styles.statsContent}>
-      <ProgressBar progressFunc={totalPercentage} backgroundColor={"#ffffff"} />
+      <ProgressBar progressFunc={() => stats.percentage} backgroundColor={"#ffffff"} />
       <Text style={[styles.statsText, {fontWeight:'bold'}]}>
-        Total Questions Completed: {totalCompleted()}/{totalQuestions()}
+        Total Questions Completed: {stats.completed}/{stats.total}
       </Text>
       
       <ScrollView style={styles.statsScrollBox} persistentScrollbar={true}>
-        {getAllTopics().map((topic, i) => 
+        {topics.map((topic, i) => 
           <Text style={styles.statsText} key={i}>• {topic}: 0/0</Text>
         )}
       </ScrollView>
@@ -108,18 +141,8 @@ const calcButtonWidth = () => {
 // may need to update these if quiz code changes after connecting to backend
 const tempResourceProgress = () => 36;
 
-const totalQuestions = () => quizData.length;
-const totalCompleted = () => {
-  const storage = getGeneralQuestionsStorage();
-  const completed = storage.getString('completedQuestions');
-  if (completed) return JSON.parse(completed).length;
-  else return 0;
-};
-const totalPercentage = () => (totalCompleted() / totalQuestions())*100;
 const totalInTopic = (category: String) => {};
 const totalCompletedInTopic = (category: String) => {};
-
-const getAllTopics = () => [...new Set(quizData.map(quiz => quiz.topic))];
 
 const styles = StyleSheet.create({
   settings: {

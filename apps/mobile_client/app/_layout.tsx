@@ -4,41 +4,58 @@ import { useFonts } from 'expo-font';
 import { Stack } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
 import 'react-native-reanimated';
-import { MMKV } from 'react-native-mmkv';
-
+import { View, Text } from 'react-native';
 
 import { useColorScheme } from '@/hooks/useColorScheme';
+import { initializeDatabase, useDatabaseMigrations, seedInitialData } from '@/lib/database';
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();
 
-// Storage instance - will be initialized in useEffect
-let settingsStorage: MMKV | null = null;
-
-// Function to get settings storage instance
-export const getSettingsStorage = () => {
-  if (!settingsStorage) {
-    settingsStorage = new MMKV();
-    settingsStorage.set("username", "Example User");
-  }
-  return settingsStorage;
-};
-
 export default function RootLayout() {
   const colorScheme = useColorScheme();
   const [appIsReady, setAppIsReady] = useState(false);
+  const [dbInitialized, setDbInitialized] = useState(false);
 
   const [loaded] = useFonts({
     SpaceMono: require('../assets/fonts/SpaceMono-Regular.ttf'),
   });
 
+  // Always call the hook at the top level - this is required by Rules of Hooks
+  const { success, error } = useDatabaseMigrations();
+
+  // Initialize database first - now async to support web
   useEffect(() => {
-    if (loaded) {
-      // Initialize storage after fonts are loaded
-      getSettingsStorage();
-      setAppIsReady(true);
+    if (loaded && !dbInitialized) {
+      const initDb = async () => {
+        try {
+          await initializeDatabase();
+          setDbInitialized(true);
+        } catch (error) {
+          console.error('Failed to initialize database:', error);
+        }
+      };
+      initDb();
     }
-  }, [loaded]);
+  }, [loaded, dbInitialized]);
+
+  useEffect(() => {
+    if (loaded && dbInitialized) {
+      const initializeApp = async () => {
+        try {
+          // Seed initial data
+          await seedInitialData();
+          
+          setAppIsReady(true);
+        } catch (error) {
+          console.error('Failed to initialize app:', error);
+          setAppIsReady(true);
+        }
+      };
+      
+      initializeApp();
+    }
+  }, [loaded, dbInitialized]);
 
   useEffect(() => {
     if (appIsReady) {
@@ -48,6 +65,24 @@ export default function RootLayout() {
       hideSplashScreen();
     }
   }, [appIsReady]);
+
+  // Show database initialization in progress
+  if (!dbInitialized) {
+    return (
+      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+        <Text>Initializing database...</Text>
+      </View>
+    );
+  }
+
+  // Show migration error if any
+  if (error) {
+    return (
+      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+        <Text>Migration error: {error.message}</Text>
+      </View>
+    );
+  }
 
   if (!appIsReady) {
     return null;
