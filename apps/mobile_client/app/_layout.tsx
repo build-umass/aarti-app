@@ -15,7 +15,6 @@ SplashScreen.preventAutoHideAsync();
 export default function RootLayout() {
   const colorScheme = useColorScheme();
   const [appIsReady, setAppIsReady] = useState(false);
-  const [dbInitialized, setDbInitialized] = useState(false);
 
   const [loaded] = useFonts({
     SpaceMono: require('../assets/fonts/SpaceMono-Regular.ttf'),
@@ -24,68 +23,49 @@ export default function RootLayout() {
   // Always call the hook at the top level - this is required by Rules of Hooks
   const { success, error } = useDatabaseMigrations();
 
-  // Initialize database first - now async to support web
+  // Initialize database and seed data
   useEffect(() => {
-    if (loaded && !dbInitialized) {
-      const initDb = async () => {
-        try {
-          await initializeDatabase();
-          setDbInitialized(true);
-        } catch (error) {
-          console.error('Failed to initialize database:', error);
-        }
-      };
-      initDb();
+    async function prepare() {
+      try {
+        // Initialize database
+        await initializeDatabase();
+        
+        // Seed initial data
+        await seedInitialData();
+        
+        // Mark app as ready
+        setAppIsReady(true);
+      } catch (error) {
+        console.error('Failed to initialize app:', error);
+        // Still mark as ready to show error state
+        setAppIsReady(true);
+      }
     }
-  }, [loaded, dbInitialized]);
 
+    if (loaded) {
+      prepare();
+    }
+  }, [loaded]);
+
+  // Hide splash screen only when everything is ready
   useEffect(() => {
-    if (loaded && dbInitialized) {
-      const initializeApp = async () => {
-        try {
-          // Seed initial data
-          await seedInitialData();
-          
-          setAppIsReady(true);
-        } catch (error) {
-          console.error('Failed to initialize app:', error);
-          setAppIsReady(true);
-        }
-      };
-      
-      initializeApp();
+    if (appIsReady && loaded) {
+      SplashScreen.hideAsync();
     }
-  }, [loaded, dbInitialized]);
+  }, [appIsReady, loaded]);
 
-  useEffect(() => {
-    if (appIsReady) {
-      const hideSplashScreen = async () => {
-        await SplashScreen.hideAsync();
-      };
-      hideSplashScreen();
-    }
-  }, [appIsReady]);
-
-  // Show database initialization in progress
-  if (!dbInitialized) {
-    return (
-      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-        <Text>Initializing database...</Text>
-      </View>
-    );
+  // Keep splash screen visible while loading
+  if (!appIsReady || !loaded) {
+    return null;
   }
 
   // Show migration error if any
   if (error) {
     return (
       <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-        <Text>Migration error: {error.message}</Text>
+        <Text>Database error: {error.message}</Text>
       </View>
     );
-  }
-
-  if (!appIsReady) {
-    return null;
   }
 
   return (
