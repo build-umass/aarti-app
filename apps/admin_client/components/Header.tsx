@@ -53,14 +53,14 @@ export default function Header({ isSignedIn }: HeaderProps) {
         <NavigationMenu className="hidden sm:flex">
           <NavigationMenuList className="flex gap-6">
             <NavigationMenuItem>
-              <Link href="/quizzes" legacyBehavior passHref>
+              <Link href="/quizzes"  passHref>
                 <NavigationMenuLink className="text-sm font-medium hover:text-primary transition-colors">
                   Quizzes
                 </NavigationMenuLink>
               </Link>
             </NavigationMenuItem>
             <NavigationMenuItem>
-              <Link href="/resources" legacyBehavior passHref>
+              <Link href="/resources"  passHref>
                 <NavigationMenuLink className="text-sm font-medium hover:text-primary transition-colors">
                   Resources
                 </NavigationMenuLink>
@@ -81,7 +81,7 @@ export default function Header({ isSignedIn }: HeaderProps) {
             {isLoading ? 'Signing Out...' : 'Sign Out'}
           </Button>
         ) : (
-          <Link href="/signin" passHref legacyBehavior>
+          <Link href="/signin" passHref >
             <Button variant="outline" className="flex items-center gap-2">
               <LogIn className="h-4 w-4" />
               Sign In
