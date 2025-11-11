@@ -20,24 +20,26 @@ export const initializeDatabase = async () => {
 // Create database tables
 async function createTables() {
   if (!db) throw new Error('Database not initialized');
-  
+
   await db.execAsync(`
     -- User settings table
     CREATE TABLE IF NOT EXISTS user_settings (
       id INTEGER PRIMARY KEY DEFAULT 1,
       username TEXT NOT NULL DEFAULT 'Example User',
+      onboarding_completed INTEGER DEFAULT 0,
+      first_launch_date TEXT,
       created_at TEXT DEFAULT CURRENT_TIMESTAMP,
       updated_at TEXT DEFAULT CURRENT_TIMESTAMP,
       CHECK (id = 1)
     );
-    
+
     -- Topics table
     CREATE TABLE IF NOT EXISTS topics (
       id INTEGER PRIMARY KEY AUTOINCREMENT,
       name TEXT NOT NULL UNIQUE,
       created_at TEXT DEFAULT CURRENT_TIMESTAMP
     );
-    
+
     -- Quiz questions table
     CREATE TABLE IF NOT EXISTS quiz_questions (
       id INTEGER PRIMARY KEY,
@@ -50,7 +52,7 @@ async function createTables() {
       created_at TEXT DEFAULT CURRENT_TIMESTAMP,
       FOREIGN KEY (topic_id) REFERENCES topics(id)
     );
-    
+
     -- Quiz progress table
     CREATE TABLE IF NOT EXISTS quiz_progress (
       id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -62,7 +64,7 @@ async function createTables() {
       updated_at TEXT DEFAULT CURRENT_TIMESTAMP,
       FOREIGN KEY (question_id) REFERENCES quiz_questions(id)
     );
-    
+
     -- Bookmarks table
     CREATE TABLE IF NOT EXISTS bookmarks (
       id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -70,14 +72,51 @@ async function createTables() {
       created_at TEXT DEFAULT CURRENT_TIMESTAMP,
       FOREIGN KEY (question_id) REFERENCES quiz_questions(id)
     );
-    
+
     -- Create indexes for better performance
     CREATE INDEX IF NOT EXISTS idx_quiz_questions_topic_id ON quiz_questions(topic_id);
     CREATE INDEX IF NOT EXISTS idx_quiz_progress_question_id ON quiz_progress(question_id);
     CREATE INDEX IF NOT EXISTS idx_bookmarks_question_id ON bookmarks(question_id);
   `);
-  
+
+  // Run migrations for existing databases
+  await runMigrations();
+
   console.log('Database tables created successfully');
+}
+
+// Migration function to add new columns to existing tables
+async function runMigrations() {
+  if (!db) throw new Error('Database not initialized');
+
+  try {
+    // Check if onboarding_completed column exists
+    const tableInfo = await db.getAllAsync<{ name: string }>(
+      "PRAGMA table_info(user_settings)"
+    );
+    const columnNames = tableInfo.map(col => col.name);
+
+    // Add onboarding_completed column if it doesn't exist
+    if (!columnNames.includes('onboarding_completed')) {
+      console.log('Adding onboarding_completed column to user_settings table');
+      await db.execAsync(
+        'ALTER TABLE user_settings ADD COLUMN onboarding_completed INTEGER DEFAULT 0'
+      );
+    }
+
+    // Add first_launch_date column if it doesn't exist
+    if (!columnNames.includes('first_launch_date')) {
+      console.log('Adding first_launch_date column to user_settings table');
+      await db.execAsync(
+        'ALTER TABLE user_settings ADD COLUMN first_launch_date TEXT'
+      );
+    }
+
+    console.log('Migrations completed successfully');
+  } catch (error) {
+    console.error('Error running migrations:', error);
+    throw error;
+  }
 }
 
 // Simple migration status hook that doesn't violate Rules of Hooks

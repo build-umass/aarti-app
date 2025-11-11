@@ -3,6 +3,8 @@ import { getDatabase } from '../lib/database';
 export interface UserSettings {
   id: number;
   username: string;
+  onboarding_completed: number;
+  first_launch_date: string | null;
   created_at: string | null;
   updated_at: string | null;
 }
@@ -56,5 +58,25 @@ export class UserService {
     const db = getDatabase();
     const user = await db.getFirstAsync('SELECT id FROM user_settings WHERE id = 1');
     return user !== null;
+  }
+
+  /**
+   * Get onboarding status
+   */
+  static async getOnboardingStatus(): Promise<boolean> {
+    const user = await this.getUserSettings();
+    return user.onboarding_completed === 1;
+  }
+
+  /**
+   * Mark onboarding as completed
+   */
+  static async setOnboardingCompleted(): Promise<void> {
+    const db = getDatabase();
+    const now = new Date().toISOString();
+    await db.runAsync(
+      'UPDATE user_settings SET onboarding_completed = ?, first_launch_date = COALESCE(first_launch_date, ?), updated_at = ? WHERE id = 1',
+      [1, now, now]
+    );
   }
 }
