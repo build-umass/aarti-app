@@ -24,7 +24,7 @@ export default function ProfileScreen() {
     percentage: number;
   }>({ total: 0, completed: 0, percentage: 0 });
   
-  const [topics, setTopics] = useState<string[]>([]);
+  const [topicStats, setTopicStats] = useState<{ name: string; completed: number; total: number }[]>([]);
 
   useEffect(() => {
     const loadUserData = async () => {
@@ -47,12 +47,24 @@ export default function ProfileScreen() {
         const completionStats = await QuizService.getCompletionStats();
         const allTopics = await QuizService.getTopics();
         setStats(completionStats);
-        setTopics(allTopics.map(t => t.name));
+
+        // Load completion stats for each topic
+        const topicStatsData = await Promise.all(
+          allTopics.map(async (topic) => {
+            const progress = await QuizService.getProgressByTopic(topic.id);
+            return {
+              name: topic.name,
+              completed: progress.completed,
+              total: progress.total,
+            };
+          })
+        );
+        setTopicStats(topicStatsData);
       } catch (error) {
         console.error('Failed to load quiz stats:', error);
       }
     };
-    
+
     loadStats();
   }, []);
 
@@ -85,38 +97,40 @@ export default function ProfileScreen() {
         </Pressable>
       </View>
 
-      {renderStats(activeTab, stats, topics)}
+      {renderStats(activeTab, stats, topicStats)}
 
     </View>
   );
 }
 
 const renderStats = (
-  activeTab: 'quiz' | 'resource', 
-  stats: { total: number; completed: number; percentage: number }, 
-  topics: string[]
+  activeTab: 'quiz' | 'resource',
+  stats: { total: number; completed: number; percentage: number },
+  topicStats: { name: string; completed: number; total: number }[]
 ) => {
   return (
     <View style={styles.statsOutline}>
-      {activeTab === 'quiz' ? renderQuizStats(stats, topics) : renderResourceStats()}
+      {activeTab === 'quiz' ? renderQuizStats(stats, topicStats) : renderResourceStats()}
     </View>
   );
 };
 
 const renderQuizStats = (
-  stats: { total: number; completed: number; percentage: number }, 
-  topics: string[]
+  stats: { total: number; completed: number; percentage: number },
+  topicStats: { name: string; completed: number; total: number }[]
 ) => {
   return (
     <View style={styles.statsContent}>
       <ProgressBar progressFunc={() => stats.percentage} backgroundColor={"#ffffff"} />
       <Text style={[styles.statsText, {fontWeight:'bold'}]}>
-        Total Questions Completed: {stats.completed}/{stats.total}
+        Quizzes Completed: {stats.completed}/{stats.total}
       </Text>
-      
+
       <ScrollView style={styles.statsScrollBox} persistentScrollbar={true}>
-        {topics.map((topic, i) => 
-          <Text style={styles.statsText} key={i}>• {topic}: 0/0</Text>
+        {topicStats.map((topic, i) =>
+          <Text style={styles.statsText} key={i}>
+            • by {topic.name}: {topic.completed}/{topic.total}
+          </Text>
         )}
       </ScrollView>
     </View>

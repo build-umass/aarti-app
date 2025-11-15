@@ -8,6 +8,7 @@ import { View, Text } from 'react-native';
 
 import { useColorScheme } from '@/hooks/useColorScheme';
 import { initializeDatabase, useDatabaseMigrations, seedInitialData } from '@/lib/database';
+import { UserService } from '@/services/UserService';
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();
@@ -15,6 +16,7 @@ SplashScreen.preventAutoHideAsync();
 export default function RootLayout() {
   const colorScheme = useColorScheme();
   const [appIsReady, setAppIsReady] = useState(false);
+  const [onboardingCompleted, setOnboardingCompleted] = useState(false);
 
   const [loaded] = useFonts({
     SpaceMono: require('../assets/fonts/SpaceMono-Regular.ttf'),
@@ -29,10 +31,14 @@ export default function RootLayout() {
       try {
         // Initialize database
         await initializeDatabase();
-        
+
         // Seed initial data
         await seedInitialData();
-        
+
+        // Check onboarding status
+        const isOnboardingCompleted = await UserService.getOnboardingStatus();
+        setOnboardingCompleted(isOnboardingCompleted);
+
         // Mark app as ready
         setAppIsReady(true);
       } catch (error) {
@@ -70,7 +76,8 @@ export default function RootLayout() {
 
   return (
     <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
-      <Stack>
+      <Stack initialRouteName={onboardingCompleted ? '(tabs)' : 'onboarding'}>
+        <Stack.Screen name="onboarding" options={{ headerShown: false }} />
         <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
         <Stack.Screen name="+not-found" />
       </Stack>
