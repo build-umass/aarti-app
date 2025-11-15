@@ -1,0 +1,174 @@
+# Aarti App - Cursor Rules
+
+## Project Overview
+Monorepo with three applications:
+- **Mobile Client**: React Native Expo + SQLite (offline-first)
+- **Backend**: Node.js Express + MongoDB (port 3002)
+- **Admin Client**: Next.js 15 + shadcn/ui + JWT auth
+
+## CRITICAL: Naming Conventions
+
+**This codebase uses different naming conventions in different layers - this is the most common source of bugs.**
+
+### Database Layer (SQLite)
+- Uses `snake_case` for all column names
+- Examples: `topic_id`, `correct_answer`, `created_at`, `is_completed`
+
+### Service Layer
+- Services return data in `snake_case` format (as returned by SQLite)
+- Service interfaces use `snake_case`: `topic_id`, `correct_answer`
+- NEVER use `camelCase` in service return types
+
+### Component/Application Layer
+- Transform service data to `camelCase` when using in components
+- TypeScript application types use `camelCase`: `topicId`, `correctAnswer`
+
+### Common Field Mappings
+- `topic_id` → `topicId`
+- `question_id` → `questionId`
+- `correct_answer` → `correctAnswer`
+- `selected_answer` → `selectedAnswer`
+- `is_completed` → `isCompleted`
+- `completed_at` → `completedAt`
+- `created_at` → `createdAt`
+- `updated_at` → `updatedAt`
+
+**Pattern:**
+```
+Database (snake_case) → Service (snake_case) → Component (camelCase transformation)
+```
+
+**Common Mistake:**
+```typescript
+// ❌ WRONG - Will return undefined
+const topicId = question.topicId;  // Database has topic_id, not topicId
+
+// ✅ CORRECT - Access snake_case from service
+const topicId = question.topic_id;
+
+// ✅ CORRECT - Transform to camelCase for component use
+const formatted = { topicId: question.topic_id };
+```
+
+## Architecture Patterns
+
+### Mobile Client (apps/mobile_client)
+- **Routing**: Expo Router file-based routing (app/ directory)
+- **Database**: SQLite via expo-sqlite (async API: `getAllAsync`, `getFirstAsync`, `runAsync`)
+- **Service Layer**: Static class methods (e.g., `QuizService.getQuizQuestions()`)
+- **Key Files**:
+  - `app/_layout.tsx` - Database initialization during splash
+  - `lib/database.ts` - SQLite setup
+  - `services/QuizService.ts`, `BookmarkService.ts`, `UserService.ts`
+
+### Backend (apps/backend)
+- **Pattern**: Routes → Controllers → Services → Models
+- **Database**: MongoDB via Mongoose
+- **Key Files**:
+  - `index.ts` - Server entry (port 3002)
+  - `routes.ts` - API endpoints
+  - `controllers.ts` - Request handlers
+  - `services.ts` - Business logic
+  - `models/` - Mongoose schemas
+
+### Admin Client (apps/admin_client)
+- **Pattern**: Next.js App Router + JWT Authentication
+- **Auth**: JWT tokens in `auth_token` cookie (1hr expiry, HS256)
+- **Middleware**: `middleware.ts` protects all routes except `/signin`
+- **Key Files**:
+  - `app/layout.tsx` - Root layout
+  - `middleware.ts` - Route protection
+  - `lib/auth.ts` - JWT utilities (jose library)
+
+## React Hooks Rules
+
+**CRITICAL**: Always follow Rules of Hooks:
+1. Only call hooks at top level (never in loops/conditions/nested functions)
+2. All hooks must run before any early returns
+3. Hooks must be called in same order every render
+
+```typescript
+// ❌ WRONG - Early return before hooks
+function Component({ showData }) {
+  if (!showData) return null;
+  const [data, setData] = useState([]); // Violation!
+}
+
+// ✅ CORRECT - Hooks at top level
+function Component({ showData }) {
+  const [data, setData] = useState([]); // Always called
+  if (!showData) return null;
+}
+```
+
+## Service Layer Pattern
+
+### Mobile Client Services
+- Static class methods: `QuizService.methodName()`
+- Use raw SQL with expo-sqlite async API
+- Return data in `snake_case` format (as from database)
+- Encapsulate all database operations
+- Located in `services/` directory
+
+```typescript
+export class QuizService {
+  static async getQuizQuestions(): Promise<QuizQuestion[]> {
+    const db = getDatabase();
+    return await db.getAllAsync<QuizQuestion>('SELECT * FROM quiz_questions');
+    // Returns with snake_case properties
+  }
+}
+```
+
+### Backend Services
+- Located in `apps/backend/services.ts`
+- Business logic between controllers and models
+- Pattern: Controller → Service → Model → Database
+
+## Database Schema (Mobile Client)
+
+**Tables:**
+- `user_settings` (id, username, created_at, updated_at)
+- `topics` (id, name, created_at)
+- `quiz_questions` (id, topic_id, title, question, options, correct_answer, feedback, created_at)
+- `quiz_progress` (id, question_id, selected_answer, is_completed, completed_at, created_at, updated_at)
+- `bookmarks` (id, question_id, created_at)
+
+**Relationships:**
+- `quiz_questions.topic_id` → `topics.id` (many-to-one)
+- `quiz_progress.question_id` → `quiz_questions.id` (one-to-one)
+- `bookmarks.question_id` → `quiz_questions.id` (one-to-one)
+
+## Important Patterns
+
+1. **Service Layer Abstraction**: All database operations go through services. Components never access database directly.
+
+2. **Data Transformation**: Services return `snake_case`, components transform to `camelCase` when needed.
+
+3. **Expo Router**: File-based routing in `app/` directory. `_layout.tsx` defines layouts. `(folder)/` creates route groups.
+
+4. **JWT Authentication**: HTTP-only cookies, validated by middleware on protected routes.
+
+## Shared Types
+
+Location: `types/index.ts`
+- Used across all applications
+- Types use `camelCase` (application layer format)
+- Mobile client transforms from service `snake_case` to these types
+
+## When Writing Code
+
+1. **Always check naming convention**: Are you accessing service data? Use `snake_case`. Are you creating component state? Use `camelCase`.
+
+2. **Service methods**: Must return data in database format (`snake_case`)
+
+3. **Component code**: Transform service data to `camelCase` when storing in component state or props
+
+4. **TypeScript interfaces**: 
+   - Service interfaces: `snake_case` (matches database)
+   - Component/prop interfaces: `camelCase` (application layer)
+
+5. **Hooks**: Always at top level, before any conditional returns
+
+6. **Database access**: Only through service layer, never directly from components
+
