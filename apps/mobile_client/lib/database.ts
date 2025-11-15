@@ -161,9 +161,10 @@ export const seedInitialData = async () => {
     if (!existingUser) {
       console.log('Seeding default user...');
       await database.runAsync(
-        'INSERT OR IGNORE INTO user_settings (id, username) VALUES (?, ?)',
-        [1, 'Example User']
+        'INSERT OR IGNORE INTO user_settings (id, username, onboarding_completed) VALUES (?, ?, ?)',
+        [1, 'Example User', 0]
       );
+      console.log('Default user created with onboarding_completed = 0');
     }
 
     // Seed topics if missing
