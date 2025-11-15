@@ -12,8 +12,10 @@ import { Feather, Entypo } from '@expo/vector-icons';
 import { UserService } from '@/services/UserService';
 import { QuizService } from '@/services/QuizService';
 import { BookmarkService } from '@/services/BookmarkService';
+import { useAppInit } from '@/contexts/AppInitContext';
 
 export default function HomeScreen() {
+  const { isSeeded } = useAppInit();
   const [username, setUsername] = useState<string>('User');
   const [stats, setStats] = useState({
     totalQuizzes: 0,
@@ -23,6 +25,11 @@ export default function HomeScreen() {
   });
 
   useEffect(() => {
+    // Wait for database seeding to complete before loading data
+    if (!isSeeded) {
+      return;
+    }
+
     const loadData = async () => {
       try {
         // Load username
@@ -45,7 +52,7 @@ export default function HomeScreen() {
     };
 
     loadData();
-  }, []);
+  }, [isSeeded]);
 
   const navigateToTab = (tabName: string) => {
     router.push(`/(tabs)/${tabName}` as any);

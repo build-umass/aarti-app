@@ -9,6 +9,7 @@ import { View, Text } from 'react-native';
 import { useColorScheme } from '@/hooks/useColorScheme';
 import { initializeDatabase, useDatabaseMigrations, seedInitialData } from '@/lib/database';
 import { UserService } from '@/services/UserService';
+import { AppInitProvider } from '@/contexts/AppInitContext';
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();
@@ -17,6 +18,7 @@ export default function RootLayout() {
   const colorScheme = useColorScheme();
   const [appIsReady, setAppIsReady] = useState(false);
   const [onboardingCompleted, setOnboardingCompleted] = useState(false);
+  const [isSeeded, setIsSeeded] = useState(false);
 
   const [loaded] = useFonts({
     SpaceMono: require('../assets/fonts/SpaceMono-Regular.ttf'),
@@ -35,6 +37,9 @@ export default function RootLayout() {
         // Seed initial data
         await seedInitialData();
 
+        // Mark seeding as complete
+        setIsSeeded(true);
+
         // Check onboarding status
         const isOnboardingCompleted = await UserService.getOnboardingStatus();
         setOnboardingCompleted(isOnboardingCompleted);
@@ -45,6 +50,7 @@ export default function RootLayout() {
         console.error('Failed to initialize app:', error);
         // Still mark as ready to show error state
         setAppIsReady(true);
+        setIsSeeded(true); // Prevent infinite loading on error
       }
     }
 
@@ -75,12 +81,14 @@ export default function RootLayout() {
   }
 
   return (
-    <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
-      <Stack initialRouteName={onboardingCompleted ? '(tabs)' : 'onboarding'}>
-        <Stack.Screen name="onboarding" options={{ headerShown: false }} />
-        <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-        <Stack.Screen name="+not-found" />
-      </Stack>
-    </ThemeProvider>
+    <AppInitProvider isInitialized={appIsReady} isSeeded={isSeeded}>
+      <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
+        <Stack initialRouteName={onboardingCompleted ? '(tabs)' : 'onboarding'}>
+          <Stack.Screen name="onboarding" options={{ headerShown: false }} />
+          <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+          <Stack.Screen name="+not-found" />
+        </Stack>
+      </ThemeProvider>
+    </AppInitProvider>
   );
 }
