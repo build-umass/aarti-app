@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   View,
   Text,
@@ -7,18 +7,33 @@ import {
   TouchableOpacity,
   ScrollView,
   SafeAreaView,
+  TextInput,
+  Alert,
 } from 'react-native';
 import { router } from 'expo-router';
 import { UserService } from '../services/UserService';
 import { Feather, Entypo } from '@expo/vector-icons';
 
 export default function OnboardingScreen() {
+  const [username, setUsername] = useState('');
+
   const handleGetStarted = async () => {
+    // Validate username input
+    const trimmedUsername = username.trim();
+    if (!trimmedUsername) {
+      Alert.alert('Name Required', 'Please enter your name to continue.');
+      return;
+    }
+
     try {
+      // Save the username first
+      await UserService.updateUsername(trimmedUsername);
+      // Then mark onboarding as completed
       await UserService.setOnboardingCompleted();
       router.replace('/(tabs)');
     } catch (error) {
       console.error('Error completing onboarding:', error);
+      Alert.alert('Error', 'Something went wrong. Please try again.');
     }
   };
 
@@ -94,6 +109,21 @@ export default function OnboardingScreen() {
               </Text>
             </View>
           </View>
+        </View>
+
+        {/* Name Input Section */}
+        <View style={styles.nameInputSection}>
+          <Text style={styles.nameInputLabel}>What should we call you?</Text>
+          <TextInput
+            style={styles.nameInput}
+            placeholder="Enter your name"
+            placeholderTextColor="#999"
+            value={username}
+            onChangeText={setUsername}
+            autoCapitalize="words"
+            autoCorrect={false}
+            maxLength={50}
+          />
         </View>
 
         {/* Get Started Button */}
@@ -189,6 +219,27 @@ const styles = StyleSheet.create({
     fontSize: 14,
     color: '#687076',
     lineHeight: 20,
+  },
+  nameInputSection: {
+    marginTop: 30,
+    marginBottom: 10,
+  },
+  nameInputLabel: {
+    fontSize: 18,
+    fontWeight: '600',
+    color: '#11181C',
+    marginBottom: 12,
+    textAlign: 'center',
+  },
+  nameInput: {
+    backgroundColor: '#f8f8f8',
+    borderRadius: 12,
+    paddingVertical: 16,
+    paddingHorizontal: 20,
+    fontSize: 16,
+    color: '#11181C',
+    borderWidth: 1,
+    borderColor: '#e0e0e0',
   },
   getStartedButton: {
     backgroundColor: '#5f2446',

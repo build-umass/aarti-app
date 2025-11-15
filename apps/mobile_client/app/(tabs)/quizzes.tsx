@@ -6,6 +6,7 @@ import { QuizItem } from '../../../../types';
 import ProgressBar from '@/components/ProgressBar';
 import { QuizService } from '@/services/QuizService';
 import { BookmarkService } from '@/services/BookmarkService';
+import { useAppInit } from '@/contexts/AppInitContext';
 
 interface SelectedAnswers {
   [key: number]: string;
@@ -41,6 +42,7 @@ interface ViewStyleWithBorder extends ViewStyle {
 // SQLite services using raw SQL are imported above
 
 export default function QuizPage() {
+  const { isSeeded } = useAppInit();
   const [selectedAnswers, setSelectedAnswers] = useState<SelectedAnswers>({});
   const [expandedQuestion, setExpandedQuestion] = useState<number | null>(null);
   const [hasStarted, setHasStarted] = useState<boolean>(false);
@@ -53,10 +55,15 @@ export default function QuizPage() {
 
   // Load initial data
   useEffect(() => {
+    // Wait for database seeding to complete before loading data
+    if (!isSeeded) {
+      return;
+    }
+
     const loadInitialData = async () => {
       try {
         setLoading(true);
-        
+
         // Load quiz data from database
         const questions = await QuizService.getQuizQuestions();
         const formattedQuestions: QuizItem[] = questions.map(q => ({
@@ -113,9 +120,9 @@ export default function QuizPage() {
         setLoading(false);
       }
     };
-    
+
     loadInitialData();
-  }, []);
+  }, [isSeeded]);
 
   // Update data when topic changes
   useEffect(() => {

@@ -20,10 +20,10 @@ export class UserService {
     if (!user) {
       // Create default user if none exists
       await db.runAsync(
-        'INSERT OR IGNORE INTO user_settings (id, username) VALUES (?, ?)',
-        [1, 'Example User']
+        'INSERT OR IGNORE INTO user_settings (id, username, onboarding_completed) VALUES (?, ?, ?)',
+        [1, 'Example User', 0]
       );
-      
+
       const newUser = await db.getFirstAsync<UserSettings>('SELECT * FROM user_settings WHERE id = 1');
       if (!newUser) throw new Error('Failed to create default user');
       return newUser;
@@ -62,10 +62,25 @@ export class UserService {
 
   /**
    * Get onboarding status
+   * Returns false if onboarding is not completed OR if username is still the default value
    */
   static async getOnboardingStatus(): Promise<boolean> {
     const user = await this.getUserSettings();
-    return user.onboarding_completed === 1;
+
+    // Safety check: if username is still default, onboarding is not complete
+    if (user.username === 'Example User') {
+      console.log('Username is still default, forcing onboarding');
+      return false;
+    }
+
+    const isCompleted = user.onboarding_completed === 1;
+    console.log('Onboarding status check:', {
+      username: user.username,
+      onboarding_completed: user.onboarding_completed,
+      isCompleted
+    });
+
+    return isCompleted;
   }
 
   /**
