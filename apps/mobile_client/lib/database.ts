@@ -150,53 +150,64 @@ export const getDatabase = () => {
 // Seed initial data
 export const seedInitialData = async () => {
   const database = getDatabase();
-  
+
   try {
-    // Check if data already exists
+    // Check each data type independently to determine what needs seeding
     const existingUser = await database.getFirstAsync('SELECT * FROM user_settings LIMIT 1');
-    if (existingUser) {
-      return; // Data already seeded
-    }
+    const existingTopics = await database.getFirstAsync('SELECT * FROM topics LIMIT 1');
+    const existingQuestions = await database.getFirstAsync('SELECT * FROM quiz_questions LIMIT 1');
 
-    // Insert default user
-    await database.runAsync(
-      'INSERT OR IGNORE INTO user_settings (id, username) VALUES (?, ?)',
-      [1, 'Example User']
-    );
-
-    // Insert topics
-    const topics = [...new Set(quizDataFile.quizzes.map((quiz: any) => quiz.topic))];
-    for (const topic of topics) {
+    // Seed user if missing
+    if (!existingUser) {
+      console.log('Seeding default user...');
       await database.runAsync(
-        'INSERT OR IGNORE INTO topics (name) VALUES (?)',
-        [topic]
+        'INSERT OR IGNORE INTO user_settings (id, username, onboarding_completed) VALUES (?, ?, ?)',
+        [1, 'Example User', 0]
       );
+      console.log('Default user created with onboarding_completed = 0');
     }
 
-    // Get topic IDs
-    const topicRecords = await database.getAllAsync<{ id: number; name: string }>('SELECT id, name FROM topics');
-    const topicMap = new Map(topicRecords.map(t => [t.name, t.id]));
-
-    // Insert quiz questions
-    for (const quiz of quizDataFile.quizzes) {
-      const topicId = topicMap.get(quiz.topic);
-      if (topicId) {
+    // Seed topics if missing
+    if (!existingTopics) {
+      console.log('Seeding topics...');
+      const topics = [...new Set(quizDataFile.quizzes.map((quiz: any) => quiz.topic))];
+      for (const topic of topics) {
         await database.runAsync(
-          'INSERT OR IGNORE INTO quiz_questions (id, topic_id, title, question, options, correct_answer, feedback) VALUES (?, ?, ?, ?, ?, ?, ?)',
-          [
-            quiz.id,
-            topicId,
-            quiz.title,
-            quiz.question,
-            JSON.stringify(quiz.options),
-            quiz.correctAnswer,
-            quiz.feedback
-          ]
+          'INSERT OR IGNORE INTO topics (name) VALUES (?)',
+          [topic]
         );
       }
     }
-    
-    console.log('Database seeded successfully');
+
+    // Seed quiz questions if missing
+    if (!existingQuestions) {
+      console.log('Seeding quiz questions...');
+
+      // Get topic IDs (they should exist by now)
+      const topicRecords = await database.getAllAsync<{ id: number; name: string }>('SELECT id, name FROM topics');
+      const topicMap = new Map(topicRecords.map(t => [t.name, t.id]));
+
+      // Insert quiz questions
+      for (const quiz of quizDataFile.quizzes) {
+        const topicId = topicMap.get(quiz.topic);
+        if (topicId) {
+          await database.runAsync(
+            'INSERT OR IGNORE INTO quiz_questions (id, topic_id, title, question, options, correct_answer, feedback) VALUES (?, ?, ?, ?, ?, ?, ?)',
+            [
+              quiz.id,
+              topicId,
+              quiz.title,
+              quiz.question,
+              JSON.stringify(quiz.options),
+              quiz.correctAnswer,
+              quiz.feedback
+            ]
+          );
+        }
+      }
+    }
+
+    console.log('Database seeding completed successfully');
   } catch (error) {
     console.error('Error seeding database:', error);
     throw error;
