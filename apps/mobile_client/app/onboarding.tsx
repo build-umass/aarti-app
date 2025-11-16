@@ -6,10 +6,10 @@ import {
   Image,
   TouchableOpacity,
   ScrollView,
-  SafeAreaView,
   TextInput,
   Alert,
 } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import { router } from 'expo-router';
 import { UserService } from '../services/UserService';
 import { Feather, Entypo } from '@expo/vector-icons';
@@ -56,6 +56,30 @@ export default function OnboardingScreen() {
             Your support and resource companion
           </Text>
         </View>
+
+        {/* Name Input Section */}
+        <View style={styles.nameInputSection}>
+          <Text style={styles.nameInputLabel}>What should we call you?</Text>
+          <TextInput
+            style={styles.nameInput}
+            placeholder="Enter your name"
+            placeholderTextColor="#999"
+            value={username}
+            onChangeText={setUsername}
+            autoCapitalize="words"
+            autoCorrect={false}
+            maxLength={50}
+          />
+        </View>
+
+        {/* Get Started Button */}
+        <TouchableOpacity
+          style={styles.getStartedButton}
+          onPress={handleGetStarted}
+          activeOpacity={0.8}
+        >
+          <Text style={styles.getStartedButtonText}>Get Started</Text>
+        </TouchableOpacity>
 
         {/* Features Section */}
         <View style={styles.featuresContainer}>
@@ -111,29 +135,7 @@ export default function OnboardingScreen() {
           </View>
         </View>
 
-        {/* Name Input Section */}
-        <View style={styles.nameInputSection}>
-          <Text style={styles.nameInputLabel}>What should we call you?</Text>
-          <TextInput
-            style={styles.nameInput}
-            placeholder="Enter your name"
-            placeholderTextColor="#999"
-            value={username}
-            onChangeText={setUsername}
-            autoCapitalize="words"
-            autoCorrect={false}
-            maxLength={50}
-          />
-        </View>
-
-        {/* Get Started Button */}
-        <TouchableOpacity
-          style={styles.getStartedButton}
-          onPress={handleGetStarted}
-          activeOpacity={0.8}
-        >
-          <Text style={styles.getStartedButtonText}>Get Started</Text>
-        </TouchableOpacity>
+        
       </ScrollView>
     </SafeAreaView>
   );
@@ -175,6 +177,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   featuresContainer: {
+    marginTop: 40,
     marginBottom: 30,
   },
   featuresTitle: {

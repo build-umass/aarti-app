@@ -5,8 +5,8 @@ import {
   Text,
   ScrollView,
   TouchableOpacity,
-  SafeAreaView,
 } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import { router } from 'expo-router';
 import { Feather, Entypo } from '@expo/vector-icons';
 import { UserService } from '@/services/UserService';
