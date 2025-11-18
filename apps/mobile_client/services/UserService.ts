@@ -94,4 +94,20 @@ export class UserService {
       [1, now, now]
     );
   }
+
+  /**
+   * Reset all quiz progress (deletes all quiz_progress entries)
+   */
+  static async resetQuizProgress(): Promise<void> {
+    const db = getDatabase();
+    await db.runAsync('DELETE FROM quiz_progress');
+  }
+
+  /**
+   * Reset all bookmarks (deletes all bookmarks entries)
+   */
+  static async resetBookmarks(): Promise<void> {
+    const db = getDatabase();
+    await db.runAsync('DELETE FROM bookmarks');
+  }
 }

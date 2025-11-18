@@ -1,4 +1,5 @@
 import { getDatabase } from '../lib/database';
+import { appEvents, EVENT_TYPES } from '../lib/eventEmitter';
 
 export interface Topic {
   id: number;
@@ -88,7 +89,7 @@ export class QuizService {
   static async saveQuizAnswer(questionId: number, selectedAnswer: string): Promise<void> {
     const db = getDatabase();
     const now = new Date().toISOString();
-    
+
     await db.runAsync(
       `INSERT INTO quiz_progress (question_id, selected_answer, is_completed, completed_at, updated_at)
        VALUES (?, ?, 1, ?, ?)
@@ -99,6 +100,9 @@ export class QuizService {
          updated_at = excluded.updated_at`,
       [questionId, selectedAnswer, now, now]
     );
+
+    // Emit event to notify other components
+    appEvents.emit(EVENT_TYPES.QUIZ_PROGRESS_UPDATED);
   }
 
   /**

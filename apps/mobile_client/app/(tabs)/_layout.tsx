@@ -6,6 +6,7 @@ import { Colors } from '@/constants/Colors';
 import { useColorScheme } from '@/hooks/useColorScheme';
 import Feather from '@expo/vector-icons/Feather';
 import Entypo from '@expo/vector-icons/Entypo';
+import FontAwesome from '@expo/vector-icons/FontAwesome';
 
 const ICON_SIZE = 29;
 
@@ -109,7 +110,7 @@ export default function TabLayout() {
         header: () => (
           <View style={styles.customHeader}>
             <Text style={styles.headerText}>Profile</Text>
-            <Image 
+            <Image
               source={require('../../assets/images/aarti-logo.png')}
               style={styles.logo}
             />
@@ -117,6 +118,24 @@ export default function TabLayout() {
         )
       }}
     />
+      <Tabs.Screen
+        name="settings"
+        options={{
+          tabBarLabel: "Settings",
+          tabBarIcon: ({ color }) => (
+            <FontAwesome name="gear" size={ICON_SIZE} color={color} />
+          ),
+          header: () => (
+            <View style={styles.customHeader}>
+              <Text style={styles.headerText}>Settings</Text>
+              <Image
+                source={require('../../assets/images/aarti-logo.png')}
+                style={styles.logo}
+              />
+            </View>
+          )
+        }}
+      />
     </Tabs>
   );
 }
