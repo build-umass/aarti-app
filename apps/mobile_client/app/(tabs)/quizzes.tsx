@@ -244,10 +244,10 @@ export default function QuizPage() {
     try {
       if (!completedQuestions.has(questionId)) {
         setHasStarted(true);
-        
+
         // Save to database
         await QuizService.saveQuizAnswer(questionId, selectedOption);
-        
+
         // Update local state
         const newSelectedAnswers = {
           ...selectedAnswers,
@@ -257,15 +257,21 @@ export default function QuizPage() {
 
         const newCompletedQuestions = new Set([...completedQuestions, questionId]);
         setCompletedQuestions(newCompletedQuestions);
+
+        // Emit event to update other pages (e.g., profile)
+        appEvents.emit(EVENT_TYPES.QUIZ_PROGRESS_UPDATED);
       } else if (calculateCompletion() === 100) {
         // Allow editing answers when all questions are completed
         await QuizService.saveQuizAnswer(questionId, selectedOption);
-        
+
         const newSelectedAnswers = {
           ...selectedAnswers,
           [questionId]: selectedOption
         };
         setSelectedAnswers(newSelectedAnswers);
+
+        // Emit event to update other pages (e.g., profile)
+        appEvents.emit(EVENT_TYPES.QUIZ_PROGRESS_UPDATED);
       }
     } catch (error) {
       console.error('Failed to save quiz answer:', error);
@@ -280,13 +286,16 @@ export default function QuizPage() {
     try {
       // Toggle in database
       const isNowBookmarked = await BookmarkService.toggleBookmark(questionId);
-      
+
       // Update local state
       const updatedBookmarks = {
         ...bookmarkedQuestions,
         [questionId]: isNowBookmarked
       };
       setBookmarkedQuestions(updatedBookmarks);
+
+      // Emit event to update other pages (e.g., profile)
+      appEvents.emit(EVENT_TYPES.BOOKMARKS_UPDATED);
     } catch (error) {
       console.error('Failed to toggle bookmark:', error);
     }

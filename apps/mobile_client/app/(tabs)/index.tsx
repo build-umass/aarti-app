@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import {
   StyleSheet,
   View,
@@ -13,6 +13,7 @@ import { UserService } from '@/services/UserService';
 import { QuizService } from '@/services/QuizService';
 import { BookmarkService } from '@/services/BookmarkService';
 import { useAppInit } from '@/contexts/AppInitContext';
+import { appEvents, EVENT_TYPES } from '@/lib/eventEmitter';
 
 export default function HomeScreen() {
   const { isSeeded } = useAppInit();
@@ -24,35 +25,59 @@ export default function HomeScreen() {
     completionPercentage: 0,
   });
 
+  const loadData = useCallback(async () => {
+    try {
+      // Load username
+      const userSettings = await UserService.getUserSettings();
+      setUsername(userSettings.username);
+
+      // Load stats
+      const quizStats = await QuizService.getCompletionStats();
+      const bookmarkCount = await BookmarkService.getBookmarkCount();
+
+      setStats({
+        totalQuizzes: quizStats.total,
+        completedQuizzes: quizStats.completed,
+        bookmarks: bookmarkCount,
+        completionPercentage: quizStats.percentage,
+      });
+    } catch (error) {
+      console.error('Error loading home screen data:', error);
+    }
+  }, []);
+
+  // Load initial data when seeded
   useEffect(() => {
-    // Wait for database seeding to complete before loading data
     if (!isSeeded) {
       return;
     }
+    loadData();
+  }, [isSeeded, loadData]);
 
-    const loadData = async () => {
-      try {
-        // Load username
-        const userSettings = await UserService.getUserSettings();
-        setUsername(userSettings.username);
-
-        // Load stats
-        const quizStats = await QuizService.getCompletionStats();
-        const bookmarkCount = await BookmarkService.getBookmarkCount();
-
-        setStats({
-          totalQuizzes: quizStats.total,
-          completedQuizzes: quizStats.completed,
-          bookmarks: bookmarkCount,
-          completionPercentage: quizStats.percentage,
-        });
-      } catch (error) {
-        console.error('Error loading home screen data:', error);
-      }
+  // Listen for data updates from other pages
+  useEffect(() => {
+    const handleUsernameUpdate = (newUsername: string) => {
+      setUsername(newUsername);
     };
 
-    loadData();
-  }, [isSeeded]);
+    const handleDataUpdate = () => {
+      loadData();
+    };
+
+    // Subscribe to events
+    appEvents.on(EVENT_TYPES.USERNAME_UPDATED, handleUsernameUpdate);
+    appEvents.on(EVENT_TYPES.QUIZ_PROGRESS_UPDATED, handleDataUpdate);
+    appEvents.on(EVENT_TYPES.BOOKMARKS_UPDATED, handleDataUpdate);
+    appEvents.on(EVENT_TYPES.DATA_RESET, handleDataUpdate);
+
+    // Cleanup listeners on unmount
+    return () => {
+      appEvents.off(EVENT_TYPES.USERNAME_UPDATED, handleUsernameUpdate);
+      appEvents.off(EVENT_TYPES.QUIZ_PROGRESS_UPDATED, handleDataUpdate);
+      appEvents.off(EVENT_TYPES.BOOKMARKS_UPDATED, handleDataUpdate);
+      appEvents.off(EVENT_TYPES.DATA_RESET, handleDataUpdate);
+    };
+  }, [loadData]);
 
   const navigateToTab = (tabName: string) => {
     router.push(`/(tabs)/${tabName}` as any);
