@@ -1,4 +1,5 @@
 import { getDatabase } from '../lib/database';
+import { appEvents, EVENT_TYPES } from '../lib/eventEmitter';
 
 export interface Bookmark {
   id: number;
@@ -47,6 +48,8 @@ export class BookmarkService {
       'INSERT OR IGNORE INTO bookmarks (question_id) VALUES (?)',
       [questionId]
     );
+    // Emit event to notify other components
+    appEvents.emit(EVENT_TYPES.BOOKMARKS_UPDATED);
   }
 
   /**
@@ -58,6 +61,8 @@ export class BookmarkService {
       'DELETE FROM bookmarks WHERE question_id = ?',
       [questionId]
     );
+    // Emit event to notify other components
+    appEvents.emit(EVENT_TYPES.BOOKMARKS_UPDATED);
   }
 
   /**
@@ -65,7 +70,7 @@ export class BookmarkService {
    */
   static async toggleBookmark(questionId: number): Promise<boolean> {
     const isCurrentlyBookmarked = await this.isBookmarked(questionId);
-    
+
     if (isCurrentlyBookmarked) {
       await this.removeBookmark(questionId);
       return false; // Now not bookmarked
@@ -73,6 +78,7 @@ export class BookmarkService {
       await this.addBookmark(questionId);
       return true; // Now bookmarked
     }
+    // Note: Events are already emitted in addBookmark/removeBookmark
   }
 
   /**

@@ -1,10 +1,12 @@
 import { StyleSheet, Pressable, View, ScrollView, Text, Dimensions } from 'react-native';
-import { useState, useEffect } from 'react';
+import { useState, useCallback, useEffect } from 'react';
+import { useRouter, useFocusEffect } from 'expo-router';
 import { Colors } from '@/constants/Colors';
 import ProgressBar from '../../components/ProgressBar';
 import FontAwesome from '@expo/vector-icons/FontAwesome';
 import { UserService } from '@/services/UserService';
 import { QuizService } from '@/services/QuizService';
+import { appEvents, EVENT_TYPES } from '@/lib/eventEmitter';
 
 // TODO:
 // fix child key console warning
@@ -14,64 +16,89 @@ import { QuizService } from '@/services/QuizService';
 // resources stats (after resources are uploaded and finalized with categories)
 
 export default function ProfileScreen() {
+  const router = useRouter();
   const [activeTab, setActiveTab] = useState<'quiz' | 'resource'>('quiz'); // valid options: quiz, resource
   const [username, setUsername] = useState<string>('Loading...');
-  
+
   // Move all hooks to the top level to follow Rules of Hooks
   const [stats, setStats] = useState<{
     total: number;
     completed: number;
     percentage: number;
   }>({ total: 0, completed: 0, percentage: 0 });
-  
+
   const [topicStats, setTopicStats] = useState<{ name: string; completed: number; total: number }[]>([]);
 
-  useEffect(() => {
-    const loadUserData = async () => {
-      try {
-        const userSettings = await UserService.getUserSettings();
-        setUsername(userSettings.username);
-      } catch (error) {
-        console.error('Failed to load user data:', error);
-        setUsername('User');
-      }
-    };
-    
-    loadUserData();
+  // Function to load all data
+  const loadData = useCallback(async () => {
+    try {
+      console.log('Loading profile data...');
+      // Load username
+      const userSettings = await UserService.getUserSettings();
+      setUsername(userSettings.username);
+
+      // Load quiz stats
+      const completionStats = await QuizService.getCompletionStats();
+      const allTopics = await QuizService.getTopics();
+      setStats(completionStats);
+
+      // Load completion stats for each topic
+      const topicStatsData = await Promise.all(
+        allTopics.map(async (topic) => {
+          const progress = await QuizService.getProgressByTopic(topic.id);
+          return {
+            name: topic.name,
+            completed: progress.completed,
+            total: progress.total,
+          };
+        })
+      );
+      setTopicStats(topicStatsData);
+      console.log('Profile data loaded successfully');
+    } catch (error) {
+      console.error('Failed to load user data or stats:', error);
+      setUsername('User');
+    }
   }, []);
 
-  // Load quiz stats when component mounts
-  useEffect(() => {
-    const loadStats = async () => {
-      try {
-        const completionStats = await QuizService.getCompletionStats();
-        const allTopics = await QuizService.getTopics();
-        setStats(completionStats);
+  // Reload data when screen comes into focus
+  useFocusEffect(
+    useCallback(() => {
+      loadData();
+    }, [loadData])
+  );
 
-        // Load completion stats for each topic
-        const topicStatsData = await Promise.all(
-          allTopics.map(async (topic) => {
-            const progress = await QuizService.getProgressByTopic(topic.id);
-            return {
-              name: topic.name,
-              completed: progress.completed,
-              total: progress.total,
-            };
-          })
-        );
-        setTopicStats(topicStatsData);
-      } catch (error) {
-        console.error('Failed to load quiz stats:', error);
-      }
+  // Listen for data updates from other tabs
+  useEffect(() => {
+    const handleUsernameUpdate = (newUsername: string) => {
+      console.log('Username updated event received:', newUsername);
+      setUsername(newUsername);
     };
 
-    loadStats();
-  }, []);
+    const handleDataUpdate = () => {
+      console.log('Data update event received, reloading...');
+      loadData();
+    };
+
+    // Subscribe to events
+    appEvents.on(EVENT_TYPES.USERNAME_UPDATED, handleUsernameUpdate);
+    appEvents.on(EVENT_TYPES.QUIZ_PROGRESS_UPDATED, handleDataUpdate);
+    appEvents.on(EVENT_TYPES.BOOKMARKS_UPDATED, handleDataUpdate);
+    appEvents.on(EVENT_TYPES.DATA_RESET, handleDataUpdate);
+
+    // Cleanup listeners on unmount
+    return () => {
+      appEvents.off(EVENT_TYPES.USERNAME_UPDATED, handleUsernameUpdate);
+      appEvents.off(EVENT_TYPES.QUIZ_PROGRESS_UPDATED, handleDataUpdate);
+      appEvents.off(EVENT_TYPES.BOOKMARKS_UPDATED, handleDataUpdate);
+      appEvents.off(EVENT_TYPES.DATA_RESET, handleDataUpdate);
+    };
+  }, [loadData]);
 
   return (
     <View style={styles.container}>
 
-      <Pressable style={styles.settings}>
+      <Pressable style={styles.settings} onPress={() => router.push('./settings' as any)}>
         <FontAwesome name="gear" size={40} color="black" />
       </Pressable>
 

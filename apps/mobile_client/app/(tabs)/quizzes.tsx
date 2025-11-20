@@ -7,6 +7,7 @@ import ProgressBar from '@/components/ProgressBar';
 import { QuizService } from '@/services/QuizService';
 import { BookmarkService } from '@/services/BookmarkService';
 import { useAppInit } from '@/contexts/AppInitContext';
+import { appEvents, EVENT_TYPES } from '@/lib/eventEmitter';
 
 interface SelectedAnswers {
   [key: number]: string;
@@ -53,6 +54,70 @@ export default function QuizPage() {
   const [topics, setTopics] = useState<string[]>(['All', 'Bookmarked']);
   const [loading, setLoading] = useState(true);
 
+  // Function to load all quiz data - can be called on init and on data changes
+  const loadQuizData = React.useCallback(async () => {
+    try {
+      setLoading(true);
+
+      // Load quiz data from database
+      const questions = await QuizService.getQuizQuestions();
+      const formattedQuestions: QuizItem[] = questions.map(q => ({
+        id: q.id,
+        topic: '', // We'll get this from topics table
+        title: q.title,
+        question: q.question,
+        options: JSON.parse(q.options),
+        correctAnswer: q.correct_answer,
+        feedback: q.feedback
+      }));
+
+      // Load topics and map them to questions
+      const topicData = await QuizService.getTopics();
+      const topicMap = new Map(topicData.map(t => [t.id, t.name]));
+
+      // Update questions with topic names
+      formattedQuestions.forEach(q => {
+        const question = questions.find(qu => qu.id === q.id);
+        if (question) {
+          q.topic = topicMap.get(question.topic_id) || '';
+        }
+      });
+
+      setQuizData(formattedQuestions);
+
+      // Load topics
+      setTopics(['All', 'Bookmarked', ...topicData.map(t => t.name)]);
+
+      // Load selected answers
+      const answers = await QuizService.getSelectedAnswers();
+      setSelectedAnswers(answers);
+
+      // Load completed questions
+      const completed = await QuizService.getCompletedQuestions();
+      setCompletedQuestions(new Set(completed));
+
+      // Load bookmarks
+      const bookmarkIds = await BookmarkService.getBookmarkedQuestionIds();
+      const bookmarks: BookmarkedQuestions = {};
+      bookmarkIds.forEach(id => {
+        bookmarks[id] = true;
+      });
+      setBookmarkedQuestions(bookmarks);
+
+      // Check if user has started
+      if (completed.length > 0) {
+        setHasStarted(true);
+      } else {
+        setHasStarted(false);
+      }
+
+    } catch (error) {
+      console.error('Failed to load quiz data:', error);
+    } finally {
+      setLoading(false);
+    }
+  }, []);
+
   // Load initial data
   useEffect(() => {
     // Wait for database seeding to complete before loading data
@@ -60,69 +125,47 @@ export default function QuizPage() {
       return;
     }
 
-    const loadInitialData = async () => {
-      try {
-        setLoading(true);
+    loadQuizData();
+  }, [isSeeded, loadQuizData]);
 
-        // Load quiz data from database
-        const questions = await QuizService.getQuizQuestions();
-        const formattedQuestions: QuizItem[] = questions.map(q => ({
-          id: q.id,
-          topic: '', // We'll get this from topics table
-          title: q.title,
-          question: q.question,
-          options: JSON.parse(q.options),
-          correctAnswer: q.correct_answer,
-          feedback: q.feedback
-        }));
-        
-        // Load topics and map them to questions
-        const topicData = await QuizService.getTopics();
-        const topicMap = new Map(topicData.map(t => [t.id, t.name]));
-        
-        // Update questions with topic names
-        formattedQuestions.forEach(q => {
-          const question = questions.find(qu => qu.id === q.id);
-          if (question) {
-            q.topic = topicMap.get(question.topic_id) || '';
-          }
-        });
-        
-        setQuizData(formattedQuestions);
-        
-        // Load topics
-        setTopics(['All', 'Bookmarked', ...topicData.map(t => t.name)]);
-        
-        // Load selected answers
-        const answers = await QuizService.getSelectedAnswers();
-        setSelectedAnswers(answers);
-        
-        // Load completed questions
-        const completed = await QuizService.getCompletedQuestions();
-        setCompletedQuestions(new Set(completed));
-        
-        // Load bookmarks
-        const bookmarkIds = await BookmarkService.getBookmarkedQuestionIds();
+  // Listen for data reset events from settings page
+  useEffect(() => {
+    const handleDataReset = () => {
+      console.log('Data reset event received, reloading quiz data...');
+      loadQuizData();
+    };
+
+    const handleQuizProgressUpdate = () => {
+      console.log('Quiz progress update event received, reloading quiz data...');
+      loadQuizData();
+    };
+
+    const handleBookmarksUpdate = () => {
+      console.log('Bookmarks update event received, reloading bookmarks...');
+      // Reload just the bookmarks
+      BookmarkService.getBookmarkedQuestionIds().then(bookmarkIds => {
         const bookmarks: BookmarkedQuestions = {};
         bookmarkIds.forEach(id => {
           bookmarks[id] = true;
         });
         setBookmarkedQuestions(bookmarks);
-        
-        // Check if user has started
-        if (completed.length > 0) {
-          setHasStarted(true);
-        }
-        
-      } catch (error) {
-        console.error('Failed to load quiz data:', error);
-      } finally {
-        setLoading(false);
-      }
+      }).catch(error => {
+        console.error('Failed to reload bookmarks:', error);
+      });
     };
 
-    loadInitialData();
-  }, [isSeeded]);
+    // Register event listeners
+    appEvents.on(EVENT_TYPES.DATA_RESET, handleDataReset);
+    appEvents.on(EVENT_TYPES.QUIZ_PROGRESS_UPDATED, handleQuizProgressUpdate);
+    appEvents.on(EVENT_TYPES.BOOKMARKS_UPDATED, handleBookmarksUpdate);
+
+    // Cleanup listeners on unmount
+    return () => {
+      appEvents.off(EVENT_TYPES.DATA_RESET, handleDataReset);
+      appEvents.off(EVENT_TYPES.QUIZ_PROGRESS_UPDATED, handleQuizProgressUpdate);
+      appEvents.off(EVENT_TYPES.BOOKMARKS_UPDATED, handleBookmarksUpdate);
+    };
+  }, [loadQuizData]);
 
   // Update data when topic changes
   useEffect(() => {
@@ -201,10 +244,10 @@ export default function QuizPage() {
     try {
       if (!completedQuestions.has(questionId)) {
         setHasStarted(true);
-        
+
         // Save to database
         await QuizService.saveQuizAnswer(questionId, selectedOption);
-        
+
         // Update local state
         const newSelectedAnswers = {
           ...selectedAnswers,
@@ -214,15 +257,21 @@ export default function QuizPage() {
 
         const newCompletedQuestions = new Set([...completedQuestions, questionId]);
         setCompletedQuestions(newCompletedQuestions);
+
+        // Emit event to update other pages (e.g., profile)
+        appEvents.emit(EVENT_TYPES.QUIZ_PROGRESS_UPDATED);
       } else if (calculateCompletion() === 100) {
         // Allow editing answers when all questions are completed
         await QuizService.saveQuizAnswer(questionId, selectedOption);
-        
+
         const newSelectedAnswers = {
           ...selectedAnswers,
           [questionId]: selectedOption
         };
         setSelectedAnswers(newSelectedAnswers);
+
+        // Emit event to update other pages (e.g., profile)
+        appEvents.emit(EVENT_TYPES.QUIZ_PROGRESS_UPDATED);
       }
     } catch (error) {
       console.error('Failed to save quiz answer:', error);
@@ -237,13 +286,16 @@ export default function QuizPage() {
     try {
       // Toggle in database
       const isNowBookmarked = await BookmarkService.toggleBookmark(questionId);
-      
+
       // Update local state
       const updatedBookmarks = {
         ...bookmarkedQuestions,
         [questionId]: isNowBookmarked
       };
       setBookmarkedQuestions(updatedBookmarks);
+
+      // Emit event to update other pages (e.g., profile)
+      appEvents.emit(EVENT_TYPES.BOOKMARKS_UPDATED);
     } catch (error) {
       console.error('Failed to toggle bookmark:', error);
     }
