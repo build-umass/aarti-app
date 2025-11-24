@@ -1,5 +1,5 @@
 import { StyleSheet, View, Text, ViewStyle, ColorValue } from 'react-native';
-import { Colors } from '@/constants/Colors';
+import { BrandColors } from '@/constants/Theme';
 
 
 type ProgressBarProps = {
@@ -41,7 +41,7 @@ const styles = StyleSheet.create({
   },
   progressFill: {
     height: '100%',
-    backgroundColor: Colors.light.tint,
+    backgroundColor: BrandColors.primary,
     borderRadius: 4,
   }
 });

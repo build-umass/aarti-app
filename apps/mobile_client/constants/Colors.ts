@@ -5,7 +5,7 @@
 
 import { BrandColors } from './Theme';
 
-const tintColorLight = BrandColors.primary; // Purple color used throughout the app
+const tintColorLight = BrandColors.pink; // Pink from logo - used for tab icons
 const tintColorDark = '#fff';
 
 export const Colors = {
