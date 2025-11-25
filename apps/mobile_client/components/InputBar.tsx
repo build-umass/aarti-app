@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { View, TextInput, TouchableOpacity, StyleSheet } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
+import { useAppTranslation } from '@/hooks/useAppTranslation';
 
 // Define props for InputBar
 interface InputBarProps {
@@ -8,6 +9,7 @@ interface InputBarProps {
 }
 
 const InputBar: React.FC<InputBarProps> = ({ onSend }) => {
+  const { t } = useAppTranslation('chat');
   const [text, setText] = useState('');
 
   const handleSendPress = () => {
@@ -23,7 +25,7 @@ const InputBar: React.FC<InputBarProps> = ({ onSend }) => {
         style={styles.textBox}
         value={text}
         onChangeText={setText}
-        placeholder="Type a message..."
+        placeholder={t('input_placeholder')}
         onSubmitEditing={handleSendPress}
       />
       <TouchableOpacity onPress={handleSendPress} style={styles.sendButton}>

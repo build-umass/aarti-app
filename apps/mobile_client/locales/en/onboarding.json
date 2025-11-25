@@ -1,0 +1,32 @@
+{
+  "welcome_title": "Welcome to Aarti",
+  "welcome_subtitle": "Your support and resource companion",
+  "name_input_label": "What should we call you?",
+  "name_input_placeholder": "Enter your name",
+  "get_started_button": "Get Started",
+  "features_title": "Explore the App",
+  "features": {
+    "resources": {
+      "title": "Resources",
+      "description": "Access helpful information and support materials"
+    },
+    "quizzes": {
+      "title": "Quizzes",
+      "description": "Test your knowledge and track your learning progress"
+    },
+    "chat": {
+      "title": "Chat",
+      "description": "Get instant answers to your questions"
+    },
+    "profile": {
+      "title": "Profile",
+      "description": "Track your progress and customize your experience"
+    }
+  },
+  "alerts": {
+    "name_required_title": "Name Required",
+    "name_required_message": "Please enter your name to continue.",
+    "error_title": "Error",
+    "error_message": "Something went wrong. Please try again."
+  }
+}

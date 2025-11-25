@@ -1,0 +1,31 @@
+{
+  "welcome_back": "Welcome back,",
+  "stats": {
+    "quizzes_completed": "Quizzes Completed",
+    "total_quizzes": "Total Quizzes",
+    "bookmarks": "Bookmarks"
+  },
+  "progress": {
+    "title": "Your Progress",
+    "overall_completion": "Overall Completion"
+  },
+  "explore_title": "Explore",
+  "features": {
+    "resources": {
+      "title": "Resources",
+      "description": "Browse helpful information and support materials"
+    },
+    "quizzes": {
+      "title": "Quizzes",
+      "description": "Test your knowledge and track progress"
+    },
+    "chat": {
+      "title": "Chat",
+      "description": "Get instant answers to your questions"
+    },
+    "profile": {
+      "title": "Profile",
+      "description": "View your stats and customize settings"
+    }
+  }
+}

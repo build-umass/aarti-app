@@ -1,4 +1,4 @@
-import { StyleSheet, Pressable, View, ScrollView, Text, Dimensions } from 'react-native';
+import { StyleSheet, Pressable, View, ScrollView, Text, Dimensions, TouchableOpacity } from 'react-native';
 import { useState, useCallback, useEffect } from 'react';
 import { useRouter, useFocusEffect } from 'expo-router';
 import { Colors } from '@/constants/Colors';
@@ -7,6 +7,8 @@ import FontAwesome from '@expo/vector-icons/FontAwesome';
 import { UserService } from '@/services/UserService';
 import { QuizService } from '@/services/QuizService';
 import { appEvents, EVENT_TYPES } from '@/lib/eventEmitter';
+import { useAppTranslation } from '@/hooks/useAppTranslation';
+import { useLanguage } from '@/contexts/LanguageContext';
 
 // TODO:
 // fix child key console warning
@@ -16,6 +18,8 @@ import { appEvents, EVENT_TYPES } from '@/lib/eventEmitter';
 // resources stats (after resources are uploaded and finalized with categories)
 
 export default function ProfileScreen() {
+  const { t } = useAppTranslation('profile');
+  const { currentLanguage, changeLanguage, availableLanguages } = useLanguage();
   const router = useRouter();
   const [activeTab, setActiveTab] = useState<'quiz' | 'resource'>('quiz'); // valid options: quiz, resource
   const [username, setUsername] = useState<string>('Loading...');
@@ -107,24 +111,50 @@ export default function ProfileScreen() {
         <Text style={styles.text}>{username}</Text>
       </View>
 
+      {/* Language Selector */}
+      <View style={styles.languageSection}>
+        <Text style={styles.languageTitle}>{t('language.title')}</Text>
+        <View style={styles.languageButtons}>
+          {availableLanguages.map((lang) => (
+            <TouchableOpacity
+              key={lang.code}
+              style={[
+                styles.languageButton,
+                currentLanguage === lang.code && styles.languageButtonActive
+              ]}
+              onPress={() => changeLanguage(lang.code)}
+            >
+              <Text
+                style={[
+                  styles.languageButtonText,
+                  currentLanguage === lang.code && styles.languageButtonTextActive
+                ]}
+              >
+                {lang.name}
+              </Text>
+            </TouchableOpacity>
+          ))}
+        </View>
+      </View>
+
       <View style={styles.statsSelection}>
 
-        <Pressable 
+        <Pressable
           style={styles.button}
           onPressIn={() => setActiveTab("quiz")}>
-          <Text style={[{color: activeTab === 'quiz' ? Colors.light.tint : "black"}, styles.buttonText]}>Quizzes</Text>  
+          <Text style={[{color: activeTab === 'quiz' ? Colors.light.tint : "black"}, styles.buttonText]}>{t('tabs.quizzes')}</Text>
         </Pressable>
 
         <View style={styles.divider}></View>
 
-        <Pressable 
+        <Pressable
           style={styles.button}
           onPress={() => setActiveTab("resource")}>
-          <Text style={[{color: activeTab === 'resource' ? Colors.light.tint : "black"}, styles.buttonText]}>Resources</Text>  
+          <Text style={[{color: activeTab === 'resource' ? Colors.light.tint : "black"}, styles.buttonText]}>{t('tabs.resources')}</Text>
         </Pressable>
       </View>
 
-      {renderStats(activeTab, stats, topicStats)}
+      {renderStats(activeTab, stats, topicStats, t)}
 
     </View>
   );
@@ -133,30 +163,32 @@ export default function ProfileScreen() {
 const renderStats = (
   activeTab: 'quiz' | 'resource',
   stats: { total: number; completed: number; percentage: number },
-  topicStats: { name: string; completed: number; total: number }[]
+  topicStats: { name: string; completed: number; total: number }[],
+  t: (key: string, params?: any) => string
 ) => {
   return (
     <View style={styles.statsOutline}>
-      {activeTab === 'quiz' ? renderQuizStats(stats, topicStats) : renderResourceStats()}
+      {activeTab === 'quiz' ? renderQuizStats(stats, topicStats, t) : renderResourceStats()}
     </View>
   );
 };
 
 const renderQuizStats = (
   stats: { total: number; completed: number; percentage: number },
-  topicStats: { name: string; completed: number; total: number }[]
+  topicStats: { name: string; completed: number; total: number }[],
+  t: (key: string, params?: any) => string
 ) => {
   return (
     <View style={styles.statsContent}>
       <ProgressBar progressFunc={() => stats.percentage} backgroundColor={"#ffffff"} />
       <Text style={[styles.statsText, {fontWeight:'bold'}]}>
-        Quizzes Completed: {stats.completed}/{stats.total}
+        {t('stats.quizzes_completed', { completed: stats.completed, total: stats.total })}
       </Text>
 
       <ScrollView style={styles.statsScrollBox} persistentScrollbar={true}>
         {topicStats.map((topic, i) =>
           <Text style={styles.statsText} key={i}>
-            • by {topic.name}: {topic.completed}/{topic.total}
+            • {t('stats.by_topic', { topic: topic.name, completed: topic.completed, total: topic.total })}
           </Text>
         )}
       </ScrollView>
@@ -253,5 +285,53 @@ const styles = StyleSheet.create({
   statsScrollBox: {
     height: "85%",
     marginTop: 3,
+  },
+  languageSection: {
+    marginTop: 20,
+    marginHorizontal: 20,
+    padding: 16,
+    backgroundColor: '#f8f8f8',
+    borderRadius: 12,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.1,
+    shadowRadius: 2,
+    elevation: 2,
+  },
+  languageTitle: {
+    fontSize: 16,
+    fontWeight: '600',
+    color: '#11181C',
+    marginBottom: 12,
+    textAlign: 'center',
+  },
+  languageButtons: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    gap: 10,
+    flexWrap: 'wrap',
+  },
+  languageButton: {
+    paddingVertical: 10,
+    paddingHorizontal: 20,
+    borderRadius: 20,
+    backgroundColor: '#fff',
+    borderWidth: 2,
+    borderColor: '#e0e0e0',
+    minWidth: 100,
+    alignItems: 'center',
+  },
+  languageButtonActive: {
+    backgroundColor: Colors.light.tint,
+    borderColor: Colors.light.tint,
+  },
+  languageButtonText: {
+    fontSize: 14,
+    fontWeight: '500',
+    color: '#687076',
+  },
+  languageButtonTextActive: {
+    color: '#fff',
+    fontWeight: '600',
   },
 });

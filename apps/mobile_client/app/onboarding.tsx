@@ -12,16 +12,18 @@ import {
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { router } from 'expo-router';
 import { UserService } from '../services/UserService';
+import { useAppTranslation } from '@/hooks/useAppTranslation';
 import { Feather, Entypo } from '@expo/vector-icons';
 
 export default function OnboardingScreen() {
+  const { t } = useAppTranslation('onboarding');
   const [username, setUsername] = useState('');
 
   const handleGetStarted = async () => {
     // Validate username input
     const trimmedUsername = username.trim();
     if (!trimmedUsername) {
-      Alert.alert('Name Required', 'Please enter your name to continue.');
+      Alert.alert(t('alerts.name_required_title'), t('alerts.name_required_message'));
       return;
     }
 
@@ -33,7 +35,7 @@ export default function OnboardingScreen() {
       router.replace('/(tabs)');
     } catch (error) {
       console.error('Error completing onboarding:', error);
-      Alert.alert('Error', 'Something went wrong. Please try again.');
+      Alert.alert(t('alerts.error_title'), t('alerts.error_message'));
     }
   };
 
@@ -51,18 +53,18 @@ export default function OnboardingScreen() {
 
         {/* Welcome Text */}
         <View style={styles.welcomeSection}>
-          <Text style={styles.welcomeTitle}>Welcome to Aarti</Text>
+          <Text style={styles.welcomeTitle}>{t('welcome_title')}</Text>
           <Text style={styles.welcomeSubtitle}>
-            Your support and resource companion
+            {t('welcome_subtitle')}
           </Text>
         </View>
 
         {/* Name Input Section */}
         <View style={styles.nameInputSection}>
-          <Text style={styles.nameInputLabel}>What should we call you?</Text>
+          <Text style={styles.nameInputLabel}>{t('name_input_label')}</Text>
           <TextInput
             style={styles.nameInput}
-            placeholder="Enter your name"
+            placeholder={t('name_input_placeholder')}
             placeholderTextColor="#999"
             value={username}
             onChangeText={setUsername}
@@ -78,12 +80,12 @@ export default function OnboardingScreen() {
           onPress={handleGetStarted}
           activeOpacity={0.8}
         >
-          <Text style={styles.getStartedButtonText}>Get Started</Text>
+          <Text style={styles.getStartedButtonText}>{t('get_started_button')}</Text>
         </TouchableOpacity>
 
         {/* Features Section */}
         <View style={styles.featuresContainer}>
-          <Text style={styles.featuresTitle}>Explore the App</Text>
+          <Text style={styles.featuresTitle}>{t('features_title')}</Text>
 
           {/* Feature Cards */}
           <View style={styles.featureCard}>
@@ -91,9 +93,9 @@ export default function OnboardingScreen() {
               <Feather name="book-open" size={28} color="#5f2446" />
             </View>
             <View style={styles.featureContent}>
-              <Text style={styles.featureTitle}>Resources</Text>
+              <Text style={styles.featureTitle}>{t('features.resources.title')}</Text>
               <Text style={styles.featureDescription}>
-                Access helpful information and support materials
+                {t('features.resources.description')}
               </Text>
             </View>
           </View>
@@ -103,9 +105,9 @@ export default function OnboardingScreen() {
               <Entypo name="graduation-cap" size={28} color="#5f2446" />
             </View>
             <View style={styles.featureContent}>
-              <Text style={styles.featureTitle}>Quizzes</Text>
+              <Text style={styles.featureTitle}>{t('features.quizzes.title')}</Text>
               <Text style={styles.featureDescription}>
-                Test your knowledge and track your learning progress
+                {t('features.quizzes.description')}
               </Text>
             </View>
           </View>
@@ -115,9 +117,9 @@ export default function OnboardingScreen() {
               <Entypo name="chat" size={28} color="#5f2446" />
             </View>
             <View style={styles.featureContent}>
-              <Text style={styles.featureTitle}>Chat</Text>
+              <Text style={styles.featureTitle}>{t('features.chat.title')}</Text>
               <Text style={styles.featureDescription}>
-                Get instant answers to your questions
+                {t('features.chat.description')}
               </Text>
             </View>
           </View>
@@ -127,9 +129,9 @@ export default function OnboardingScreen() {
               <Feather name="user" size={28} color="#5f2446" />
             </View>
             <View style={styles.featureContent}>
-              <Text style={styles.featureTitle}>Profile</Text>
+              <Text style={styles.featureTitle}>{t('features.profile.title')}</Text>
               <Text style={styles.featureDescription}>
-                Track your progress and customize your experience
+                {t('features.profile.description')}
               </Text>
             </View>
           </View>

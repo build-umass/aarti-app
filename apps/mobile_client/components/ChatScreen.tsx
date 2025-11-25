@@ -8,6 +8,7 @@ import {
 } from 'react-native';
 import MessageBubble from './MessageBubble';
 import InputBar from './InputBar';
+import { useAppTranslation } from '@/hooks/useAppTranslation';
 
 // Define a Message type
 interface Message {
@@ -17,10 +18,11 @@ interface Message {
 }
 
 const ChatScreen: React.FC = () => {
+  const { t } = useAppTranslation('chat');
   const [messages, setMessages] = useState<Message[]>([
     {
       id: '0',
-      text: 'Hey my name is Aarti! Here to help you find the resources you need! What do you have on your mind?',
+      text: t('initial_message'),
       isUser: false,
     },
   ]);
@@ -37,7 +39,7 @@ const ChatScreen: React.FC = () => {
           ...prevMessages,
           {
             id: (prevMessages.length + 1).toString(),
-            text: 'Here are some resources you can refer to...',
+            text: t('resources_message'),
             isUser: false,
           },
         ]);
