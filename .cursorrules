@@ -50,16 +50,62 @@ const topicId = question.topic_id;
 const formatted = { topicId: question.topic_id };
 ```
 
+## CRITICAL: Theme and Color Usage
+
+**ALWAYS use centralized colors from `constants/Theme.ts` - NEVER hardcode color values!**
+
+### Centralized Brand Colors
+- Location: `apps/mobile_client/constants/Theme.ts`
+- Import: `import { BrandColors } from '@/constants/Theme';`
+
+### Key Brand Colors
+- **Primary purple**: `BrandColors.primary` (`#5f2446`) - headers, progress bars, primary actions
+- **Primary light**: `BrandColors.primaryLight` (`#f0e6ed`) - light purple backgrounds
+- **Pink**: `BrandColors.pink` (`#EE628C`) - logo accent
+- **Blue**: `BrandColors.blue` (`#2270CA`) - resources/info
+- **Green**: `BrandColors.green` (`#22c55e`) - success/chat
+- **Orange**: `BrandColors.orange` (`#f59e0b`) - warning/profile
+
+### Color Usage Rules
+1. **NEVER** hardcode hex values like `#5f2446` in components
+2. **ALWAYS** import and use `BrandColors` constants
+3. All progress bars MUST use `BrandColors.primary` (purple) for consistency
+4. `Colors.light.tint` references `BrandColors.primary`
+
+```typescript
+import { BrandColors } from '@/constants/Theme';
+
+// ✅ CORRECT - Use centralized colors
+const styles = StyleSheet.create({
+  progressBar: {
+    backgroundColor: BrandColors.primary,  // Purple
+  },
+  header: {
+    color: BrandColors.primary,
+  }
+});
+
+// ❌ WRONG - Don't hardcode colors
+const styles = StyleSheet.create({
+  progressBar: {
+    backgroundColor: '#5f2446',  // Hardcoded - DON'T DO THIS
+  }
+});
+```
+
 ## Architecture Patterns
 
 ### Mobile Client (apps/mobile_client)
 - **Routing**: Expo Router file-based routing (app/ directory)
 - **Database**: SQLite via expo-sqlite (async API: `getAllAsync`, `getFirstAsync`, `runAsync`)
 - **Service Layer**: Static class methods (e.g., `QuizService.getQuizQuestions()`)
+- **Theme System**: Centralized colors in `constants/Theme.ts`
 - **Key Files**:
   - `app/_layout.tsx` - Database initialization during splash
   - `lib/database.ts` - SQLite setup
   - `services/QuizService.ts`, `BookmarkService.ts`, `UserService.ts`
+  - `constants/Theme.ts` - Centralized brand colors (ALWAYS use this!)
+  - `constants/Colors.ts` - Light/dark mode color definitions
 
 ### Backend (apps/backend)
 - **Pattern**: Routes → Controllers → Services → Models
@@ -158,17 +204,22 @@ Location: `types/index.ts`
 
 ## When Writing Code
 
-1. **Always check naming convention**: Are you accessing service data? Use `snake_case`. Are you creating component state? Use `camelCase`.
+1. **Theme and Colors**:
+   - ALWAYS use `BrandColors` from `constants/Theme.ts`
+   - NEVER hardcode color hex values
+   - Progress bars MUST use `BrandColors.primary` (purple)
 
-2. **Service methods**: Must return data in database format (`snake_case`)
+2. **Always check naming convention**: Are you accessing service data? Use `snake_case`. Are you creating component state? Use `camelCase`.
 
-3. **Component code**: Transform service data to `camelCase` when storing in component state or props
+3. **Service methods**: Must return data in database format (`snake_case`)
 
-4. **TypeScript interfaces**: 
+4. **Component code**: Transform service data to `camelCase` when storing in component state or props
+
+5. **TypeScript interfaces**:
    - Service interfaces: `snake_case` (matches database)
    - Component/prop interfaces: `camelCase` (application layer)
 
-5. **Hooks**: Always at top level, before any conditional returns
+6. **Hooks**: Always at top level, before any conditional returns
 
-6. **Database access**: Only through service layer, never directly from components
+7. **Database access**: Only through service layer, never directly from components
 

@@ -125,6 +125,9 @@ aarti-app/
 - `lib/database.ts` - SQLite database setup and initialization
 - `services/` - Business logic layer (QuizService, BookmarkService, UserService)
 - `components/` - Reusable UI components
+- `constants/` - Theme, colors, and app-wide constants
+  - `Theme.ts` - Centralized brand colors and theme values
+  - `Colors.ts` - Light/dark mode color definitions
 
 **Database:**
 - **Type:** SQLite (local, offline-first)
@@ -136,6 +139,42 @@ aarti-app/
 - Services use raw SQL with expo-sqlite's async API
 - Located in `services/` directory
 - Pattern: `QuizService.methodName()` - static methods
+
+**Theme and Colors:**
+- **Location:** `constants/Theme.ts` and `constants/Colors.ts`
+- **Centralized Design System:** All brand colors defined in `Theme.ts`
+- **Key Brand Colors:**
+  - Primary purple: `#5f2446` (used for headers, progress bars, primary actions)
+  - Primary light: `#f0e6ed` (light purple backgrounds)
+  - Pink: `#EE628C` (from logo, secondary accent)
+  - Blue: `#2270CA` (resources/info)
+  - Green: `#22c55e` (success/chat)
+  - Orange: `#f59e0b` (warning/profile)
+
+**IMPORTANT Color Usage:**
+- **ALWAYS** use `BrandColors` from `constants/Theme.ts` instead of hardcoded hex values
+- **NEVER** hardcode colors like `#5f2446` directly in components
+- Progress bars use `BrandColors.primary` (purple) consistently throughout the app
+- `Colors.light.tint` references `BrandColors.primary` for theme consistency
+
+**Example:**
+```typescript
+import { BrandColors } from '@/constants/Theme';
+
+// ✅ CORRECT - Use centralized colors
+const styles = StyleSheet.create({
+  progressBar: {
+    backgroundColor: BrandColors.primary,  // Purple
+  }
+});
+
+// ❌ WRONG - Don't hardcode colors
+const styles = StyleSheet.create({
+  progressBar: {
+    backgroundColor: '#5f2446',  // Hardcoded
+  }
+});
+```
 
 ### Backend (Node.js Express)
 
@@ -457,6 +496,8 @@ Comprehensive documentation available in `docs/`:
 - `lib/database.ts` - Database setup and migrations
 - `services/QuizService.ts` - Quiz operations
 - `app/(tabs)/quizzes.tsx` - Main quiz screen
+- `constants/Theme.ts` - Centralized brand colors and theme
+- `constants/Colors.ts` - Light/dark mode colors
 
 ### Backend
 - `index.ts` - Server entry point

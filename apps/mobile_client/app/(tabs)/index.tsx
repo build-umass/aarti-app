@@ -14,6 +14,7 @@ import { QuizService } from '@/services/QuizService';
 import { BookmarkService } from '@/services/BookmarkService';
 import { useAppInit } from '@/contexts/AppInitContext';
 import { appEvents, EVENT_TYPES } from '@/lib/eventEmitter';
+import { BrandColors } from '@/constants/Theme';
 
 export default function HomeScreen() {
   const { isSeeded } = useAppInit();
@@ -155,8 +156,8 @@ export default function HomeScreen() {
             onPress={() => navigateToTab('quizzes')}
             activeOpacity={0.7}
           >
-            <View style={[styles.featureIconContainer, { backgroundColor: '#f0e6ed' }]}>
-              <Entypo name="graduation-cap" size={28} color="#5f2446" />
+            <View style={[styles.featureIconContainer, { backgroundColor: BrandColors.primaryLight }]}>
+              <Entypo name="graduation-cap" size={28} color={BrandColors.primary} />
             </View>
             <View style={styles.featureContent}>
               <Text style={styles.featureTitle}>Quizzes</Text>
@@ -228,7 +229,7 @@ const styles = StyleSheet.create({
   usernameText: {
     fontSize: 28,
     fontWeight: 'bold',
-    color: '#5f2446',
+    color: BrandColors.primary,
   },
   statsContainer: {
     flexDirection: 'row',
@@ -251,7 +252,7 @@ const styles = StyleSheet.create({
   statNumber: {
     fontSize: 24,
     fontWeight: 'bold',
-    color: '#5f2446',
+    color: BrandColors.primary,
     marginBottom: 4,
   },
   statLabel: {
@@ -292,7 +293,7 @@ const styles = StyleSheet.create({
   progressPercentage: {
     fontSize: 20,
     fontWeight: 'bold',
-    color: '#5f2446',
+    color: BrandColors.primary,
   },
   progressBarContainer: {
     height: 8,
@@ -302,7 +303,7 @@ const styles = StyleSheet.create({
   },
   progressBarFill: {
     height: '100%',
-    backgroundColor: '#5f2446',
+    backgroundColor: BrandColors.primary,
     borderRadius: 4,
   },
   featuresSection: {
