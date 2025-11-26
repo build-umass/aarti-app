@@ -9,6 +9,7 @@ import { QuizService } from '@/services/QuizService';
 import { appEvents, EVENT_TYPES } from '@/lib/eventEmitter';
 import { useAppTranslation } from '@/hooks/useAppTranslation';
 import { useLanguage } from '@/contexts/LanguageContext';
+import React from 'react';
 
 // TODO:
 // fix child key console warning
@@ -101,61 +102,60 @@ export default function ProfileScreen() {
 
   return (
     <View style={styles.container}>
-
       <Pressable style={styles.settings} onPress={() => router.push('./settings' as any)}>
         <FontAwesome name="gear" size={40} color="black" />
       </Pressable>
 
-      <View style={styles.user}>
-        <FontAwesome name="user-circle" size={170} color="black" />
-        <Text style={styles.text}>{username}</Text>
-      </View>
-
-      {/* Language Selector */}
-      <View style={styles.languageSection}>
-        <Text style={styles.languageTitle}>{t('language.title')}</Text>
-        <View style={styles.languageButtons}>
-          {availableLanguages.map((lang) => (
-            <TouchableOpacity
-              key={lang.code}
-              style={[
-                styles.languageButton,
-                currentLanguage === lang.code && styles.languageButtonActive
-              ]}
-              onPress={() => changeLanguage(lang.code)}
-            >
-              <Text
-                style={[
-                  styles.languageButtonText,
-                  currentLanguage === lang.code && styles.languageButtonTextActive
-                ]}
-              >
-                {lang.name}
-              </Text>
-            </TouchableOpacity>
-          ))}
+      <ScrollView style={styles.scrollContainer} contentContainerStyle={styles.scrollContent}>
+        <View style={styles.user}>
+          <FontAwesome name="user-circle" size={170} color="black" />
+          <Text style={styles.text}>{username}</Text>
         </View>
-      </View>
 
-      <View style={styles.statsSelection}>
+        {/* Language Selector */}
+        <View style={styles.languageSection}>
+          <Text style={styles.languageTitle}>{t('language.title')}</Text>
+          <View style={styles.languageButtons}>
+            {availableLanguages.map((lang) => (
+              <TouchableOpacity
+                key={lang.code}
+                style={[
+                  styles.languageButton,
+                  currentLanguage === lang.code && styles.languageButtonActive
+                ]}
+                onPress={() => changeLanguage(lang.code)}
+              >
+                <Text
+                  style={[
+                    styles.languageButtonText,
+                    currentLanguage === lang.code && styles.languageButtonTextActive
+                  ]}
+                >
+                  {lang.name}
+                </Text>
+              </TouchableOpacity>
+            ))}
+          </View>
+        </View>
 
-        <Pressable
-          style={styles.button}
-          onPressIn={() => setActiveTab("quiz")}>
-          <Text style={[{color: activeTab === 'quiz' ? Colors.light.tint : "black"}, styles.buttonText]}>{t('tabs.quizzes')}</Text>
-        </Pressable>
+        <View style={styles.statsSelection}>
+          <Pressable
+            style={styles.button}
+            onPressIn={() => setActiveTab("quiz")}>
+            <Text style={[{color: activeTab === 'quiz' ? Colors.light.tint : "black"}, styles.buttonText]}>{t('tabs.quizzes')}</Text>
+          </Pressable>
 
-        <View style={styles.divider}></View>
+          <View style={styles.divider}></View>
 
-        <Pressable
-          style={styles.button}
-          onPress={() => setActiveTab("resource")}>
-          <Text style={[{color: activeTab === 'resource' ? Colors.light.tint : "black"}, styles.buttonText]}>{t('tabs.resources')}</Text>
-        </Pressable>
-      </View>
+          <Pressable
+            style={styles.button}
+            onPress={() => setActiveTab("resource")}>
+            <Text style={[{color: activeTab === 'resource' ? Colors.light.tint : "black"}, styles.buttonText]}>{t('tabs.resources')}</Text>
+          </Pressable>
+        </View>
 
-      {renderStats(activeTab, stats, topicStats, t)}
-
+        {renderStats(activeTab, stats, topicStats, t)}
+      </ScrollView>
     </View>
   );
 }
@@ -228,6 +228,12 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: 'white',
   },
+  scrollContainer: {
+    flex: 1,
+  },
+  scrollContent: {
+    paddingBottom: 20,
+  },
   user: {
     marginTop: 10,
     alignItems: 'center'
@@ -238,9 +244,20 @@ const styles = StyleSheet.create({
     marginTop: 25,
     textAlign: 'center',
   },
+  languageSection: {
+    marginTop: 20,
+    marginHorizontal: 20,
+    alignItems: 'center',
+  },
+  languageTitle: {
+    fontSize: 16,
+    fontWeight: '600',
+    color: '#11181C',
+    marginBottom: 12,
+  },
   statsSelection: {
     justifyContent: 'center',
-    marginTop: 30,
+    marginTop: 20,
     flexDirection: 'row',
   },
   button: {
@@ -256,7 +273,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#ccc',
   },
   statsOutline: {
-    flex: 1,
+    minHeight: 300,
     marginTop: 20,
     marginRight: 20,
     marginLeft: 20,
@@ -273,7 +290,6 @@ const styles = StyleSheet.create({
     elevation: 3,
   },
   statsContent: {
-    flex: 1,
     marginLeft: 20,
     marginRight: 20,
     marginTop: 5,
@@ -284,26 +300,8 @@ const styles = StyleSheet.create({
   },
   statsScrollBox: {
     height: "85%",
+    maxHeight: 150,
     marginTop: 3,
-  },
-  languageSection: {
-    marginTop: 20,
-    marginHorizontal: 20,
-    padding: 16,
-    backgroundColor: '#f8f8f8',
-    borderRadius: 12,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 1 },
-    shadowOpacity: 0.1,
-    shadowRadius: 2,
-    elevation: 2,
-  },
-  languageTitle: {
-    fontSize: 16,
-    fontWeight: '600',
-    color: '#11181C',
-    marginBottom: 12,
-    textAlign: 'center',
   },
   languageButtons: {
     flexDirection: 'row',
@@ -328,7 +326,7 @@ const styles = StyleSheet.create({
   languageButtonText: {
     fontSize: 14,
     fontWeight: '500',
-    color: '#687076',
+    color: '#11181C',
   },
   languageButtonTextActive: {
     color: '#fff',
