@@ -1,4 +1,4 @@
-import { StyleSheet, Pressable, View, ScrollView, Text, Dimensions, TouchableOpacity } from 'react-native';
+import { StyleSheet, Pressable, View, ScrollView, Text, Dimensions } from 'react-native';
 import { useState, useCallback, useEffect } from 'react';
 import { useRouter, useFocusEffect } from 'expo-router';
 import { Colors } from '@/constants/Colors';
@@ -9,6 +9,7 @@ import { QuizService } from '@/services/QuizService';
 import { appEvents, EVENT_TYPES } from '@/lib/eventEmitter';
 import { useAppTranslation } from '@/hooks/useAppTranslation';
 import { useLanguage } from '@/contexts/LanguageContext';
+import { Picker } from '@react-native-picker/picker';
 import React from 'react';
 
 // TODO:
@@ -115,26 +116,16 @@ export default function ProfileScreen() {
         {/* Language Selector */}
         <View style={styles.languageSection}>
           <Text style={styles.languageTitle}>{t('language.title')}</Text>
-          <View style={styles.languageButtons}>
-            {availableLanguages.map((lang) => (
-              <TouchableOpacity
-                key={lang.code}
-                style={[
-                  styles.languageButton,
-                  currentLanguage === lang.code && styles.languageButtonActive
-                ]}
-                onPress={() => changeLanguage(lang.code)}
-              >
-                <Text
-                  style={[
-                    styles.languageButtonText,
-                    currentLanguage === lang.code && styles.languageButtonTextActive
-                  ]}
-                >
-                  {lang.name}
-                </Text>
-              </TouchableOpacity>
-            ))}
+          <View style={styles.pickerContainer}>
+            <Picker
+              selectedValue={currentLanguage}
+              onValueChange={(itemValue) => changeLanguage(itemValue)}
+              style={styles.picker}
+            >
+              {availableLanguages.map((lang) => (
+                <Picker.Item key={lang.code} label={lang.name} value={lang.code} />
+              ))}
+            </Picker>
           </View>
         </View>
 
@@ -253,7 +244,25 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: '600',
     color: '#11181C',
-    marginBottom: 12,
+    marginBottom: 8,
+  },
+  pickerContainer: {
+    borderWidth: 1,
+    borderColor: '#ddd',
+    borderRadius: 8,
+    backgroundColor: '#f9f9f9',
+    overflow: 'hidden',
+    width: 200,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.1,
+    shadowRadius: 2,
+    elevation: 2,
+  },
+  picker: {
+    height: 50,
+    width: '100%',
+    color: '#11181C',
   },
   statsSelection: {
     justifyContent: 'center',
@@ -302,34 +311,5 @@ const styles = StyleSheet.create({
     height: "85%",
     maxHeight: 150,
     marginTop: 3,
-  },
-  languageButtons: {
-    flexDirection: 'row',
-    justifyContent: 'center',
-    gap: 10,
-    flexWrap: 'wrap',
-  },
-  languageButton: {
-    paddingVertical: 10,
-    paddingHorizontal: 20,
-    borderRadius: 20,
-    backgroundColor: '#fff',
-    borderWidth: 2,
-    borderColor: '#e0e0e0',
-    minWidth: 100,
-    alignItems: 'center',
-  },
-  languageButtonActive: {
-    backgroundColor: Colors.light.tint,
-    borderColor: Colors.light.tint,
-  },
-  languageButtonText: {
-    fontSize: 14,
-    fontWeight: '500',
-    color: '#11181C',
-  },
-  languageButtonTextActive: {
-    color: '#fff',
-    fontWeight: '600',
   },
 });

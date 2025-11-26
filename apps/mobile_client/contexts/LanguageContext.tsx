@@ -31,6 +31,7 @@ export const LanguageProvider: React.FC<LanguageProviderProps> = ({ children }) 
   // Future languages can be added here
   const availableLanguages = [
     { code: 'en', name: 'English' },
+    { code: 'te', name: 'తెలుగు' },
     // { code: 'es', name: 'Español' },
     // { code: 'fr', name: 'Français' },
     // { code: 'hi', name: 'हिन्दी' },

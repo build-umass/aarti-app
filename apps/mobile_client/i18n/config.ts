@@ -9,6 +9,17 @@ import quizEN from '../locales/en/quiz.json';
 import profileEN from '../locales/en/profile.json';
 import chatEN from '../locales/en/chat.json';
 import onboardingEN from '../locales/en/onboarding.json';
+import settingsEN from '../locales/en/settings.json';
+
+// Import Telugu translation files
+import navigationTE from '../locales/te/navigation.json';
+import homeTE from '../locales/te/home.json';
+import quizTE from '../locales/te/quiz.json';
+import profileTE from '../locales/te/profile.json';
+import chatTE from '../locales/te/chat.json';
+import onboardingTE from '../locales/te/onboarding.json';
+import settingsTE from '../locales/te/settings.json';
+
 
 const resources = {
   en: {
@@ -18,8 +29,17 @@ const resources = {
     profile: profileEN,
     chat: chatEN,
     onboarding: onboardingEN,
+    settings: settingsEN,
   },
-  // Future languages will be added here
+  te: {
+    navigation: navigationTE,
+    home: homeTE,
+    quiz: quizTE,
+    profile: profileTE,
+    chat: chatTE,
+    onboarding: onboardingTE,
+    settings: settingsTE,
+  },
 };
 
 i18n
@@ -28,7 +48,7 @@ i18n
     resources,
     lng: 'en', // Default to English for now
     fallbackLng: 'en',
-    ns: ['navigation', 'home', 'quiz', 'profile', 'chat', 'onboarding'],
+    ns: ['navigation', 'home', 'quiz', 'profile', 'chat', 'onboarding', 'settings'],
     defaultNS: 'home',
     interpolation: {
       escapeValue: false, // React already escapes

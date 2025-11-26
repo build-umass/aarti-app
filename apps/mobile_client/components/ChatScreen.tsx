@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   View,
   FlatList,
@@ -18,7 +18,7 @@ interface Message {
 }
 
 const ChatScreen: React.FC = () => {
-  const { t } = useAppTranslation('chat');
+  const { t, currentLanguage } = useAppTranslation('chat');
   const [messages, setMessages] = useState<Message[]>([
     {
       id: '0',
@@ -26,6 +26,17 @@ const ChatScreen: React.FC = () => {
       isUser: false,
     },
   ]);
+
+  // Update initial message when language changes
+  useEffect(() => {
+    setMessages([
+      {
+        id: '0',
+        text: t('initial_message'),
+        isUser: false,
+      },
+    ]);
+  }, [currentLanguage, t]);
 
   const handleSend = (text: string) => {
     if (text.length > 0) {
