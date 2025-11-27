@@ -10,6 +10,8 @@ import { useColorScheme } from '@/hooks/useColorScheme';
 import { initializeDatabase, useDatabaseMigrations, seedInitialData } from '@/lib/database';
 import { UserService } from '@/services/UserService';
 import { AppInitProvider } from '@/contexts/AppInitContext';
+import { LanguageProvider } from '@/contexts/LanguageContext';
+import '@/i18n/config'; // Initialize i18n
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();
@@ -76,15 +78,17 @@ export default function RootLayout() {
   }
 
   return (
-    <AppInitProvider isInitialized={appIsReady} isSeeded={isSeeded}>
-      <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
-        <Stack screenOptions={{ headerShown: false }}>
-          <Stack.Screen name="index" options={{ headerShown: false }} />
-          <Stack.Screen name="onboarding" options={{ headerShown: false }} />
-          <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-          <Stack.Screen name="+not-found" />
-        </Stack>
-      </ThemeProvider>
-    </AppInitProvider>
+    <LanguageProvider>
+      <AppInitProvider isInitialized={appIsReady} isSeeded={isSeeded}>
+        <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
+          <Stack screenOptions={{ headerShown: false }}>
+            <Stack.Screen name="index" options={{ headerShown: false }} />
+            <Stack.Screen name="onboarding" options={{ headerShown: false }} />
+            <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+            <Stack.Screen name="+not-found" />
+          </Stack>
+        </ThemeProvider>
+      </AppInitProvider>
+    </LanguageProvider>
   );
 }

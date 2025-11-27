@@ -1,0 +1,18 @@
+{
+  "tabs": {
+    "home": "Home",
+    "resources": "Resources",
+    "quizzes": "Quizzes",
+    "chat": "Chat",
+    "profile": "Profile",
+    "settings": "Settings"
+  },
+  "headers": {
+    "home": "Home",
+    "resources": "Resources",
+    "quizzes": "Quizzes",
+    "chat": "Chat",
+    "profile": "Profile",
+    "settings": "Settings"
+  }
+}

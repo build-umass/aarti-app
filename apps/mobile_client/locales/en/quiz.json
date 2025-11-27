@@ -1,0 +1,6 @@
+{
+  "loading": "Loading quiz data...",
+  "select_topic_label": "Select Topic:",
+  "questions_completed": "Questions completed: {{completed}}/{{total}}",
+  "review_note": "You can now review and change your answers"
+}

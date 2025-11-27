@@ -4,6 +4,7 @@ import FontAwesome from '@expo/vector-icons/FontAwesome';
 import { Colors } from '@/constants/Colors';
 import { UserService } from '@/services/UserService';
 import { appEvents, EVENT_TYPES } from '@/lib/eventEmitter';
+import { useAppTranslation } from '@/hooks/useAppTranslation';
 
 // Web-compatible confirmation dialog
 const showConfirmDialog = (
@@ -36,6 +37,7 @@ const showAlert = (title: string, message: string) => {
 };
 
 export default function SettingsScreen() {
+  const { t } = useAppTranslation('settings');
   const [username, setUsername] = useState<string>('');
   const [originalUsername, setOriginalUsername] = useState<string>('');
   const [isSaving, setIsSaving] = useState<boolean>(false);
@@ -56,12 +58,12 @@ export default function SettingsScreen() {
 
   const handleSaveUsername = async () => {
     if (username.trim() === '') {
-      showAlert('Error', 'Username cannot be empty');
+      showAlert(t('alerts.error'), t('alerts.username_empty'));
       return;
     }
 
     if (username === originalUsername) {
-      showAlert('Info', 'No changes to save');
+      showAlert(t('alerts.info'), t('alerts.no_changes'));
       return;
     }
 
@@ -70,10 +72,10 @@ export default function SettingsScreen() {
       await UserService.updateUsername(username);
       setOriginalUsername(username);
       appEvents.emit(EVENT_TYPES.USERNAME_UPDATED, username);
-      showAlert('Success', 'Username updated successfully');
+      showAlert(t('alerts.success'), t('alerts.username_updated'));
     } catch (error) {
       console.error('Failed to update username:', error);
-      showAlert('Error', 'Failed to update username');
+      showAlert(t('alerts.error'), t('alerts.update_failed'));
     } finally {
       setIsSaving(false);
     }
@@ -82,8 +84,8 @@ export default function SettingsScreen() {
   const handleResetQuizProgress = () => {
     console.log('Reset quiz progress button pressed');
     showConfirmDialog(
-      'Reset Quiz Progress',
-      'Are you sure you want to reset all quiz progress? This will delete all your quiz answers and completion history. This action cannot be undone.',
+      t('reset_quiz.confirm_title'),
+      t('reset_quiz.confirm_message'),
       async () => {
         console.log('Reset confirmed, starting deletion...');
         try {
@@ -91,21 +93,21 @@ export default function SettingsScreen() {
           console.log('Quiz progress reset successful');
           appEvents.emit(EVENT_TYPES.QUIZ_PROGRESS_UPDATED);
           appEvents.emit(EVENT_TYPES.DATA_RESET);
-          showAlert('Success', 'Quiz progress has been reset');
+          showAlert(t('alerts.success'), t('reset_quiz.success'));
         } catch (error) {
           console.error('Failed to reset quiz progress:', error);
-          showAlert('Error', `Failed to reset quiz progress: ${error}`);
+          showAlert(t('alerts.error'), `${t('alerts.reset_failed')}: ${error}`);
         }
       },
-      'Reset'
+      t('reset_quiz.confirm_button')
     );
   };
 
   const handleResetBookmarks = () => {
     console.log('Reset bookmarks button pressed');
     showConfirmDialog(
-      'Reset Bookmarks',
-      'Are you sure you want to delete all your bookmarks? This action cannot be undone.',
+      t('delete_bookmarks.confirm_title'),
+      t('delete_bookmarks.confirm_message'),
       async () => {
         console.log('Delete confirmed, starting deletion...');
         try {
@@ -113,13 +115,13 @@ export default function SettingsScreen() {
           console.log('Bookmarks reset successful');
           appEvents.emit(EVENT_TYPES.BOOKMARKS_UPDATED);
           appEvents.emit(EVENT_TYPES.DATA_RESET);
-          showAlert('Success', 'Bookmarks have been deleted');
+          showAlert(t('alerts.success'), t('delete_bookmarks.success'));
         } catch (error) {
           console.error('Failed to reset bookmarks:', error);
-          showAlert('Error', `Failed to reset bookmarks: ${error}`);
+          showAlert(t('alerts.error'), `${t('alerts.delete_failed')}: ${error}`);
         }
       },
-      'Delete'
+      t('delete_bookmarks.confirm_button')
     );
   };
 
@@ -127,13 +129,13 @@ export default function SettingsScreen() {
     <View style={styles.container}>
       {/* Username Section */}
       <View style={styles.section}>
-        <Text style={styles.sectionTitle}>Username</Text>
+        <Text style={styles.sectionTitle}>{t('username.title')}</Text>
         <View style={styles.inputContainer}>
           <TextInput
             style={styles.input}
             value={username}
             onChangeText={setUsername}
-            placeholder="Enter your username"
+            placeholder={t('username.placeholder')}
             placeholderTextColor="#999"
           />
           <Pressable
@@ -142,7 +144,7 @@ export default function SettingsScreen() {
             disabled={isSaving}
           >
             <Text style={styles.saveButtonText}>
-              {isSaving ? 'Saving...' : 'Save'}
+              {isSaving ? t('username.saving') : t('username.save')}
             </Text>
           </Pressable>
         </View>
@@ -150,14 +152,14 @@ export default function SettingsScreen() {
 
       {/* Reset Progress Section */}
       <View style={styles.section}>
-        <Text style={styles.sectionTitle}>Data Management</Text>
+        <Text style={styles.sectionTitle}>{t('data_management.title')}</Text>
 
         <Pressable
           style={styles.dangerButton}
           onPress={handleResetQuizProgress}
         >
           <FontAwesome name="refresh" size={20} color="#fff" style={styles.buttonIcon} />
-          <Text style={styles.dangerButtonText}>Reset Quiz Progress</Text>
+          <Text style={styles.dangerButtonText}>{t('reset_quiz.button')}</Text>
         </Pressable>
 
         <Pressable
@@ -165,7 +167,7 @@ export default function SettingsScreen() {
           onPress={handleResetBookmarks}
         >
           <FontAwesome name="trash" size={20} color="#fff" style={styles.buttonIcon} />
-          <Text style={styles.dangerButtonText}>Delete All Bookmarks</Text>
+          <Text style={styles.dangerButtonText}>{t('delete_bookmarks.button')}</Text>
         </Pressable>
       </View>
     </View>

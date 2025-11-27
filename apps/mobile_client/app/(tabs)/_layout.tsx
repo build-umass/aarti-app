@@ -4,6 +4,7 @@ import React, { useEffect } from 'react';
 
 import { Colors } from '@/constants/Colors';
 import { useColorScheme } from '@/hooks/useColorScheme';
+import { useAppTranslation } from '@/hooks/useAppTranslation';
 import Feather from '@expo/vector-icons/Feather';
 import Entypo from '@expo/vector-icons/Entypo';
 import FontAwesome from '@expo/vector-icons/FontAwesome';
@@ -12,6 +13,7 @@ const ICON_SIZE = 29;
 
 export default function TabLayout() {
   const colorScheme = useColorScheme();
+  const { t } = useAppTranslation('navigation');
 
   return (
     <Tabs
@@ -31,14 +33,14 @@ export default function TabLayout() {
       <Tabs.Screen
         name="index"
         options={{
-          tabBarLabel: "Home",
+          tabBarLabel: t('tabs.home'),
           tabBarIcon: ({ color }) => (
             <Feather name="home" size={ICON_SIZE} color = {color} />
           ),
           header: () => (
             <View style={styles.customHeader}>
-              <Text style={styles.headerText}>Home</Text>
-              <Image 
+              <Text style={styles.headerText}>{t('headers.home')}</Text>
+              <Image
                 source={require('../../assets/images/aarti-logo.png')}
                 style={styles.logo}
               />
@@ -49,14 +51,14 @@ export default function TabLayout() {
       <Tabs.Screen
         name="resources"
         options={{
-          tabBarLabel: "Resources",
+          tabBarLabel: t('tabs.resources'),
           tabBarIcon: ({ color }) => (
             <Feather name="book-open" size={ICON_SIZE} color = {color} />
           ),
           header: () => (
             <View style={styles.customHeader}>
-              <Text style={styles.headerText}>Resources</Text>
-              <Image 
+              <Text style={styles.headerText}>{t('headers.resources')}</Text>
+              <Image
                 source={require('../../assets/images/aarti-logo.png')}
                 style={styles.logo}
               />
@@ -67,14 +69,14 @@ export default function TabLayout() {
       <Tabs.Screen
         name="quizzes"
         options={{
-          tabBarLabel: "Quizzes",
+          tabBarLabel: t('tabs.quizzes'),
           tabBarIcon: ({ color }) => (
             <Entypo name="graduation-cap" size={ICON_SIZE} color= {color} />
           ),
           header: () => (
             <View style={styles.customHeader}>
-              <Text style={styles.headerText}>Quizzes</Text>
-              <Image 
+              <Text style={styles.headerText}>{t('headers.quizzes')}</Text>
+              <Image
                 source={require('../../assets/images/aarti-logo.png')}
                 style={styles.logo}
               />
@@ -85,14 +87,14 @@ export default function TabLayout() {
       <Tabs.Screen
         name="chatbot"
         options={{
-          tabBarLabel: "Chat",
+          tabBarLabel: t('tabs.chat'),
           tabBarIcon: ({ color }) => (
             <Entypo name="chat" size={ICON_SIZE} color = {color} />
           ),
           header: () => (
             <View style={styles.customHeader}>
-              <Text style={styles.headerText}>Chat</Text>
-              <Image 
+              <Text style={styles.headerText}>{t('headers.chat')}</Text>
+              <Image
                 source={require('../../assets/images/aarti-logo.png')}
                 style={styles.logo}
               />
@@ -103,13 +105,13 @@ export default function TabLayout() {
       <Tabs.Screen
       name="profile"
       options={{
-        tabBarLabel: "Profile",
+        tabBarLabel: t('tabs.profile'),
         tabBarIcon: ({ color }) => (
             <Feather name="user" size={ICON_SIZE} color = {color} />
         ),
         header: () => (
           <View style={styles.customHeader}>
-            <Text style={styles.headerText}>Profile</Text>
+            <Text style={styles.headerText}>{t('headers.profile')}</Text>
             <Image
               source={require('../../assets/images/aarti-logo.png')}
               style={styles.logo}
@@ -121,13 +123,13 @@ export default function TabLayout() {
       <Tabs.Screen
         name="settings"
         options={{
-          tabBarLabel: "Settings",
+          tabBarLabel: t('tabs.settings'),
           tabBarIcon: ({ color }) => (
             <FontAwesome name="gear" size={ICON_SIZE} color={color} />
           ),
           header: () => (
             <View style={styles.customHeader}>
-              <Text style={styles.headerText}>Settings</Text>
+              <Text style={styles.headerText}>{t('headers.settings')}</Text>
               <Image
                 source={require('../../assets/images/aarti-logo.png')}
                 style={styles.logo}

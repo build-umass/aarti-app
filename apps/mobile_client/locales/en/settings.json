@@ -1,0 +1,37 @@
+{
+  "username": {
+    "title": "Username",
+    "placeholder": "Enter your username",
+    "save": "Save",
+    "saving": "Saving..."
+  },
+  "data_management": {
+    "title": "Data Management"
+  },
+  "reset_quiz": {
+    "button": "Reset Quiz Progress",
+    "confirm_title": "Reset Quiz Progress",
+    "confirm_message": "Are you sure you want to reset all quiz progress? This will delete all your quiz answers and completion history. This action cannot be undone.",
+    "confirm_button": "Reset",
+    "success": "Quiz progress has been reset"
+  },
+  "delete_bookmarks": {
+    "button": "Delete All Bookmarks",
+    "confirm_title": "Reset Bookmarks",
+    "confirm_message": "Are you sure you want to delete all your bookmarks? This action cannot be undone.",
+    "confirm_button": "Delete",
+    "success": "Bookmarks have been deleted"
+  },
+  "alerts": {
+    "error": "Error",
+    "success": "Success",
+    "info": "Info",
+    "username_empty": "Username cannot be empty",
+    "no_changes": "No changes to save",
+    "username_updated": "Username updated successfully",
+    "update_failed": "Failed to update username",
+    "reset_failed": "Failed to reset quiz progress",
+    "delete_failed": "Failed to reset bookmarks",
+    "cancel": "Cancel"
+  }
+}
