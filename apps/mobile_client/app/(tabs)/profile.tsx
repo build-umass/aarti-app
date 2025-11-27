@@ -1,7 +1,8 @@
-import { StyleSheet, Pressable, View, ScrollView, Text, Dimensions } from 'react-native';
+import { StyleSheet, Pressable, View, ScrollView, Text, Dimensions, Modal } from 'react-native';
 import { useState, useCallback, useEffect } from 'react';
 import { useRouter, useFocusEffect } from 'expo-router';
 import { Colors } from '@/constants/Colors';
+import { BrandColors } from '@/constants/Theme';
 import ProgressBar from '../../components/ProgressBar';
 import FontAwesome from '@expo/vector-icons/FontAwesome';
 import { UserService } from '@/services/UserService';
@@ -9,7 +10,6 @@ import { QuizService } from '@/services/QuizService';
 import { appEvents, EVENT_TYPES } from '@/lib/eventEmitter';
 import { useAppTranslation } from '@/hooks/useAppTranslation';
 import { useLanguage } from '@/contexts/LanguageContext';
-import { Picker } from '@react-native-picker/picker';
 import React from 'react';
 
 // TODO:
@@ -25,6 +25,7 @@ export default function ProfileScreen() {
   const router = useRouter();
   const [activeTab, setActiveTab] = useState<'quiz' | 'resource'>('quiz'); // valid options: quiz, resource
   const [username, setUsername] = useState<string>('Loading...');
+  const [showLanguageModal, setShowLanguageModal] = useState(false);
 
   // Move all hooks to the top level to follow Rules of Hooks
   const [stats, setStats] = useState<{
@@ -116,18 +117,52 @@ export default function ProfileScreen() {
         {/* Language Selector */}
         <View style={styles.languageSection}>
           <Text style={styles.languageTitle}>{t('language.title')}</Text>
-          <View style={styles.pickerContainer}>
-            <Picker
-              selectedValue={currentLanguage}
-              onValueChange={(itemValue) => changeLanguage(itemValue)}
-              style={styles.picker}
-            >
-              {availableLanguages.map((lang) => (
-                <Picker.Item key={lang.code} label={lang.name} value={lang.code} />
-              ))}
-            </Picker>
-          </View>
+          <Pressable
+            style={styles.languageButton}
+            onPress={() => setShowLanguageModal(true)}
+          >
+            <Text style={styles.languageButtonText}>
+              {availableLanguages.find(lang => lang.code === currentLanguage)?.name || 'English'}
+            </Text>
+          </Pressable>
         </View>
+
+        {/* Language Selection Modal */}
+        <Modal
+          visible={showLanguageModal}
+          transparent={true}
+          animationType="fade"
+          onRequestClose={() => setShowLanguageModal(false)}
+        >
+          <Pressable
+            style={styles.modalOverlay}
+            onPress={() => setShowLanguageModal(false)}
+          >
+            <View style={styles.modalContent}>
+              <Text style={styles.modalTitle}>{t('language.title')}</Text>
+              {availableLanguages.map((lang) => (
+                <Pressable
+                  key={lang.code}
+                  style={[
+                    styles.languageOption,
+                    currentLanguage === lang.code && styles.languageOptionSelected
+                  ]}
+                  onPress={() => {
+                    changeLanguage(lang.code);
+                    setShowLanguageModal(false);
+                  }}
+                >
+                  <Text style={[
+                    styles.languageOptionText,
+                    currentLanguage === lang.code && styles.languageOptionTextSelected
+                  ]}>
+                    {lang.name}
+                  </Text>
+                </Pressable>
+              ))}
+            </View>
+          </Pressable>
+        </Modal>
 
         <View style={styles.statsSelection}>
           <Pressable
@@ -243,26 +278,71 @@ const styles = StyleSheet.create({
   languageTitle: {
     fontSize: 16,
     fontWeight: '600',
-    color: '#11181C',
-    marginBottom: 8,
+    color: BrandColors.grayDark,
+    marginBottom: 12,
   },
-  pickerContainer: {
-    borderWidth: 1,
-    borderColor: '#ddd',
-    borderRadius: 8,
-    backgroundColor: '#f9f9f9',
-    overflow: 'hidden',
-    width: 200,
+  languageButton: {
+    backgroundColor: BrandColors.pink,
+    paddingHorizontal: 32,
+    paddingVertical: 12,
+    borderRadius: 25,
+    minWidth: 150,
+    alignItems: 'center',
     shadowColor: '#000',
-    shadowOffset: { width: 0, height: 1 },
-    shadowOpacity: 0.1,
-    shadowRadius: 2,
-    elevation: 2,
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.15,
+    shadowRadius: 3,
+    elevation: 3,
   },
-  picker: {
-    height: 50,
-    width: '100%',
-    color: '#11181C',
+  languageButtonText: {
+    color: 'white',
+    fontSize: 16,
+    fontWeight: '600',
+  },
+  modalOverlay: {
+    flex: 1,
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  modalContent: {
+    backgroundColor: 'white',
+    borderRadius: 16,
+    padding: 24,
+    minWidth: 280,
+    maxWidth: '80%',
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.25,
+    shadowRadius: 8,
+    elevation: 5,
+  },
+  modalTitle: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    color: BrandColors.grayDark,
+    marginBottom: 16,
+    textAlign: 'center',
+  },
+  languageOption: {
+    paddingVertical: 14,
+    paddingHorizontal: 20,
+    borderRadius: 8,
+    marginVertical: 4,
+    backgroundColor: BrandColors.grayLight,
+  },
+  languageOptionSelected: {
+    backgroundColor: BrandColors.pink,
+  },
+  languageOptionText: {
+    fontSize: 16,
+    fontWeight: '500',
+    color: BrandColors.grayDark,
+    textAlign: 'center',
+  },
+  languageOptionTextSelected: {
+    color: 'white',
+    fontWeight: '600',
   },
   statsSelection: {
     justifyContent: 'center',
