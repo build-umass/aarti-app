@@ -1,0 +1,14 @@
+{
+  "tabs": {
+    "quizzes": "Quizzes",
+    "resources": "Resources"
+  },
+  "stats": {
+    "quizzes_completed": "Quizzes Completed: {{completed}}/{{total}}",
+    "by_topic": "by {{topic}}: {{completed}}/{{total}}"
+  },
+  "language": {
+    "title": "Language Preference",
+    "select": "Select Language"
+  }
+}

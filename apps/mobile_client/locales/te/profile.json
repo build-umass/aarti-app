@@ -1,0 +1,14 @@
+{
+  "tabs": {
+    "quizzes": "క్విజ్‌లు",
+    "resources": "వనరులు"
+  },
+  "stats": {
+    "quizzes_completed": "పూర్తి చేసిన క్విజ్‌లు: {{completed}}/{{total}}",
+    "by_topic": "{{topic}} వారీగా: {{completed}}/{{total}}"
+  },
+  "language": {
+    "title": "భాష ప్రాధాన్యత",
+    "select": "భాషను ఎంచుకోండి"
+  }
+}

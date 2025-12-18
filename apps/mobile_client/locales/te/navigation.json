@@ -1,0 +1,18 @@
+{
+  "tabs": {
+    "home": "హోమ్",
+    "resources": "వనరులు",
+    "quizzes": "క్విజ్‌లు",
+    "chat": "చాట్",
+    "profile": "ప్రొఫైల్",
+    "settings": "సెట్టింగ్‌లు"
+  },
+  "headers": {
+    "home": "హోమ్",
+    "resources": "వనరులు",
+    "quizzes": "క్విజ్‌లు",
+    "chat": "చాట్",
+    "profile": "ప్రొఫైల్",
+    "settings": "సెట్టింగ్‌లు"
+  }
+}

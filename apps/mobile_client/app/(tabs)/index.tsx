@@ -15,8 +15,10 @@ import { BookmarkService } from '@/services/BookmarkService';
 import { useAppInit } from '@/contexts/AppInitContext';
 import { appEvents, EVENT_TYPES } from '@/lib/eventEmitter';
 import { BrandColors } from '@/constants/Theme';
+import { useAppTranslation } from '@/hooks/useAppTranslation';
 
 export default function HomeScreen() {
+  const { t } = useAppTranslation('home');
   const { isSeeded } = useAppInit();
   const [username, setUsername] = useState<string>('User');
   const [stats, setStats] = useState({
@@ -89,7 +91,7 @@ export default function HomeScreen() {
       <ScrollView contentContainerStyle={styles.scrollContent}>
         {/* Welcome Section */}
         <View style={styles.welcomeSection}>
-          <Text style={styles.welcomeText}>Welcome back,</Text>
+          <Text style={styles.welcomeText}>{t('welcome_back')}</Text>
           <Text style={styles.usernameText}>{username}</Text>
         </View>
 
@@ -97,24 +99,24 @@ export default function HomeScreen() {
         <View style={styles.statsContainer}>
           <View style={styles.statCard}>
             <Text style={styles.statNumber}>{stats.completedQuizzes}</Text>
-            <Text style={styles.statLabel}>Quizzes Completed</Text>
+            <Text style={styles.statLabel}>{t('stats.quizzes_completed')}</Text>
           </View>
           <View style={styles.statCard}>
             <Text style={styles.statNumber}>{stats.totalQuizzes}</Text>
-            <Text style={styles.statLabel}>Total Quizzes</Text>
+            <Text style={styles.statLabel}>{t('stats.total_quizzes')}</Text>
           </View>
           <View style={styles.statCard}>
             <Text style={styles.statNumber}>{stats.bookmarks}</Text>
-            <Text style={styles.statLabel}>Bookmarks</Text>
+            <Text style={styles.statLabel}>{t('stats.bookmarks')}</Text>
           </View>
         </View>
 
         {/* Progress Section */}
         <View style={styles.progressSection}>
-          <Text style={styles.sectionTitle}>Your Progress</Text>
+          <Text style={styles.sectionTitle}>{t('progress.title')}</Text>
           <View style={styles.progressCard}>
             <View style={styles.progressInfo}>
-              <Text style={styles.progressText}>Overall Completion</Text>
+              <Text style={styles.progressText}>{t('progress.overall_completion')}</Text>
               <Text style={styles.progressPercentage}>{stats.completionPercentage}%</Text>
             </View>
             <View style={styles.progressBarContainer}>
@@ -130,7 +132,7 @@ export default function HomeScreen() {
 
         {/* Features Section */}
         <View style={styles.featuresSection}>
-          <Text style={styles.sectionTitle}>Explore</Text>
+          <Text style={styles.sectionTitle}>{t('explore_title')}</Text>
 
           {/* Resources Card */}
           <TouchableOpacity
@@ -142,9 +144,9 @@ export default function HomeScreen() {
               <Feather name="book-open" size={28} color="#2270CA" />
             </View>
             <View style={styles.featureContent}>
-              <Text style={styles.featureTitle}>Resources</Text>
+              <Text style={styles.featureTitle}>{t('features.resources.title')}</Text>
               <Text style={styles.featureDescription}>
-                Browse helpful information and support materials
+                {t('features.resources.description')}
               </Text>
             </View>
             <Feather name="chevron-right" size={24} color="#687076" />
@@ -160,9 +162,9 @@ export default function HomeScreen() {
               <Entypo name="graduation-cap" size={28} color={BrandColors.primary} />
             </View>
             <View style={styles.featureContent}>
-              <Text style={styles.featureTitle}>Quizzes</Text>
+              <Text style={styles.featureTitle}>{t('features.quizzes.title')}</Text>
               <Text style={styles.featureDescription}>
-                Test your knowledge and track progress
+                {t('features.quizzes.description')}
               </Text>
             </View>
             <Feather name="chevron-right" size={24} color="#687076" />
@@ -178,9 +180,9 @@ export default function HomeScreen() {
               <Entypo name="chat" size={28} color="#22c55e" />
             </View>
             <View style={styles.featureContent}>
-              <Text style={styles.featureTitle}>Chat</Text>
+              <Text style={styles.featureTitle}>{t('features.chat.title')}</Text>
               <Text style={styles.featureDescription}>
-                Get instant answers to your questions
+                {t('features.chat.description')}
               </Text>
             </View>
             <Feather name="chevron-right" size={24} color="#687076" />
@@ -196,9 +198,9 @@ export default function HomeScreen() {
               <Feather name="user" size={28} color="#f59e0b" />
             </View>
             <View style={styles.featureContent}>
-              <Text style={styles.featureTitle}>Profile</Text>
+              <Text style={styles.featureTitle}>{t('features.profile.title')}</Text>
               <Text style={styles.featureDescription}>
-                View your stats and customize settings
+                {t('features.profile.description')}
               </Text>
             </View>
             <Feather name="chevron-right" size={24} color="#687076" />

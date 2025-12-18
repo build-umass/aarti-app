@@ -176,6 +176,62 @@ const styles = StyleSheet.create({
 });
 ```
 
+**Internationalization (i18n):**
+
+The mobile client uses **i18next** for internationalization support with English as the baseline language.
+
+- **Location:** `i18n/config.ts` - i18n configuration and initialization
+- **Translation Files:** `locales/en/` - Organized by namespace (navigation, home, quiz, profile, chat, onboarding)
+- **Context:** `contexts/LanguageContext.tsx` - Language state management
+- **Hook:** `hooks/useAppTranslation.ts` - Custom translation hook
+- **Storage:** AsyncStorage for language preference persistence
+
+**Key Features:**
+- Namespace-based organization for better maintainability
+- Snake_case translation keys (e.g., `welcome_back`, `select_topic_label`)
+- Interpolation support for dynamic values (e.g., `{{count}}`, `{{topic}}`)
+- Language selector UI in Profile screen
+- Future-ready for adding additional languages
+
+**Translation Key Naming Convention:**
+- Use `snake_case` for all translation keys
+- Be descriptive and indicate purpose
+- Group related strings under namespaces
+- Keep phrases atomic (complete, not fragmented)
+
+**Example Usage:**
+```typescript
+import { useAppTranslation } from '@/hooks/useAppTranslation';
+
+function HomeScreen() {
+  const { t } = useAppTranslation('home');
+
+  return (
+    <View>
+      <Text>{t('welcome_back')}</Text>
+      <Text>{t('stats.quizzes_completed')}</Text>
+      <Text>{t('quiz.questions_completed', { completed: 5, total: 10 })}</Text>
+    </View>
+  );
+}
+```
+
+**Available Namespaces:**
+- `navigation` - Tab labels and headers
+- `home` - Home screen content
+- `quiz` - Quiz screen with question progress
+- `profile` - Profile screen with statistics
+- `chat` - Chat messages and placeholders
+- `onboarding` - Welcome and feature descriptions
+
+**IMPORTANT Translation Rules:**
+- **NEVER** hardcode user-facing strings in components
+- **ALWAYS** use translation keys via `t()` function
+- **ALWAYS** keep complete phrases together (not fragmented)
+- Quiz content (questions, options, feedback) remains in English
+
+See `docs/i18n-guide.md` for detailed implementation guide and how to add new languages.
+
 ### Backend (Node.js Express)
 
 **Key Technologies:** Express, MongoDB, Mongoose
@@ -484,6 +540,7 @@ Comprehensive documentation available in `docs/`:
 - `database-services.md` - Database schema and service architecture
 - `field-naming-conventions.md` - Critical naming convention details
 - `service-architecture.md` - Service layer patterns and best practices
+- `i18n-guide.md` - Internationalization implementation and extension guide
 - `develop.md` - Contribution guide and architectural patterns
 - `run-locally.md` - Setup and troubleshooting
 - `troubleshooting.md` - Common issues and solutions
@@ -492,12 +549,16 @@ Comprehensive documentation available in `docs/`:
 ## Key Files to Know
 
 ### Mobile Client
-- `app/_layout.tsx` - Root layout, database initialization
+- `app/_layout.tsx` - Root layout, database initialization, i18n initialization
 - `lib/database.ts` - Database setup and migrations
 - `services/QuizService.ts` - Quiz operations
 - `app/(tabs)/quizzes.tsx` - Main quiz screen
 - `constants/Theme.ts` - Centralized brand colors and theme
 - `constants/Colors.ts` - Light/dark mode colors
+- `i18n/config.ts` - i18next configuration
+- `contexts/LanguageContext.tsx` - Language state management
+- `hooks/useAppTranslation.ts` - Custom translation hook
+- `locales/en/` - English translation files (navigation, home, quiz, profile, chat, onboarding)
 
 ### Backend
 - `index.ts` - Server entry point

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   View,
   FlatList,
@@ -8,6 +8,7 @@ import {
 } from 'react-native';
 import MessageBubble from './MessageBubble';
 import InputBar from './InputBar';
+import { useAppTranslation } from '@/hooks/useAppTranslation';
 
 // Define a Message type
 interface Message {
@@ -17,13 +18,25 @@ interface Message {
 }
 
 const ChatScreen: React.FC = () => {
+  const { t, currentLanguage } = useAppTranslation('chat');
   const [messages, setMessages] = useState<Message[]>([
     {
       id: '0',
-      text: 'Hey my name is Aarti! Here to help you find the resources you need! What do you have on your mind?',
+      text: t('initial_message'),
       isUser: false,
     },
   ]);
+
+  // Update initial message when language changes
+  useEffect(() => {
+    setMessages([
+      {
+        id: '0',
+        text: t('initial_message'),
+        isUser: false,
+      },
+    ]);
+  }, [currentLanguage, t]);
 
   const handleSend = (text: string) => {
     if (text.length > 0) {
@@ -37,7 +50,7 @@ const ChatScreen: React.FC = () => {
           ...prevMessages,
           {
             id: (prevMessages.length + 1).toString(),
-            text: 'Here are some resources you can refer to...',
+            text: t('resources_message'),
             isUser: false,
           },
         ]);

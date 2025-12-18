@@ -8,6 +8,7 @@ import { QuizService } from '@/services/QuizService';
 import { BookmarkService } from '@/services/BookmarkService';
 import { useAppInit } from '@/contexts/AppInitContext';
 import { appEvents, EVENT_TYPES } from '@/lib/eventEmitter';
+import { useAppTranslation } from '@/hooks/useAppTranslation';
 
 interface SelectedAnswers {
   [key: number]: string;
@@ -43,6 +44,7 @@ interface ViewStyleWithBorder extends ViewStyle {
 // SQLite services using raw SQL are imported above
 
 export default function QuizPage() {
+  const { t } = useAppTranslation('quiz');
   const { isSeeded } = useAppInit();
   const [selectedAnswers, setSelectedAnswers] = useState<SelectedAnswers>({});
   const [expandedQuestion, setExpandedQuestion] = useState<number | null>(null);
@@ -305,7 +307,7 @@ export default function QuizPage() {
   if (loading) {
     return (
       <View style={[styles.container, { justifyContent: 'center', alignItems: 'center' }]}>
-        <Text>Loading quiz data...</Text>
+        <Text>{t('loading')}</Text>
       </View>
     );
   }
@@ -314,7 +316,7 @@ export default function QuizPage() {
     <ScrollView style={styles.container}>
       <View style={styles.content}>
         <View style={styles.topicSelectorContainer}>
-          <Text style={styles.topicLabel}>Select Topic:</Text>
+          <Text style={styles.topicLabel}>{t('select_topic_label')}</Text>
           <ScrollView
             horizontal
             showsHorizontalScrollIndicator={false}
@@ -346,11 +348,11 @@ export default function QuizPage() {
 
         <View style={styles.completionContainer}>
           <Text style={styles.completionText}>
-            Questions completed: {getCompletedCount()}/{filteredQuizData.length}
+            {t('questions_completed', { completed: getCompletedCount(), total: filteredQuizData.length })}
           </Text>
           {calculateCompletion() === 100 && (
             <Text style={styles.completionNote}>
-              You can now review and change your answers
+              {t('review_note')}
             </Text>
           )}
         </View>
