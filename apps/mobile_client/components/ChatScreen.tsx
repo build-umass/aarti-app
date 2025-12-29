@@ -9,6 +9,7 @@ import {
 import MessageBubble from './MessageBubble';
 import InputBar from './InputBar';
 import { useAppTranslation } from '@/hooks/useAppTranslation';
+import { RAGService } from '@/services/RAGService';
 
 // Define a Message type
 interface Message {
@@ -38,23 +39,40 @@ const ChatScreen: React.FC = () => {
     ]);
   }, [currentLanguage, t]);
 
-  const handleSend = (text: string) => {
+  const handleSend = async (text: string) => {
     if (text.length > 0) {
+      // Add user message immediately
       setMessages((prevMessages) => [
         ...prevMessages,
         { id: (prevMessages.length + 1).toString(), text, isUser: true },
       ]);
 
-      setTimeout(() => {
+      try {
+        // Generate RAG response
+        const response = await RAGService.generateResponse(text);
+
+        // Add bot response
         setMessages((prevMessages) => [
           ...prevMessages,
           {
             id: (prevMessages.length + 1).toString(),
-            text: t('resources_message'),
+            text: response,
             isUser: false,
           },
         ]);
-      }, 500);
+      } catch (error) {
+        console.error('Error generating response:', error);
+
+        // Fallback response
+        setMessages((prevMessages) => [
+          ...prevMessages,
+          {
+            id: (prevMessages.length + 1).toString(),
+            text: "I'm sorry, I'm having trouble connecting right now. Please try again later.",
+            isUser: false,
+          },
+        ]);
+      }
     }
   };
 

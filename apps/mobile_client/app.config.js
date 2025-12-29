@@ -1,0 +1,49 @@
+export default {
+  expo: {
+    name: "Aarti",
+    slug: "aarti-app",
+    version: "1.0.0",
+    orientation: "portrait",
+    icon: "./assets/images/aarti-logo-app-icon.png",
+    scheme: "myapp",
+    userInterfaceStyle: "automatic",
+    ios: {
+      supportsTablet: true,
+      bundleIdentifier: "com.romanobro.aartiapp"
+    },
+    android: {
+      adaptiveIcon: {
+        foregroundImage: "./assets/images/aarti-logo-android-adaptive-icon.png",
+        backgroundColor: "#ffffff"
+      },
+      package: "com.romanobro.aartiapp"
+    },
+    web: {
+      bundler: "metro",
+      output: "static",
+      favicon: "./assets/images/favicon.png"
+    },
+    plugins: [
+      "expo-router",
+      "expo-font",
+      [
+        "expo-splash-screen",
+        {
+          backgroundColor: "#5f2446",
+          image: "assets/images/aarti-logo-splash-icon.png",
+          imageWidth: 320
+        }
+      ],
+      "expo-web-browser",
+      "expo-sqlite",
+      "expo-localization"
+    ],
+    experiments: {
+      typedRoutes: true
+    },
+    extra: {
+      // EXPO_PUBLIC_ variables are automatically available via process.env in client code
+      // No need to duplicate them here
+    }
+  }
+};
