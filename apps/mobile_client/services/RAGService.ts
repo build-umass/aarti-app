@@ -194,14 +194,40 @@ export class RAGService {
   }
 
   // Initialize knowledge base with PDF documents only
+  // This will only load documents if the knowledge base is empty
   static async initializeKnowledgeBase(): Promise<void> {
     try {
       const db = getDatabase();
 
-      // Force reset of knowledge base to ensure correct schema
-      console.log('Resetting knowledge base to ensure correct schema...');
-      await this.resetKnowledgeBase();
-      console.log('Knowledge base schema reset complete');
+      // Ensure tables exist (create if not present, but don't drop existing)
+      await this.ensureTablesExist();
+
+      // Check if knowledge base is already populated
+      const existingDocs = await db.getFirstAsync<{ count: number }>(
+        'SELECT COUNT(*) as count FROM knowledge_base'
+      );
+
+      const docCount = existingDocs?.count ?? 0;
+
+      if (docCount > 0) {
+        console.log(`📚 Knowledge base already initialized with ${docCount} documents`);
+
+        // Check if embeddings exist
+        const embeddingCount = await db.getFirstAsync<{ count: number }>(
+          'SELECT COUNT(*) as count FROM vector_embeddings'
+        );
+
+        if ((embeddingCount?.count ?? 0) > 0) {
+          console.log(`✅ Found ${embeddingCount?.count} embeddings - ready to use!`);
+          return; // Already initialized, skip
+        } else {
+          console.log('⚠️ Documents exist but no embeddings found. Generating embeddings...');
+          await this.generateEmbeddingsForExistingDocuments();
+          return;
+        }
+      }
+
+      console.log('🆕 First run - initializing knowledge base...');
 
       // Load PDF documents
       console.log('Loading PDF documents...');
@@ -283,6 +309,37 @@ export class RAGService {
       }
     } catch (error) {
       console.error('Error initializing knowledge base:', error);
+      throw error;
+    }
+  }
+
+  // Ensure knowledge base tables exist without dropping existing data
+  static async ensureTablesExist(): Promise<void> {
+    try {
+      const db = getDatabase();
+
+      // Create tables if they don't exist (IF NOT EXISTS prevents errors)
+      await db.execAsync(`
+        CREATE TABLE IF NOT EXISTS knowledge_base (
+          id INTEGER PRIMARY KEY AUTOINCREMENT,
+          content TEXT NOT NULL,
+          embedding TEXT,
+          metadata TEXT,
+          content_type TEXT DEFAULT 'resource',
+          created_at TEXT DEFAULT CURRENT_TIMESTAMP
+        );
+
+        CREATE TABLE IF NOT EXISTS vector_embeddings (
+          id INTEGER PRIMARY KEY AUTOINCREMENT,
+          content_id TEXT NOT NULL,
+          embedding TEXT NOT NULL,
+          created_at TEXT DEFAULT CURRENT_TIMESTAMP
+        );
+
+        CREATE INDEX IF NOT EXISTS idx_vector_embeddings_content_id ON vector_embeddings(content_id);
+      `);
+    } catch (error) {
+      console.error('Error ensuring tables exist:', error);
       throw error;
     }
   }
