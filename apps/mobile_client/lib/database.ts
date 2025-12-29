@@ -1,5 +1,6 @@
 import React from 'react';
 import { openDatabaseAsync, type SQLiteDatabase } from 'expo-sqlite';
+import { createClient } from '@libsql/client';
 import quizDataFile from '../assets/quizData.json';
 
 // Database instance
@@ -73,10 +74,21 @@ async function createTables() {
       FOREIGN KEY (question_id) REFERENCES quiz_questions(id)
     );
 
+    -- Knowledge base table for RAG chatbot
+    CREATE TABLE IF NOT EXISTS knowledge_base (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      content TEXT NOT NULL,
+      embedding TEXT, -- JSON array of embedding values (nullable)
+      metadata TEXT, -- JSON metadata
+      content_type TEXT DEFAULT 'quiz', -- 'quiz', 'resource', 'general'
+      created_at TEXT DEFAULT CURRENT_TIMESTAMP
+    );
+
     -- Create indexes for better performance
     CREATE INDEX IF NOT EXISTS idx_quiz_questions_topic_id ON quiz_questions(topic_id);
     CREATE INDEX IF NOT EXISTS idx_quiz_progress_question_id ON quiz_progress(question_id);
     CREATE INDEX IF NOT EXISTS idx_bookmarks_question_id ON bookmarks(question_id);
+    CREATE INDEX IF NOT EXISTS idx_knowledge_base_content_type ON knowledge_base(content_type);
   `);
 
   // Run migrations for existing databases
@@ -110,6 +122,45 @@ async function runMigrations() {
       await db.execAsync(
         'ALTER TABLE user_settings ADD COLUMN first_launch_date TEXT'
       );
+    }
+
+    // Check knowledge_base table schema and recreate if needed
+    const kbTableInfo = await db.getAllAsync<{ name: string; type: string; notnull: number }>(
+      "PRAGMA table_info(knowledge_base)"
+    );
+
+    if (kbTableInfo.length > 0) {
+      const embeddingCol = kbTableInfo.find(col => col.name === 'embedding');
+      if (embeddingCol && embeddingCol.notnull === 1) {
+        console.log('Found old schema with NOT NULL embedding column, recreating tables...');
+        // Drop and recreate tables with correct schema
+        await db.runAsync('DROP TABLE IF EXISTS knowledge_base');
+        await db.runAsync('DROP TABLE IF EXISTS vector_embeddings');
+
+        await db.execAsync(`
+          CREATE TABLE knowledge_base (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            content TEXT NOT NULL,
+            embedding TEXT,
+            metadata TEXT,
+            content_type TEXT DEFAULT 'resource',
+            created_at TEXT DEFAULT CURRENT_TIMESTAMP
+          );
+
+          CREATE TABLE vector_embeddings (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            content_id TEXT NOT NULL,
+            embedding TEXT NOT NULL,
+            created_at TEXT DEFAULT CURRENT_TIMESTAMP
+          );
+
+          CREATE INDEX idx_vector_embeddings_content_id ON vector_embeddings(content_id);
+        `);
+
+        console.log('Tables recreated with correct schema');
+      } else {
+        console.log('Knowledge base table schema looks good');
+      }
     }
 
     console.log('Migrations completed successfully');
@@ -212,4 +263,10 @@ export const seedInitialData = async () => {
     console.error('Error seeding database:', error);
     throw error;
   }
+};
+
+// Initialize vector database
+export const initializeVectorDatabase = async () => {
+  const { initializeVectorDB } = await import('./vector-db');
+  await initializeVectorDB();
 };

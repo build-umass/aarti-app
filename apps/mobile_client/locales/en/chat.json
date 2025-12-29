@@ -1,5 +1,8 @@
 {
   "initial_message": "Hey my name is Aarti! Here to help you find the resources you need! What do you have on your mind?",
   "resources_message": "Here are some resources you can refer to...",
-  "input_placeholder": "Type a message..."
+  "input_placeholder": "Type a message...",
+  "thinking_placeholder": "Aarti is thinking...",
+  "error_message": "I'm sorry, I'm having trouble connecting right now. Please try again later.",
+  "typing_indicator": "Typing..."
 }

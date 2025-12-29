@@ -7,8 +7,9 @@ import 'react-native-reanimated';
 import { View, Text } from 'react-native';
 
 import { useColorScheme } from '@/hooks/useColorScheme';
-import { initializeDatabase, useDatabaseMigrations, seedInitialData } from '@/lib/database';
+import { initializeDatabase, useDatabaseMigrations, seedInitialData, initializeVectorDatabase } from '@/lib/database';
 import { UserService } from '@/services/UserService';
+import { RAGService } from '@/services/RAGService';
 import { AppInitProvider } from '@/contexts/AppInitContext';
 import { LanguageProvider } from '@/contexts/LanguageContext';
 import '@/i18n/config'; // Initialize i18n
@@ -37,6 +38,24 @@ export default function RootLayout() {
 
         // Seed initial data
         await seedInitialData();
+
+        // Initialize vector database
+        try {
+          await initializeVectorDatabase();
+          console.log('Vector database initialized');
+        } catch (vecError) {
+          console.error('Failed to initialize vector database:', vecError);
+          // Don't fail the app if vector DB initialization fails
+        }
+
+        // Initialize RAG knowledge base
+        try {
+          await RAGService.initializeKnowledgeBase();
+          console.log('RAG knowledge base initialized');
+        } catch (ragError) {
+          console.error('Failed to initialize RAG knowledge base:', ragError);
+          // Don't fail the app if RAG initialization fails
+        }
 
         // Mark seeding as complete
         setIsSeeded(true);
