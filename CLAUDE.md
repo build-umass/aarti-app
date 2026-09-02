@@ -5,9 +5,9 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 ## Project Overview
 
 Aarti is a quiz-based learning application built as a monorepo with three main applications:
-- **Mobile Client**: React Native Expo app with SQLite for offline-first functionality
-- **Backend**: Node.js Express server with MongoDB for centralized data storage
-- **Admin Client**: Next.js dashboard for managing quiz content and resources
+- **Mobile Client**: React Native Expo app with SQLite for offline-first functionality (Expo SDK 57, React Native 0.86, TypeScript 6)
+- **Backend**: Node.js Express server with MongoDB for centralized data storage (Express 5, Mongoose 9)
+- **Admin Client**: Next.js dashboard for managing quiz content and resources (Next 16, React 19)
 
 ## Common Commands
 
@@ -23,6 +23,7 @@ Install packages for all applications:
 **Backend Server:**
 ```bash
 cd apps/backend
+npm run build
 npm run start
 ```
 
@@ -78,6 +79,22 @@ npm run lint
 npx tsc --noEmit
 ```
 
+**Dependency Gate (from repo root):**
+```bash
+node scripts/check-unused-deps.mjs
+```
+
+### Verification Gates
+
+A change is done when its gates exit 0, not when it compiles. Run the gate set for every app you touch:
+
+- **mobile_client:** `npx tsc --noEmit`, `npm run lint`, `npx jest --ci`, `npx expo-doctor`, `npx expo export --platform web`
+- **admin_client:** `npx tsc --noEmit`, `npm run lint`, `npm run build`
+- **backend:** `npm run build`, then `node -e "require('./dist/app.js')"` must load without MongoDB
+- **repo root:** `node scripts/check-unused-deps.mjs`
+
+`scripts/check-unused-deps.mjs` fails when a dependency has no import evidence and no entry in its `TOOLING` keep-list. Use a dependency in source or justify it there. Rerun the gate after deletions; removing code can expose dependencies as unused.
+
 ### Troubleshooting Mobile App
 
 **Diagnose potential issues:**
@@ -114,7 +131,7 @@ aarti-app/
 
 ### Mobile Client (React Native Expo)
 
-**Key Technologies:** Expo Router, expo-sqlite, React Navigation
+**Key Technologies:** Expo Router, expo-sqlite, react-native-reanimated
 
 **Architecture Pattern:** Service Layer + SQLite Database
 
@@ -122,8 +139,11 @@ aarti-app/
 - `app/` - Expo Router file-based routing (like Next.js)
   - `_layout.tsx` - Root layout where database initialization happens
   - `(tabs)/` - Tab-based navigation screens
-- `lib/database.ts` - SQLite database setup and initialization
-- `services/` - Business logic layer (QuizService, BookmarkService, UserService)
+    - `resources/` - Nested expo-router stack (`_layout.tsx`, `index.tsx`, `[resource].tsx`)
+- `lib/database.ts` - SQLite database setup and initialization (single source of table definitions)
+- `lib/gemini.ts` - Gemini API client (`@google/genai`): embeddings and text generation
+- `lib/vector-db.ts` - Embedding storage and cosine-similarity search
+- `services/` - Business logic layer (QuizService, BookmarkService, UserService, RAGService, PDFService)
 - `components/` - Reusable UI components
 - `constants/` - Theme, colors, and app-wide constants
   - `Theme.ts` - Centralized brand colors and theme values
@@ -133,7 +153,14 @@ aarti-app/
 - **Type:** SQLite (local, offline-first)
 - **Location:** `lib/database.ts`
 - **Initialization:** During splash screen in `app/_layout.tsx`
-- **Tables:** user_settings, topics, quiz_questions, quiz_progress, bookmarks
+- **Tables:** user_settings, topics, quiz_questions, quiz_progress, bookmarks, knowledge_base, vector_embeddings
+
+**RAG Chatbot:**
+- `services/RAGService.ts` - Knowledge base lifecycle and query pipeline: loads documents, chunks them, stores embeddings, and answers queries (embed question, cosine search, pass top 3 chunks to `gemini-2.5-flash`, fall back to a plain response)
+- `services/PDFService.ts` - Loads pre-extracted document text from `assets/Resources/documents.json` and chunks it (500 words, 50 overlap)
+- `lib/gemini.ts` - `@google/genai` client. Embeddings use `text-embedding-004`; missing API key degrades the chat to a not-configured message, never a crash
+- `lib/vector-db.ts` - `vector_embeddings` table CRUD and cosine similarity (embeddings stored as JSON strings)
+- Initialization runs in `app/_layout.tsx` after the database seeds; the knowledge base persists across restarts and re-seeds only when empty
 
 **Service Layer:**
 - Services use raw SQL with expo-sqlite's async API
@@ -181,7 +208,7 @@ const styles = StyleSheet.create({
 The mobile client uses **i18next** for internationalization support with English as the baseline language.
 
 - **Location:** `i18n/config.ts` - i18n configuration and initialization
-- **Translation Files:** `locales/en/` - Organized by namespace (navigation, home, quiz, profile, chat, onboarding)
+- **Translation Files:** `locales/en/` - Organized by namespace (navigation, home, quiz, profile, chat, onboarding, settings)
 - **Context:** `contexts/LanguageContext.tsx` - Language state management
 - **Hook:** `hooks/useAppTranslation.ts` - Custom translation hook
 - **Storage:** AsyncStorage for language preference persistence
@@ -223,6 +250,7 @@ function HomeScreen() {
 - `profile` - Profile screen with statistics
 - `chat` - Chat messages and placeholders
 - `onboarding` - Welcome and feature descriptions
+- `settings` - Settings screen labels and messages
 
 **IMPORTANT Translation Rules:**
 - **NEVER** hardcode user-facing strings in components
@@ -234,14 +262,14 @@ See `docs/i18n-guide.md` for detailed implementation guide and how to add new la
 
 ### Backend (Node.js Express)
 
-**Key Technologies:** Express, MongoDB, Mongoose
+**Key Technologies:** Express 5, MongoDB, Mongoose 9, dotenv 17
 
 **Architecture Pattern:** Routes → Controllers → Services → Models
 
 **Directory Structure:**
 - `index.ts` - Server entry point, starts on port 3002
 - `app.ts` - Express app configuration
-- `db.ts` - MongoDB connection
+- `db.ts` - MongoDB connection (loads `.env` from the repository root via `dotenv.config({ path: "../../.env" })`)
 - `routes.ts` - API endpoint definitions
 - `controllers.ts` - Request handlers
 - `services.ts` - Business logic
@@ -262,7 +290,7 @@ HTTP Request → Route → Controller → Service → Model → MongoDB
 
 ### Admin Client (Next.js)
 
-**Key Technologies:** Next.js 15, shadcn/ui, React Hook Form, JWT (jose)
+**Key Technologies:** Next 16, shadcn/ui, React Hook Form, Tailwind 4, JWT (jose)
 
 **Architecture Pattern:** App Router + JWT Authentication
 
@@ -282,6 +310,7 @@ HTTP Request → Route → Controller → Service → Model → MongoDB
 - Tokens expire in 1 hour
 - Middleware protects all routes except `/signin`
 - Algorithm: HS256
+- Login compares the password against `ADMIN_PASSWORD_HASH` (bcrypt) from `.env.local`; `JWT_SECRET` signs the token
 
 ## Critical Naming Conventions
 
@@ -391,6 +420,12 @@ quiz_progress (id, question_id, selected_answer, is_completed, completed_at, cre
 
 -- User's bookmarks
 bookmarks (id, question_id, created_at)
+
+-- RAG chatbot documents
+knowledge_base (id, content, metadata, content_type, created_at)
+
+-- Embeddings for knowledge base documents (JSON array of numbers)
+vector_embeddings (id, content_id, embedding, created_at)
 ```
 
 **Relationships:**
@@ -483,9 +518,22 @@ export interface QuizItem {
 
 ## Environment Setup
 
-1. Copy `.env.example` to `.env`
-2. Add MongoDB connection string (contact team for credentials)
-3. Backend requires `MONGODB_URI` environment variable
+Each app reads its variables from its own file. See `AGENTS.md` for the same table with usage notes.
+
+| Variable | File | Used by |
+|----------|------|---------|
+| `MONGODB_URI` | repo-root `.env` | backend (loaded via `../../.env`) |
+| `JWT_SECRET` | `apps/admin_client/.env.local` | admin JWT signing |
+| `ADMIN_PASSWORD_HASH` | `apps/admin_client/.env.local` | admin login (bcrypt hash) |
+| `EXPO_PUBLIC_GOOGLE_GEMINI_API_KEY` | `apps/mobile_client/.env` | chatbot (optional) |
+
+Generate the admin password hash from `apps/admin_client`:
+
+```bash
+node -e "console.log(require('bcrypt').hashSync('your-password', 10))"
+```
+
+The mobile app is offline-first and runs without the backend or MongoDB.
 
 ## Important Patterns
 
@@ -544,6 +592,7 @@ Comprehensive documentation available in `docs/`:
 - `develop.md` - Contribution guide and architectural patterns
 - `run-locally.md` - Setup and troubleshooting
 - `troubleshooting.md` - Common issues and solutions
+- `settings-data-sync.md` - Settings data synchronization
 - `web-support_expo_sqlite.md` - Web compatibility notes
 
 ## Key Files to Know
@@ -551,14 +600,19 @@ Comprehensive documentation available in `docs/`:
 ### Mobile Client
 - `app/_layout.tsx` - Root layout, database initialization, i18n initialization
 - `lib/database.ts` - Database setup and migrations
+- `lib/gemini.ts` - Gemini API client (embeddings and text)
+- `lib/vector-db.ts` - Embedding storage and similarity search
+- `services/RAGService.ts` - RAG knowledge base and query pipeline
+- `services/PDFService.ts` - Document loading and chunking
 - `services/QuizService.ts` - Quiz operations
 - `app/(tabs)/quizzes.tsx` - Main quiz screen
+- `app/(tabs)/resources/` - Resources list and detail (expo-router nested stack)
 - `constants/Theme.ts` - Centralized brand colors and theme
 - `constants/Colors.ts` - Light/dark mode colors
 - `i18n/config.ts` - i18next configuration
 - `contexts/LanguageContext.tsx` - Language state management
 - `hooks/useAppTranslation.ts` - Custom translation hook
-- `locales/en/` - English translation files (navigation, home, quiz, profile, chat, onboarding)
+- `locales/en/` - English translation files (navigation, home, quiz, profile, chat, onboarding, settings)
 
 ### Backend
 - `index.ts` - Server entry point
