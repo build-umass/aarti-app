@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import {
   StyleSheet,
   View,
@@ -54,7 +54,9 @@ export default function HomeScreen() {
     if (!isSeeded) {
       return;
     }
-    loadData();
+    void (async () => {
+      await loadData();
+    })();
   }, [isSeeded, loadData]);
 
   // Listen for data updates from other pages

@@ -1,6 +1,5 @@
 import { Tabs } from 'expo-router';
 import { Image, View, Text, StyleSheet } from 'react-native';
-import React, { useEffect } from 'react';
 
 import { Colors } from '@/constants/Colors';
 import { useColorScheme } from '@/hooks/useColorScheme';
@@ -18,7 +17,7 @@ export default function TabLayout() {
   return (
     <Tabs
       screenOptions={{
-        tabBarActiveTintColor: Colors[colorScheme ?? 'light'].tint,
+        tabBarActiveTintColor: Colors[colorScheme].tint,
         tabBarInactiveTintColor: 'black',
         tabBarShowLabel: true,
         tabBarStyle: {

@@ -1,6 +1,5 @@
-import i18n from 'i18next';
+import i18next from 'i18next';
 import { initReactI18next } from 'react-i18next';
-import * as Localization from 'expo-localization';
 
 // Import English translation files
 import navigationEN from '../locales/en/navigation.json';
@@ -42,7 +41,7 @@ const resources = {
   },
 };
 
-i18n
+i18next
   .use(initReactI18next)
   .init({
     resources,
@@ -58,8 +57,4 @@ i18n
     },
   });
 
-// Try to detect device locale (for future multi-language support)
-const deviceLocale = Localization.getLocales()[0]?.languageCode || 'en';
-console.log('Device locale detected:', deviceLocale);
-
-export default i18n;
+export default i18next;

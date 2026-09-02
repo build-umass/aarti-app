@@ -1,6 +1,6 @@
 // Simple custom event emitter that works on all platforms
 class SimpleEventEmitter {
-  private listeners: { [key: string]: Array<(...args: any[]) => void> } = {};
+  private listeners: { [key: string]: ((...args: any[]) => void)[] } = {};
 
   on(event: string, callback: (...args: any[]) => void) {
     if (!this.listeners[event]) {

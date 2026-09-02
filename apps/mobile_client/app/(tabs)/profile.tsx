@@ -10,7 +10,6 @@ import { QuizService } from '@/services/QuizService';
 import { appEvents, EVENT_TYPES } from '@/lib/eventEmitter';
 import { useAppTranslation } from '@/hooks/useAppTranslation';
 import { useLanguage } from '@/contexts/LanguageContext';
-import React from 'react';
 
 // TODO:
 // fix child key console warning
@@ -239,9 +238,6 @@ const calcButtonWidth = () => {
 
 // may need to update these if quiz code changes after connecting to backend
 const tempResourceProgress = () => 36;
-
-const totalInTopic = (category: String) => {};
-const totalCompletedInTopic = (category: String) => {};
 
 const styles = StyleSheet.create({
   settings: {

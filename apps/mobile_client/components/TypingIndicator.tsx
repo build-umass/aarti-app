@@ -66,7 +66,7 @@ const TypingIndicator: React.FC<TypingIndicatorProps> = ({
                 false
             )
         );
-    }, []);
+    }, [dot1Scale, dot2Scale, dot3Scale]);
 
     const dot1Style = useAnimatedStyle(() => ({
         transform: [{ scale: dot1Scale.value }],

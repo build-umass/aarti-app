@@ -1,6 +1,5 @@
-import React from 'react';
-import { useState, useEffect } from 'react';
-import { StyleSheet, ViewStyle, TextStyle, Text, View, Pressable, ScrollView, PressableStateCallbackType } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { StyleSheet, ViewStyle, TextStyle, Text, View, Pressable, ScrollView } from 'react-native';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { QuizItem } from '../../../../types';
 import ProgressBar from '@/components/ProgressBar';
@@ -127,7 +126,9 @@ export default function QuizPage() {
       return;
     }
 
-    loadQuizData();
+    void (async () => {
+      await loadQuizData();
+    })();
   }, [isSeeded, loadQuizData]);
 
   // Listen for data reset events from settings page
@@ -388,7 +389,7 @@ export default function QuizPage() {
                   {quiz.options.map((option, index) => (
                     <Pressable
                       key={index}
-                      style={({ pressed }: PressableStateCallbackType): ViewStyle[] => [
+                      style={(): ViewStyle[] => [
                         styles.optionButton,
                         selectedAnswers[quiz.id] && option === quiz.correctAnswer ? styles.correctOption : undefined,
                         selectedAnswers[quiz.id] === option &&

@@ -1,14 +1,12 @@
-import React, { useEffect, useState } from 'react';
-import { DarkTheme, DefaultTheme, ThemeProvider } from '@react-navigation/native';
+import { useEffect, useState } from 'react';
+import { DarkTheme, DefaultTheme, ThemeProvider } from "expo-router/react-navigation";
 import { useFonts } from 'expo-font';
 import { Stack } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
 import 'react-native-reanimated';
-import { View, Text } from 'react-native';
 
 import { useColorScheme } from '@/hooks/useColorScheme';
-import { initializeDatabase, useDatabaseMigrations, seedInitialData, initializeVectorDatabase } from '@/lib/database';
-import { UserService } from '@/services/UserService';
+import { initializeDatabase, seedInitialData } from '@/lib/database';
 import { RAGService } from '@/services/RAGService';
 import { AppInitProvider } from '@/contexts/AppInitContext';
 import { LanguageProvider } from '@/contexts/LanguageContext';
@@ -26,27 +24,12 @@ export default function RootLayout() {
     SpaceMono: require('../assets/fonts/SpaceMono-Regular.ttf'),
   });
 
-  // Always call the hook at the top level - this is required by Rules of Hooks
-  const { error } = useDatabaseMigrations();
-
   // Initialize database and seed data
   useEffect(() => {
     async function prepare() {
       try {
-        // Initialize database
         await initializeDatabase();
-
-        // Seed initial data
         await seedInitialData();
-
-        // Initialize vector database
-        try {
-          await initializeVectorDatabase();
-          console.log('Vector database initialized');
-        } catch (vecError) {
-          console.error('Failed to initialize vector database:', vecError);
-          // Don't fail the app if vector DB initialization fails
-        }
 
         // Initialize RAG knowledge base
         try {
@@ -57,14 +40,10 @@ export default function RootLayout() {
           // Don't fail the app if RAG initialization fails
         }
 
-        // Mark seeding as complete
         setIsSeeded(true);
-
-        // Mark app as ready
         setAppIsReady(true);
       } catch (error) {
         console.error('Failed to initialize app:', error);
-        // Still mark as ready to show error state
         setAppIsReady(true);
         setIsSeeded(true); // Prevent infinite loading on error
       }
@@ -85,15 +64,6 @@ export default function RootLayout() {
   // Keep splash screen visible while loading
   if (!appIsReady || !loaded) {
     return null;
-  }
-
-  // Show migration error if any
-  if (error) {
-    return (
-      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-        <Text>Database error: {error.message}</Text>
-      </View>
-    );
   }
 
   return (

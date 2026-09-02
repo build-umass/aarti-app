@@ -19,3 +19,6 @@ apps/mobile_client/.expo
 
 # ignore .claude folder
 .claude
+
+# verification skill scratch + evidence
+.verify/

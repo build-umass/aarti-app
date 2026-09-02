@@ -1,6 +1,5 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useMemo, useRef } from 'react';
 import {
-  View,
   FlatList,
   StyleSheet,
   KeyboardAvoidingView,
@@ -20,27 +19,15 @@ interface Message {
 }
 
 const ChatScreen: React.FC = () => {
-  const { t, currentLanguage } = useAppTranslation('chat');
-  const [messages, setMessages] = useState<Message[]>([
-    {
-      id: '0',
-      text: t('initial_message'),
-      isUser: false,
-    },
-  ]);
+  const { t } = useAppTranslation('chat');
+  const [messages, setMessages] = useState<Message[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const flatListRef = useRef<FlatList>(null);
 
-  // Update initial message when language changes
-  useEffect(() => {
-    setMessages([
-      {
-        id: '0',
-        text: t('initial_message'),
-        isUser: false,
-      },
-    ]);
-  }, [currentLanguage, t]);
+  const displayMessages = useMemo<Message[]>(
+    () => [{ id: '0', text: t('initial_message'), isUser: false }, ...messages],
+    [messages, t]
+  );
 
   // Scroll to bottom when new messages arrive or loading state changes
   useEffect(() => {
@@ -53,20 +40,16 @@ const ChatScreen: React.FC = () => {
 
   const handleSend = async (text: string) => {
     if (text.length > 0 && !isLoading) {
-      // Add user message immediately
       setMessages((prevMessages) => [
         ...prevMessages,
         { id: (prevMessages.length + 1).toString(), text, isUser: true },
       ]);
 
-      // Show loading indicator
       setIsLoading(true);
 
       try {
-        // Generate RAG response
         const response = await RAGService.generateResponse(text);
 
-        // Add bot response
         setMessages((prevMessages) => [
           ...prevMessages,
           {
@@ -78,7 +61,6 @@ const ChatScreen: React.FC = () => {
       } catch (error) {
         console.error('Error generating response:', error);
 
-        // Fallback response using i18n
         setMessages((prevMessages) => [
           ...prevMessages,
           {
@@ -112,7 +94,7 @@ const ChatScreen: React.FC = () => {
     >
       <FlatList
         ref={flatListRef}
-        data={messages}
+        data={displayMessages}
         renderItem={renderItem}
         keyExtractor={(item) => item.id}
         contentContainerStyle={styles.contentContainer}
