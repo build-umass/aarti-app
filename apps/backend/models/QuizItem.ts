@@ -56,11 +56,4 @@ const quizItemSchema = new Schema<IQuizItem>(
   { timestamps: true }
 );
 
-quizItemSchema.pre('save', async function() {
-  if (this.isNew) {
-    const lastQuizItem = await QuizItem.findOne().sort({ id: -1 });
-    this.id = lastQuizItem ? lastQuizItem.id + 1 : 1;
-  }
-});
-
 export const QuizItem = mongoose.model<IQuizItem>('QuizItem', quizItemSchema);
