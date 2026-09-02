@@ -1,14 +1,6 @@
-import { QuizItem, IQuizItem } from './models/QuizItem';
+import { QuizItem, IQuizItem, QuizItemInput } from './models/QuizItem';
 
-export async function createQuizItem(quizItemData: {
-  id: number;
-  topic: string;
-  title: string;
-  question: string;
-  options: string[];
-  correctAnswer: string;
-  feedback: string;
-}) {
+export async function createQuizItem(quizItemData: QuizItemInput) {
   try {
     const quizItem = new QuizItem(quizItemData);
     return await quizItem.save();
@@ -65,16 +57,6 @@ export async function deleteQuizItem(id: number) {
     return await QuizItem.findOneAndDelete({ id });
   } catch (error) {
     console.error(`Error deleting quiz item with ID ${id}:`, error);
-    throw error;
-  }
-}
-
-export async function getNextQuizItemId() {
-  try {
-    const highestItem = await QuizItem.findOne().sort({ id: -1 });
-    return highestItem ? highestItem.id + 1 : 1;
-  } catch (error) {
-    console.error("Error getting next quiz item ID:", error);
     throw error;
   }
 }
