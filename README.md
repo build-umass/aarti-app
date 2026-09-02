@@ -38,10 +38,10 @@ JWT_SECRET=<random-string>
 ADMIN_PASSWORD_HASH=<bcrypt hash of your admin password>
 ```
 
-Generate the password hash from the admin folder:
+Generate the password hash from the admin folder. The output already escapes `$` for env files, because Next.js expands `$` references inside `.env.local` and would otherwise corrupt the hash:
 
 ```bash
-node -e "console.log(require('bcrypt').hashSync('your-password', 10))"
+node -e 'console.log(require("bcrypt").hashSync("your-password", 10).replaceAll("$", "\\$"))'
 ```
 
 **Mobile client.** Create `.env` in `apps/mobile_client` (optional; only for the chatbot):

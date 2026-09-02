@@ -86,6 +86,12 @@ async function createTables() {
       created_at TEXT DEFAULT CURRENT_TIMESTAMP
     );
 
+    -- RAG metadata (records which embedding model produced the stored vectors)
+    CREATE TABLE IF NOT EXISTS rag_meta (
+      key TEXT PRIMARY KEY,
+      value TEXT NOT NULL
+    );
+
     CREATE INDEX IF NOT EXISTS idx_quiz_questions_topic_id ON quiz_questions(topic_id);
     CREATE INDEX IF NOT EXISTS idx_quiz_progress_question_id ON quiz_progress(question_id);
     CREATE INDEX IF NOT EXISTS idx_bookmarks_question_id ON bookmarks(question_id);
@@ -134,6 +140,21 @@ export const getDatabase = () => {
     throw new Error('Database not initialized. Call initializeDatabase() first.');
   }
   return db;
+};
+
+export const getRagMeta = async (key: string): Promise<string | null> => {
+  const row = await getDatabase().getFirstAsync<{ value: string }>(
+    'SELECT value FROM rag_meta WHERE key = ?',
+    [key]
+  );
+  return row?.value ?? null;
+};
+
+export const setRagMeta = async (key: string, value: string): Promise<void> => {
+  await getDatabase().runAsync(
+    'INSERT OR REPLACE INTO rag_meta (key, value) VALUES (?, ?)',
+    [key, value]
+  );
 };
 
 // Seed initial data
