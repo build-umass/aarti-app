@@ -60,7 +60,7 @@ Rules the skill enforces:
 **Admin.**
 - `cookies()` and `headers()` are async in Next 16. Await them.
 - ESLint is flat config (`eslint.config.mjs`); `next lint` no longer exists.
-- Login compares against `ADMIN_PASSWORD_HASH`, a bcrypt hash from `.env.local`.
+- Login compares against `ADMIN_PASSWORD_HASH`, a bcrypt hash from `.env.local`. Next expands `$` references in env files; store the hash with every `$` escaped as `\$` or login fails with 401 even when the hash matches.
 
 **Backend.**
 - `controllers.ts` handlers send responses without returning the `Response` object. @types/express 5 types `RequestHandler` as returning `void | Promise<void>`.

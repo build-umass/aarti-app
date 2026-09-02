@@ -539,10 +539,10 @@ Each app reads its variables from its own file. See `AGENTS.md` for the same tab
 | `ADMIN_PASSWORD_HASH` | `apps/admin_client/.env.local` | admin login (bcrypt hash) |
 | `EXPO_PUBLIC_GOOGLE_GEMINI_API_KEY` | `apps/mobile_client/.env` | chatbot (optional) |
 
-Generate the admin password hash from `apps/admin_client`:
+Generate the admin password hash from `apps/admin_client`. Next.js expands `$` references inside `.env.local`, so the hash must have every `$` escaped as `\$` (the command below prints it pre-escaped):
 
 ```bash
-node -e "console.log(require('bcrypt').hashSync('your-password', 10))"
+node -e 'console.log(require("bcrypt").hashSync("your-password", 10).replaceAll("$", "\\$"))'
 ```
 
 The mobile app is offline-first and runs without the backend or MongoDB.
