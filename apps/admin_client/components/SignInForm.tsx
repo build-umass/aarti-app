@@ -21,8 +21,6 @@ export default function SignInForm() {
     setError(null);
     setIsLoading(true);
 
-    console.log(`[SignInForm] Attempting login with password: "${password}"`);
-
     try {
       const response = await fetch('/api/login', {
         method: 'POST',
