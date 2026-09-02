@@ -95,7 +95,7 @@ export default function Home() {
     <div>
       <div className="rise mb-10">
         <p className="text-sm font-medium text-muted-foreground">{greeting}</p>
-        <h1 className="mt-1 font-display text-3xl font-semibold tracking-tight sm:text-4xl">
+        <h1 className="mt-1 font-display text-3xl font-semibold tracking-tight text-primary sm:text-4xl">
           Content studio
         </h1>
         <p className="mt-2 max-w-lg text-sm leading-relaxed text-muted-foreground">
@@ -125,7 +125,7 @@ export default function Home() {
         />
       </div>
 
-      <div className={`rise rise-3 mt-10 rounded-xl border border-marigold-soft bg-marigold-soft/40 p-5`}>
+      <div className={`rise rise-3 mt-10 rounded-xl border border-pink-soft bg-pink-soft/50 p-5`}>
         <h2 className="font-display text-base font-semibold tracking-tight">
           Getting started
         </h2>

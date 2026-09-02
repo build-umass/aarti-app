@@ -1,38 +1,32 @@
 @import "tailwindcss";
 @config "../tailwind.config.ts";
 
-:root {
-  --background-start-rgb: 250 247 242;
-  --background-end-rgb: 243 238 230;
-  --foreground-rgb: 31 26 23;
-}
-
-/* Aarti admin: warm paper, plum ink, marigold accent. */
+/* Aarti admin: plum ink, pink accent. */
 @layer base {
   :root {
-    --background: 40 33% 98%;
-    --foreground: 330 20% 12%;
-    --card: 40 40% 99%;
-    --card-foreground: 330 20% 12%;
-    --popover: 40 40% 99%;
-    --popover-foreground: 330 20% 12%;
-    --primary: 330 40% 26%;
-    --primary-foreground: 40 40% 98%;
-    --secondary: 330 22% 94%;
-    --secondary-foreground: 330 30% 22%;
-    --muted: 38 22% 93%;
-    --muted-foreground: 330 8% 42%;
-    --accent: 38 55% 91%;
-    --accent-foreground: 330 40% 24%;
-    --destructive: 0 68% 44%;
-    --destructive-foreground: 40 40% 98%;
-    --success: 152 45% 30%;
-    --success-soft: 150 40% 92%;
-    --border: 35 18% 87%;
-    --input: 35 18% 84%;
-    --ring: 330 40% 32%;
-    --marigold: 36 82% 55%;
-    --marigold-soft: 38 70% 88%;
+    --background: 210 20% 98%;
+    --foreground: 202 24% 9%;
+    --card: 0 0% 100%;
+    --card-foreground: 202 24% 9%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 202 24% 9%;
+    --primary: 325 45% 26%;
+    --primary-foreground: 0 0% 100%;
+    --secondary: 318 25% 92%;
+    --secondary-foreground: 325 45% 26%;
+    --muted: 0 0% 97%;
+    --muted-foreground: 206 6% 44%;
+    --accent: 318 25% 92%;
+    --accent-foreground: 325 45% 26%;
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 100%;
+    --success: 142 71% 45%;
+    --success-soft: 142 71% 95%;
+    --pink: 342 80% 66%;
+    --pink-soft: 342 80% 96%;
+    --border: 240 10% 91%;
+    --input: 240 10% 91%;
+    --ring: 325 45% 40%;
     --radius: 0.625rem;
   }
 }
@@ -70,10 +64,10 @@
 /* Atmosphere for the sign-in screen: plum mesh under film grain. */
 .atmosphere {
   background:
-    radial-gradient(42rem 42rem at 12% -10%, hsl(330 45% 30% / 0.9), transparent 60%),
-    radial-gradient(30rem 30rem at 95% 110%, hsl(36 82% 55% / 0.5), transparent 55%),
-    radial-gradient(24rem 24rem at 80% 10%, hsl(330 30% 40% / 0.45), transparent 60%),
-    hsl(330 25% 14%);
+    radial-gradient(42rem 42rem at 12% -10%, hsl(325 45% 32% / 0.9), transparent 60%),
+    radial-gradient(30rem 30rem at 95% 110%, hsl(342 80% 60% / 0.5), transparent 55%),
+    radial-gradient(24rem 24rem at 80% 10%, hsl(342 60% 55% / 0.4), transparent 60%),
+    hsl(325 35% 16%);
 }
 
 .grain::after {

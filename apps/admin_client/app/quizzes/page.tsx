@@ -240,7 +240,7 @@ export default function QuizzesPage() {
     <div>
       <div className="rise mb-8 flex flex-wrap items-end justify-between gap-4">
         <div>
-          <h1 className="font-display text-3xl font-semibold tracking-tight sm:text-4xl">Quizzes</h1>
+          <h1 className="font-display text-3xl font-semibold tracking-tight text-primary sm:text-4xl">Quizzes</h1>
           <p className="mt-1 text-sm text-muted-foreground">
             Write questions with options and feedback for learners to practice.
           </p>

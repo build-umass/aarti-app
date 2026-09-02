@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { usePathname, useRouter } from 'next/navigation';
 import { BookOpen, HelpCircle, LayoutDashboard, LogOut } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -15,14 +16,16 @@ const NAV = [
 function BrandMark({ className = '' }: { className?: string }) {
   return (
     <Link href="/" className={`flex items-center gap-3 ${className}`}>
-      <span className="flex h-9 w-9 items-center justify-center rounded-lg bg-primary font-display text-lg font-semibold text-primary-foreground shadow-sm">
-        A
-      </span>
-      <span className="leading-tight">
-        <span className="block font-display text-lg font-semibold tracking-tight">Aarti</span>
-        <span className="block text-[11px] font-medium uppercase tracking-[0.14em] text-muted-foreground">
-          Admin
-        </span>
+      <Image
+        src="/aarti-logo.png"
+        alt="Aarti"
+        width={120}
+        height={68}
+        priority
+        className="h-10 w-auto"
+      />
+      <span className="block text-[11px] font-medium uppercase tracking-[0.14em] text-primary-foreground/60">
+        Admin
       </span>
     </Link>
   );
@@ -58,7 +61,7 @@ export default function AppShell({
 
   return (
     <div className="flex min-h-screen">
-      <aside className="sticky top-0 hidden h-screen w-60 shrink-0 flex-col border-r border-border/70 bg-card px-4 py-6 md:flex">
+      <aside className="sticky top-0 hidden h-screen w-60 shrink-0 flex-col bg-primary px-4 py-6 md:flex">
         <BrandMark className="px-2" />
 
         {isSignedIn && (
@@ -72,8 +75,8 @@ export default function AppShell({
                   aria-current={active ? 'page' : undefined}
                   className={`group flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium transition-colors ${
                     active
-                      ? 'bg-primary text-primary-foreground shadow-sm'
-                      : 'text-muted-foreground hover:bg-secondary hover:text-secondary-foreground'
+                      ? 'bg-pink text-primary-foreground shadow-sm'
+                      : 'text-primary-foreground/70 hover:bg-primary-foreground/10 hover:text-primary-foreground'
                   }`}
                 >
                   <Icon className="h-4 w-4" />
@@ -90,7 +93,7 @@ export default function AppShell({
               variant="ghost"
               onClick={handleSignOut}
               disabled={isSigningOut}
-              className="w-full justify-start gap-3 px-3 text-muted-foreground hover:text-foreground"
+              className="w-full justify-start gap-3 px-3 text-primary-foreground/70 hover:bg-primary-foreground/10 hover:text-primary-foreground"
             >
               <LogOut className="h-4 w-4" />
               {isSigningOut ? 'Signing out…' : 'Sign out'}
@@ -100,7 +103,7 @@ export default function AppShell({
       </aside>
 
       <div className="flex min-w-0 flex-1 flex-col">
-        <header className="sticky top-0 z-10 flex items-center justify-between border-b border-border/70 bg-background/85 px-4 py-3 backdrop-blur md:hidden">
+        <header className="sticky top-0 z-10 flex items-center justify-between border-b border-primary-foreground/10 bg-primary px-4 py-3 md:hidden">
           <BrandMark />
           {isSignedIn && (
             <nav className="flex items-center gap-1" aria-label="Main">
@@ -113,7 +116,7 @@ export default function AppShell({
                     aria-label={label}
                     aria-current={active ? 'page' : undefined}
                     className={`rounded-lg p-2 transition-colors ${
-                      active ? 'bg-primary text-primary-foreground' : 'text-muted-foreground'
+                      active ? 'bg-pink text-primary-foreground' : 'text-primary-foreground/70 hover:bg-primary-foreground/10'
                     }`}
                   >
                     <Icon className="h-4 w-4" />
@@ -126,7 +129,7 @@ export default function AppShell({
                 onClick={handleSignOut}
                 disabled={isSigningOut}
                 aria-label="Sign out"
-                className="text-muted-foreground"
+                className="text-primary-foreground/70"
               >
                 <LogOut className="h-4 w-4" />
               </Button>

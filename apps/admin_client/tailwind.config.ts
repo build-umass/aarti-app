@@ -18,8 +18,8 @@ const config: Config = {
         sm: 'calc(var(--radius) - 4px)',
       },
       colors: {
-        marigold: 'hsl(var(--marigold))',
-        'marigold-soft': 'hsl(var(--marigold-soft))',
+        pink: 'hsl(var(--pink))',
+        'pink-soft': 'hsl(var(--pink-soft))',
         success: 'hsl(var(--success))',
         'success-soft': 'hsl(var(--success-soft))',
         background: 'hsl(var(--background))',

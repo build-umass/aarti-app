@@ -341,7 +341,7 @@ export default function ResourcesPage() {
     <div>
       <div className="rise mb-8 flex flex-wrap items-end justify-between gap-4">
         <div>
-          <h1 className="font-display text-3xl font-semibold tracking-tight sm:text-4xl">Resources</h1>
+          <h1 className="font-display text-3xl font-semibold tracking-tight text-primary sm:text-4xl">Resources</h1>
           <p className="mt-1 text-sm text-muted-foreground">
             Supporting material learners read alongside their quizzes.
           </p>
