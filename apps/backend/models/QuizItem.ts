@@ -10,6 +10,8 @@ export interface IQuizItem extends Document {
   feedback: string;
 }
 
+export type QuizItemInput = Omit<IQuizItem, keyof Document>;
+
 const quizItemSchema = new Schema<IQuizItem>(
   {
     id: { 
@@ -36,12 +38,12 @@ const quizItemSchema = new Schema<IQuizItem>(
       required: true,
       validate: [(val: string[]) => val.length > 0, 'Quiz item must have at least one option'] 
     },
-    correctAnswer: { 
-      type: String, 
+    correctAnswer: {
+      type: String,
       required: true,
       validate: {
-        validator: function(this: IQuizItem, v: string) {
-          return this.options.includes(v);
+        validator: function(this: unknown, v: string) {
+          return (this as IQuizItem).options.includes(v);
         },
         message: 'Correct answer must be one of the provided options'
       }
@@ -54,12 +56,11 @@ const quizItemSchema = new Schema<IQuizItem>(
   { timestamps: true }
 );
 
-quizItemSchema.pre('save', async function(next) {
+quizItemSchema.pre('save', async function() {
   if (this.isNew) {
     const lastQuizItem = await QuizItem.findOne().sort({ id: -1 });
     this.id = lastQuizItem ? lastQuizItem.id + 1 : 1;
   }
-  next();
 });
 
 export const QuizItem = mongoose.model<IQuizItem>('QuizItem', quizItemSchema);

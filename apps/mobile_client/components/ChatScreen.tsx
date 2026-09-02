@@ -1,6 +1,5 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo, useRef } from 'react';
 import {
-  View,
   FlatList,
   StyleSheet,
   KeyboardAvoidingView,
@@ -8,7 +7,9 @@ import {
 } from 'react-native';
 import MessageBubble from './MessageBubble';
 import InputBar from './InputBar';
+import TypingIndicator from './TypingIndicator';
 import { useAppTranslation } from '@/hooks/useAppTranslation';
+import { RAGService } from '@/services/RAGService';
 
 // Define a Message type
 interface Message {
@@ -18,44 +19,71 @@ interface Message {
 }
 
 const ChatScreen: React.FC = () => {
-  const { t, currentLanguage } = useAppTranslation('chat');
-  const [messages, setMessages] = useState<Message[]>([
-    {
-      id: '0',
-      text: t('initial_message'),
-      isUser: false,
-    },
-  ]);
+  const { t } = useAppTranslation('chat');
+  const [messages, setMessages] = useState<Message[]>([]);
+  const [isLoading, setIsLoading] = useState(false);
+  const flatListRef = useRef<FlatList>(null);
 
-  // Update initial message when language changes
+  const displayMessages = useMemo<Message[]>(
+    () => [{ id: '0', text: t('initial_message'), isUser: false }, ...messages],
+    [messages, t]
+  );
+
+  // Scroll to bottom when new messages arrive or loading state changes
   useEffect(() => {
-    setMessages([
-      {
-        id: '0',
-        text: t('initial_message'),
-        isUser: false,
-      },
-    ]);
-  }, [currentLanguage, t]);
+    if (flatListRef.current && (messages.length > 0 || isLoading)) {
+      setTimeout(() => {
+        flatListRef.current?.scrollToEnd({ animated: true });
+      }, 100);
+    }
+  }, [messages, isLoading]);
 
-  const handleSend = (text: string) => {
-    if (text.length > 0) {
+  const handleSend = async (text: string) => {
+    if (text.length > 0 && !isLoading) {
       setMessages((prevMessages) => [
         ...prevMessages,
         { id: (prevMessages.length + 1).toString(), text, isUser: true },
       ]);
 
-      setTimeout(() => {
+      setIsLoading(true);
+
+      try {
+        const response = await RAGService.generateResponse(text);
+
         setMessages((prevMessages) => [
           ...prevMessages,
           {
             id: (prevMessages.length + 1).toString(),
-            text: t('resources_message'),
+            text: response,
             isUser: false,
           },
         ]);
-      }, 500);
+      } catch (error) {
+        console.error('Error generating response:', error);
+
+        setMessages((prevMessages) => [
+          ...prevMessages,
+          {
+            id: (prevMessages.length + 1).toString(),
+            text: t('error_message'),
+            isUser: false,
+          },
+        ]);
+      } finally {
+        setIsLoading(false);
+      }
     }
+  };
+
+  const renderItem = ({ item }: { item: Message }) => (
+    <MessageBubble message={item} />
+  );
+
+  const renderFooter = () => {
+    if (isLoading) {
+      return <TypingIndicator />;
+    }
+    return null;
   };
 
   return (
@@ -65,12 +93,15 @@ const ChatScreen: React.FC = () => {
       keyboardVerticalOffset={Platform.OS === 'ios' ? 60 : 0}
     >
       <FlatList
-        data={messages}
-        renderItem={({ item }) => <MessageBubble message={item} />}
+        ref={flatListRef}
+        data={displayMessages}
+        renderItem={renderItem}
         keyExtractor={(item) => item.id}
         contentContainerStyle={styles.contentContainer}
+        ListFooterComponent={renderFooter}
+        onContentSizeChange={() => flatListRef.current?.scrollToEnd({ animated: true })}
       />
-      <InputBar onSend={handleSend} />
+      <InputBar onSend={handleSend} disabled={isLoading} />
     </KeyboardAvoidingView>
   );
 };
@@ -82,6 +113,7 @@ const styles = StyleSheet.create({
   contentContainer: {
     paddingHorizontal: 10,
     paddingBottom: 10,
+    flexGrow: 1,
   },
 });
 

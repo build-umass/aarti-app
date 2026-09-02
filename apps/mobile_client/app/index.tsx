@@ -2,33 +2,38 @@ import { useEffect, useState } from 'react';
 import { Redirect } from 'expo-router';
 import { View, ActivityIndicator } from 'react-native';
 import { UserService } from '@/services/UserService';
+import { BrandColors } from '@/constants/Theme';
 
 export default function Index() {
   const [isChecking, setIsChecking] = useState(true);
   const [onboardingCompleted, setOnboardingCompleted] = useState(false);
 
   useEffect(() => {
-    checkOnboardingStatus();
-  }, []);
+    let cancelled = false;
 
-  const checkOnboardingStatus = async () => {
-    try {
-      const status = await UserService.getOnboardingStatus();
-      console.log('Index route: checking onboarding status =', status);
-      setOnboardingCompleted(status);
-    } catch (error) {
-      console.error('Error checking onboarding status:', error);
-      // Default to showing onboarding on error
-      setOnboardingCompleted(false);
-    } finally {
-      setIsChecking(false);
-    }
-  };
+    void (async () => {
+      try {
+        const status = await UserService.getOnboardingStatus();
+        console.log('Index route: checking onboarding status =', status);
+        if (!cancelled) setOnboardingCompleted(status);
+      } catch (error) {
+        console.error('Error checking onboarding status:', error);
+        // Default to showing onboarding on error
+        if (!cancelled) setOnboardingCompleted(false);
+      } finally {
+        if (!cancelled) setIsChecking(false);
+      }
+    })();
+
+    return () => {
+      cancelled = true;
+    };
+  }, []);
 
   // Show loading while checking
   if (isChecking) {
     return (
-      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: '#5f2446' }}>
+      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: BrandColors.primary }}>
         <ActivityIndicator size="large" color="#ffffff" />
       </View>
     );

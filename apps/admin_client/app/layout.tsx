@@ -14,17 +14,16 @@ export const metadata: Metadata = {
   description: 'Manage quizzes and resources',
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{ // Use Readonly<> for props type
   children: React.ReactNode;
 }>) {
 
   // --- Authentication Check ---
-  const cookieStore = cookies();
-  const tokenCookie = (cookieStore as any).get('auth_token');
+  const cookieStore = await cookies();
+  const tokenCookie = cookieStore.get('auth_token');
   const isSignedIn = !!tokenCookie?.value;
-  console.log(`[Layout Server Render] User signed in status: ${isSignedIn}`);
   // --- End Authentication Check ---
 
   return (

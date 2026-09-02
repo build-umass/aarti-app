@@ -24,18 +24,15 @@ interface LanguageProviderProps {
 
 const LANGUAGE_STORAGE_KEY = '@aarti_language_preference';
 
+// Available languages - currently only English and Telugu
+// Future languages can be added here
+const availableLanguages = [
+  { code: 'en', name: 'English' },
+  { code: 'te', name: 'తెలుగు' },
+];
+
 export const LanguageProvider: React.FC<LanguageProviderProps> = ({ children }) => {
   const [currentLanguage, setCurrentLanguage] = useState('en');
-
-  // Available languages - currently only English
-  // Future languages can be added here
-  const availableLanguages = [
-    { code: 'en', name: 'English' },
-    { code: 'te', name: 'తెలుగు' },
-    // { code: 'es', name: 'Español' },
-    // { code: 'fr', name: 'Français' },
-    // { code: 'hi', name: 'हिन्दी' },
-  ];
 
   useEffect(() => {
     // Load saved language preference on mount

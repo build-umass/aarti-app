@@ -7,7 +7,8 @@ export async function POST(request: Request) {
   try {
     console.log("Attempting to delete auth_token cookie...");
     // Clear the authentication cookie by setting its maxAge to 0 or expiry to the past
-    (cookies() as any).set('auth_token', '', {
+    const cookieStore = await cookies();
+    cookieStore.set('auth_token', '', {
       path: '/',          // Path must match the path used when setting
       httpOnly: true,
       secure: process.env.NODE_ENV === 'production',

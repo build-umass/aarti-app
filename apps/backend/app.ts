@@ -12,7 +12,6 @@ export function createApp() {
   app.use(express.json());
   app.use((req, _, next) => {
     console.log(`Aarti-backend incoming: ${req.method} ${req.url}`);
-    console.log(req.body)
     next();
   });
   

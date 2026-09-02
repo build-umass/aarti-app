@@ -501,7 +501,7 @@ export default function QuizzesPage() {
           <DialogHeader>
             <DialogTitle>Confirm Deletion</DialogTitle>
             <DialogDescription>
-              Are you sure you want to delete the quiz "{quizToDelete?.title}"? This action cannot be undone.
+              Are you sure you want to delete the quiz &quot;{quizToDelete?.title}&quot;? This action cannot be undone.
             </DialogDescription>
           </DialogHeader>
           <DialogFooter className="flex space-x-2 sm:justify-start">
@@ -533,7 +533,7 @@ export default function QuizzesPage() {
           <DialogHeader>
             <DialogTitle>Confirm Save</DialogTitle>
             <DialogDescription>
-              Are you sure you want to {editingQuiz ? 'save changes to' : 'create'} the quiz "{quizToSave?.title}"?
+              Are you sure you want to {editingQuiz ? 'save changes to' : 'create'} the quiz &quot;{quizToSave?.title}&quot;?
             </DialogDescription>
           </DialogHeader>
           <DialogFooter className="flex space-x-2 sm:justify-start">
