@@ -24,7 +24,6 @@ export default async function RootLayout({
   const cookieStore = await cookies();
   const tokenCookie = cookieStore.get('auth_token');
   const isSignedIn = !!tokenCookie?.value;
-  console.log(`[Layout Server Render] User signed in status: ${isSignedIn}`);
   // --- End Authentication Check ---
 
   return (

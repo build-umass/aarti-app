@@ -17,7 +17,13 @@ export async function generateEmbedding(text: string): Promise<number[]> {
   }
 
   const result = await ai.models.embedContent({ model: EMBEDDING_MODEL, contents: text });
-  return result.embeddings?.[0]?.values ?? [];
+  const values = result.embeddings?.[0]?.values;
+
+  if (!values || values.length === 0) {
+    throw new Error('Gemini returned no embedding values');
+  }
+
+  return values;
 }
 
 // Generate text response using RAG context
