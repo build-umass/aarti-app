@@ -8,10 +8,9 @@ const config: Config = {
   ],
   theme: {
     extend: {
-      backgroundImage: {
-        'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
-        'gradient-conic':
-          'conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))',
+      fontFamily: {
+        sans: ['var(--font-body)'],
+        display: ['var(--font-display)'],
       },
       borderRadius: {
         lg: 'var(--radius)',
@@ -19,6 +18,10 @@ const config: Config = {
         sm: 'calc(var(--radius) - 4px)',
       },
       colors: {
+        marigold: 'hsl(var(--marigold))',
+        'marigold-soft': 'hsl(var(--marigold-soft))',
+        success: 'hsl(var(--success))',
+        'success-soft': 'hsl(var(--success-soft))',
         background: 'hsl(var(--background))',
         foreground: 'hsl(var(--foreground))',
         card: {

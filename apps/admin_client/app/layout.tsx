@@ -1,40 +1,41 @@
 // app/layout.tsx
-import './globals.css'; // Your global styles
+import './globals.css';
 import type { Metadata } from 'next';
-import { Inter } from 'next/font/google';
-import Header from '@/components/Header'; // Assuming Header is in components/Header.tsx
-import { cookies } from 'next/headers'; // Import the cookies function for server-side access
-import { Toaster } from "@/components/ui/toaster" // Import Toaster if you use shadcn toasts
+import { Fraunces, Manrope } from 'next/font/google';
+import AppShell from '@/components/AppShell';
+import { cookies } from 'next/headers';
+import { Toaster } from '@/components/ui/toaster';
 
-const inter = Inter({ subsets: ['latin'] });
+const fraunces = Fraunces({
+  subsets: ['latin'],
+  variable: '--font-display',
+  axes: ['opsz', 'SOFT', 'WONK'],
+});
+
+const manrope = Manrope({
+  subsets: ['latin'],
+  variable: '--font-body',
+});
 
 export const metadata: Metadata = {
-  // You can keep your original metadata or update it
-  title: 'Quiz Admin Dashboard',
-  description: 'Manage quizzes and resources',
+  title: 'Aarti Admin',
+  description: 'Manage Aarti quizzes and learning resources',
 };
 
 export default async function RootLayout({
   children,
-}: Readonly<{ // Use Readonly<> for props type
+}: Readonly<{
   children: React.ReactNode;
 }>) {
-
-  // --- Authentication Check ---
   const cookieStore = await cookies();
   const tokenCookie = cookieStore.get('auth_token');
   const isSignedIn = !!tokenCookie?.value;
-  // --- End Authentication Check ---
 
   return (
-    <html lang="en">
-      <body className={inter.className}>
-        {/* Pass the determined status to the Header component */}
-        <Header isSignedIn={isSignedIn} />
-        <main className="container mx-auto px-4 py-8">
-          {children}
-        </main>
-        <Toaster /> {/* Add Toaster here for shadcn UI toasts */}
+    <html lang="en" className={`${fraunces.variable} ${manrope.variable}`}>
+      <body className="font-sans antialiased">
+        <AppShell isSignedIn={isSignedIn}>{children}</AppShell>
+        <Toaster />
       </body>
     </html>
   );

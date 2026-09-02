@@ -7,7 +7,7 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormDescription } fr
 import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Textarea } from '@/components/ui/textarea';
-import { Plus, Minus, Save, Edit, X, Filter, Trash2 } from 'lucide-react';
+import { Plus, Minus, Save, Edit, X, Filter, Trash2, HelpCircle } from 'lucide-react';
 import { useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { QuizItem } from '../../../../types';
@@ -238,8 +238,14 @@ export default function QuizzesPage() {
 
   return (
     <div>
-      <div className="flex justify-between items-center mb-6">
-        <h1 className="text-3xl font-bold">Quizzes</h1>
+      <div className="rise mb-8 flex flex-wrap items-end justify-between gap-4">
+        <div>
+          <h1 className="font-display text-3xl font-semibold tracking-tight sm:text-4xl">Quizzes</h1>
+          <p className="mt-1 text-sm text-muted-foreground">
+            Write questions with options and feedback for learners to practice.
+          </p>
+        </div>
+        <div className="flex gap-3">
         <Dialog 
           open={isDialogOpen} 
           onOpenChange={(open) => {
@@ -407,12 +413,13 @@ export default function QuizzesPage() {
             </Form>
           </DialogContent>
         </Dialog>
+        </div>
       </div>
 
-      <div className="mb-6 flex items-center gap-4">
+      <div className="mb-6 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
         <div className="flex items-center gap-2">
-          <Filter className="h-4 w-4" />
-          <span className="font-medium">Filter by Topic:</span>
+          <Filter className="h-4 w-4 text-muted-foreground" />
+          <span className="text-sm font-medium">Filter by Topic:</span>
         </div>
         <Select value={selectedTopic} onValueChange={setSelectedTopic}>
           <SelectTrigger className="w-[200px]">
@@ -432,15 +439,22 @@ export default function QuizzesPage() {
       {loading ? (
         <div className="text-center py-10">Loading quizzes...</div>
       ) : filteredQuizzes.length === 0 ? (
-        <div className="text-center py-10">
+        <Card className="rounded-xl border-border/70 shadow-sm">
+          <CardContent className="flex flex-col items-center gap-3 py-14 text-center">
+            <span className="flex h-12 w-12 items-center justify-center rounded-xl bg-secondary text-primary">
+              <HelpCircle className="h-6 w-6" />
+            </span>
+            <p className="text-sm text-muted-foreground">
           {selectedTopic === 'all' 
             ? 'No quizzes found. Create your first quiz!'
             : `No quizzes found for topic "${selectedTopic}"`}
-        </div>
+            </p>
+          </CardContent>
+        </Card>
       ) : (
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid gap-4 sm:grid-cols-2">
           {filteredQuizzes.map((quiz) => (
-            <Card key={quiz.id}>
+            <Card key={quiz.id} className="rounded-xl border-border/70 shadow-sm">
               <CardHeader>
                 <CardTitle>{quiz.title}</CardTitle>
               </CardHeader>
@@ -453,7 +467,7 @@ export default function QuizzesPage() {
                       key={index}
                       className={`p-2 rounded-md ${
                         option === quiz.correctAnswer
-                          ? 'bg-green-100 dark:bg-green-900'
+                          ? 'bg-success-soft'
                           : 'bg-secondary'
                       }`}
                     >
@@ -465,7 +479,7 @@ export default function QuizzesPage() {
                   <details className="text-sm">
                     <summary className="font-medium cursor-pointer">View Feedback</summary>
                     <div className="mt-2">
-                      <div className="p-2 bg-green-50 dark:bg-green-900/20 rounded-md">
+                      <div className="p-2 bg-success-soft/60 rounded-md">
                         <p>{quiz.feedback}</p>
                       </div>
                     </div>

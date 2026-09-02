@@ -7,7 +7,7 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormDescription } fr
 import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Textarea } from '@/components/ui/textarea';
-import { Plus, Save, Edit, X, Filter, Trash2, Upload, FileText, CheckCircle2 } from 'lucide-react';
+import { Plus, Save, Edit, X, Filter, Trash2, Upload, FileText, CheckCircle2, BookOpen } from 'lucide-react';
 import { useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { Resource } from '../../../../types';
@@ -339,8 +339,14 @@ export default function ResourcesPage() {
 
   return (
     <div>
-      <div className="flex justify-between items-center mb-6">
-        <h1 className="text-3xl font-bold">Resources</h1>
+      <div className="rise mb-8 flex flex-wrap items-end justify-between gap-4">
+        <div>
+          <h1 className="font-display text-3xl font-semibold tracking-tight sm:text-4xl">Resources</h1>
+          <p className="mt-1 text-sm text-muted-foreground">
+            Supporting material learners read alongside their quizzes.
+          </p>
+        </div>
+        <div className="flex gap-3">
         <Dialog 
           open={isDialogOpen} 
           onOpenChange={(open) => {
@@ -477,12 +483,13 @@ export default function ResourcesPage() {
             </Form>
           </DialogContent>
         </Dialog>
+        </div>
       </div>
 
-      <div className="mb-6 flex items-center gap-4">
+      <div className="mb-6 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
         <div className="flex items-center gap-2">
-          <Filter className="h-4 w-4" />
-          <span className="font-medium">Filter by Topic:</span>
+          <Filter className="h-4 w-4 text-muted-foreground" />
+          <span className="text-sm font-medium">Filter by Topic:</span>
         </div>
         <Select value={selectedTopic} onValueChange={setSelectedTopic}>
           <SelectTrigger className="w-[200px]">
@@ -502,20 +509,27 @@ export default function ResourcesPage() {
       {loading ? (
         <div className="text-center py-10">Loading resources...</div>
       ) : filteredResources.length === 0 ? (
-        <div className="text-center py-10">
+        <Card className="rounded-xl border-border/70 shadow-sm">
+          <CardContent className="flex flex-col items-center gap-3 py-14 text-center">
+            <span className="flex h-12 w-12 items-center justify-center rounded-xl bg-secondary text-primary">
+              <BookOpen className="h-6 w-6" />
+            </span>
+            <p className="text-sm text-muted-foreground">
           {selectedTopic === 'all' 
             ? 'No resources found. Create your first resource!'
             : `No resources found for topic "${selectedTopic}"`}
-        </div>
+            </p>
+          </CardContent>
+        </Card>
       ) : (
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid gap-4 sm:grid-cols-2">
           {filteredResources.map((resource) => (
-            <Card key={resource.id}>
+            <Card key={resource.id} className="rounded-xl border-border/70 shadow-sm">
               <CardHeader>
                 <div className="flex items-center justify-between">
                   <CardTitle>{resource.title}</CardTitle>
                   {resource.isPublished && (
-                    <CheckCircle2 className="h-5 w-5 text-green-500" />
+                    <CheckCircle2 className="h-5 w-5 text-success" />
                   )}
                 </div>
               </CardHeader>
@@ -532,7 +546,7 @@ export default function ResourcesPage() {
                   </details>
                 </div>
                 {resource.isPublished && (
-                  <p className="text-xs text-green-600 dark:text-green-400 mt-2">
+                  <p className="text-xs text-success mt-2">
                     Published to quizzes
                   </p>
                 )}
