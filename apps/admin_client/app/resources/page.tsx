@@ -576,7 +576,7 @@ export default function ResourcesPage() {
           <DialogHeader>
             <DialogTitle>Confirm Deletion</DialogTitle>
             <DialogDescription>
-              Are you sure you want to delete the resource "{resourceToDelete?.title}"? This action cannot be undone.
+              Are you sure you want to delete the resource &quot;{resourceToDelete?.title}&quot;? This action cannot be undone.
             </DialogDescription>
           </DialogHeader>
           <DialogFooter className="flex space-x-2 sm:justify-start">
@@ -608,7 +608,7 @@ export default function ResourcesPage() {
           <DialogHeader>
             <DialogTitle>Confirm Save</DialogTitle>
             <DialogDescription>
-              Are you sure you want to {editingResource ? 'save changes to' : 'create'} the resource "{resourceToSave?.title}"?
+              Are you sure you want to {editingResource ? 'save changes to' : 'create'} the resource &quot;{resourceToSave?.title}&quot;?
             </DialogDescription>
           </DialogHeader>
           <DialogFooter className="flex space-x-2 sm:justify-start">
@@ -640,7 +640,7 @@ export default function ResourcesPage() {
           <DialogHeader>
             <DialogTitle>Publish to Quizzes</DialogTitle>
             <DialogDescription>
-              Are you sure you want to publish the resource "{resourceToPublish?.title}" to the quizzes section? This will create a quiz item from this resource.
+              Are you sure you want to publish the resource &quot;{resourceToPublish?.title}&quot; to the quizzes section? This will create a quiz item from this resource.
             </DialogDescription>
           </DialogHeader>
           <DialogFooter className="flex space-x-2 sm:justify-start">

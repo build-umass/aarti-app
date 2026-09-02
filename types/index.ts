@@ -8,6 +8,14 @@ export interface QuizItem {
     feedback: string;
 }
 
+export interface Resource {
+    id: number;
+    topic: string;
+    title: string;
+    content: string;
+    isPublished?: boolean;
+}
+
 export interface MockResource {
     id: string;
     title: string;
