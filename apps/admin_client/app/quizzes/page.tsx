@@ -2,10 +2,31 @@
 
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle, CardFooter } from '@/components/ui/card';
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger, DialogDescription, DialogFooter } from '@/components/ui/dialog';
-import { Form, FormControl, FormField, FormItem, FormLabel, FormDescription } from '@/components/ui/form';
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+  DialogDescription,
+  DialogFooter,
+} from '@/components/ui/dialog';
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormDescription,
+} from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
 import { Textarea } from '@/components/ui/textarea';
 import { Plus, Minus, Save, Edit, X, Filter, Trash2, HelpCircle } from 'lucide-react';
 import { useState, useEffect } from 'react';
@@ -37,7 +58,7 @@ export default function QuizzesPage() {
       question: '',
       correctAnswer: '',
       feedback: '',
-    }
+    },
   });
 
   // Fetch quiz data from backend when component mounts
@@ -67,12 +88,11 @@ export default function QuizzesPage() {
   }, []);
 
   // Get unique topics from existing quizzes
-  const existingTopics = Array.from(new Set(quizzes.map(quiz => quiz.topic)));
+  const existingTopics = Array.from(new Set(quizzes.map((quiz) => quiz.topic)));
 
   // Filter quizzes by selected topic
-  const filteredQuizzes = selectedTopic === 'all' 
-    ? quizzes 
-    : quizzes.filter(quiz => quiz.topic === selectedTopic);
+  const filteredQuizzes =
+    selectedTopic === 'all' ? quizzes : quizzes.filter((quiz) => quiz.topic === selectedTopic);
 
   const addOption = () => {
     setOptions([...options, '']);
@@ -123,15 +143,19 @@ export default function QuizzesPage() {
 
   const handleSaveClick = (data: any) => {
     const quizData = {
-      id: editingQuiz ? editingQuiz.id : quizzes.length > 0 ? Math.max(...quizzes.map(q => q.id)) + 1 : 1,
+      id: editingQuiz
+        ? editingQuiz.id
+        : quizzes.length > 0
+          ? Math.max(...quizzes.map((q) => q.id)) + 1
+          : 1,
       topic: data.topic,
       title: data.title,
       question: data.question,
-      options: options.filter(opt => opt.trim() !== ''),
+      options: options.filter((opt) => opt.trim() !== ''),
       correctAnswer: data.correctAnswer,
-      feedback: data.feedback
+      feedback: data.feedback,
     };
-    
+
     setQuizToSave(quizData);
     setIsSaveDialogOpen(true);
   };
@@ -159,7 +183,7 @@ export default function QuizzesPage() {
         }
 
         const updatedQuiz = await response.json();
-        setQuizzes(quizzes.map(q => q.id === editingQuiz.id ? updatedQuiz : q));
+        setQuizzes(quizzes.map((q) => (q.id === editingQuiz.id ? updatedQuiz : q)));
         toast({
           title: 'Success',
           description: 'Quiz updated successfully',
@@ -211,7 +235,7 @@ export default function QuizzesPage() {
         throw new Error('Failed to delete quiz');
       }
 
-      setQuizzes(quizzes.filter(q => q.id !== quizToDelete.id));
+      setQuizzes(quizzes.filter((q) => q.id !== quizToDelete.id));
       toast({
         title: 'Success',
         description: 'Quiz deleted successfully',
@@ -240,179 +264,192 @@ export default function QuizzesPage() {
     <div>
       <div className="rise mb-8 flex flex-wrap items-end justify-between gap-4">
         <div>
-          <h1 className="font-display text-3xl font-semibold tracking-tight text-primary sm:text-4xl">Quizzes</h1>
+          <h1 className="font-display text-3xl font-semibold tracking-tight text-primary sm:text-4xl">
+            Quizzes
+          </h1>
           <p className="mt-1 text-sm text-muted-foreground">
             Write questions with options and feedback for learners to practice.
           </p>
         </div>
         <div className="flex gap-3">
-        <Dialog 
-          open={isDialogOpen} 
-          onOpenChange={(open) => {
-            setIsDialogOpen(open);
-            if (!open) resetForm();
-          }}
-        >
-          <DialogTrigger asChild>
-            <Button className="flex items-center gap-2">
-              <Plus className="h-4 w-4" />
-              Create Quiz
-            </Button>
-          </DialogTrigger>
-          <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
-            <DialogHeader>
-              <DialogTitle>{editingQuiz ? 'Edit Quiz' : 'Create New Quiz'}</DialogTitle>
-            </DialogHeader>
-            <Form {...form}>
-              <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-                <FormField
-                  control={form.control}
-                  name="topic"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Topic</FormLabel>
-                      {isAddingTopic ? (
-                        <div className="flex gap-2">
-                          <Input
-                            value={newTopic}
-                            onChange={(e) => setNewTopic(e.target.value)}
-                            placeholder="Enter new topic"
-                          />
-                          <Button type="button" onClick={handleAddTopic}>Add</Button>
-                          <Button type="button" variant="outline" onClick={() => setIsAddingTopic(false)}>
-                            <X className="h-4 w-4" />
-                          </Button>
-                        </div>
-                      ) : (
-                        <div className="flex gap-2">
-                          <Select onValueChange={field.onChange} value={field.value}>
-                            <FormControl>
-                              <SelectTrigger>
-                                <SelectValue placeholder="Select a topic" />
-                              </SelectTrigger>
-                            </FormControl>
-                            <SelectContent>
-                              {existingTopics.map(topic => (
-                                <SelectItem key={topic} value={topic}>
-                                  {topic}
-                                </SelectItem>
-                              ))}
-                            </SelectContent>
-                          </Select>
-                          <Button type="button" variant="outline" onClick={() => setIsAddingTopic(true)}>
-                            <Plus className="h-4 w-4" />
-                          </Button>
-                        </div>
-                      )}
-                    </FormItem>
-                  )}
-                />
-                <FormField
-                  control={form.control}
-                  name="title"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Title</FormLabel>
-                      <FormControl>
-                        <Input placeholder="Quiz title" {...field} />
-                      </FormControl>
-                    </FormItem>
-                  )}
-                />
-                <FormField
-                  control={form.control}
-                  name="question"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Question</FormLabel>
-                      <FormControl>
-                        <Textarea placeholder="Enter your question" {...field} />
-                      </FormControl>
-                    </FormItem>
-                  )}
-                />
-                
-                <div className="space-y-4">
-                  <div className="flex items-center justify-between">
-                    <FormLabel>Options</FormLabel>
-                    <Button type="button" onClick={addOption} variant="outline" size="sm">
-                      <Plus className="h-4 w-4 mr-1" /> Add Option
-                    </Button>
-                  </div>
-                  {options.map((option, index) => (
-                    <div key={index} className="flex gap-2">
-                      <Input
-                        placeholder={`Option ${index + 1}`}
-                        value={option}
-                        onChange={(e) => handleOptionChange(index, e.target.value)}
-                      />
-                      {options.length > 2 && (
-                        <Button
-                          type="button"
-                          variant="outline"
-                          size="icon"
-                          onClick={() => removeOption(index)}
-                        >
-                          <Minus className="h-4 w-4" />
-                        </Button>
-                      )}
-                    </div>
-                  ))}
-                </div>
-
-                <FormField
-                  control={form.control}
-                  name="correctAnswer"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Correct Answer</FormLabel>
-                      <Select onValueChange={field.onChange} value={field.value}>
+          <Dialog
+            open={isDialogOpen}
+            onOpenChange={(open) => {
+              setIsDialogOpen(open);
+              if (!open) resetForm();
+            }}
+          >
+            <DialogTrigger asChild>
+              <Button className="flex items-center gap-2">
+                <Plus className="h-4 w-4" />
+                Create Quiz
+              </Button>
+            </DialogTrigger>
+            <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
+              <DialogHeader>
+                <DialogTitle>{editingQuiz ? 'Edit Quiz' : 'Create New Quiz'}</DialogTitle>
+              </DialogHeader>
+              <Form {...form}>
+                <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+                  <FormField
+                    control={form.control}
+                    name="topic"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Topic</FormLabel>
+                        {isAddingTopic ? (
+                          <div className="flex gap-2">
+                            <Input
+                              value={newTopic}
+                              onChange={(e) => setNewTopic(e.target.value)}
+                              placeholder="Enter new topic"
+                            />
+                            <Button type="button" onClick={handleAddTopic}>
+                              Add
+                            </Button>
+                            <Button
+                              type="button"
+                              variant="outline"
+                              onClick={() => setIsAddingTopic(false)}
+                            >
+                              <X className="h-4 w-4" />
+                            </Button>
+                          </div>
+                        ) : (
+                          <div className="flex gap-2">
+                            <Select onValueChange={field.onChange} value={field.value}>
+                              <FormControl>
+                                <SelectTrigger>
+                                  <SelectValue placeholder="Select a topic" />
+                                </SelectTrigger>
+                              </FormControl>
+                              <SelectContent>
+                                {existingTopics.map((topic) => (
+                                  <SelectItem key={topic} value={topic}>
+                                    {topic}
+                                  </SelectItem>
+                                ))}
+                              </SelectContent>
+                            </Select>
+                            <Button
+                              type="button"
+                              variant="outline"
+                              onClick={() => setIsAddingTopic(true)}
+                            >
+                              <Plus className="h-4 w-4" />
+                            </Button>
+                          </div>
+                        )}
+                      </FormItem>
+                    )}
+                  />
+                  <FormField
+                    control={form.control}
+                    name="title"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Title</FormLabel>
                         <FormControl>
-                          <SelectTrigger>
-                            <SelectValue placeholder="Select correct answer" />
-                          </SelectTrigger>
+                          <Input placeholder="Quiz title" {...field} />
                         </FormControl>
-                        <SelectContent>
-                          {options.map((option, index) => (
-                            option.trim() && (
-                              <SelectItem key={index} value={option}>
-                                Option {index + 1}: {option}
-                              </SelectItem>
-                            )
-                          ))}
-                        </SelectContent>
-                      </Select>
-                      <FormDescription>
-                        Select the correct answer from the options above
-                      </FormDescription>
-                    </FormItem>
-                  )}
-                />
+                      </FormItem>
+                    )}
+                  />
+                  <FormField
+                    control={form.control}
+                    name="question"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Question</FormLabel>
+                        <FormControl>
+                          <Textarea placeholder="Enter your question" {...field} />
+                        </FormControl>
+                      </FormItem>
+                    )}
+                  />
 
-                <FormField
-                  control={form.control}
-                  name="feedback"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Feedback for Correct Answer</FormLabel>
-                      <FormControl>
-                        <Textarea 
-                          placeholder="Provide encouraging feedback for correct answers"
-                          {...field}
+                  <div className="space-y-4">
+                    <div className="flex items-center justify-between">
+                      <FormLabel>Options</FormLabel>
+                      <Button type="button" onClick={addOption} variant="outline" size="sm">
+                        <Plus className="h-4 w-4 mr-1" /> Add Option
+                      </Button>
+                    </div>
+                    {options.map((option, index) => (
+                      <div key={index} className="flex gap-2">
+                        <Input
+                          placeholder={`Option ${index + 1}`}
+                          value={option}
+                          onChange={(e) => handleOptionChange(index, e.target.value)}
                         />
-                      </FormControl>
-                    </FormItem>
-                  )}
-                />
+                        {options.length > 2 && (
+                          <Button
+                            type="button"
+                            variant="outline"
+                            size="icon"
+                            onClick={() => removeOption(index)}
+                          >
+                            <Minus className="h-4 w-4" />
+                          </Button>
+                        )}
+                      </div>
+                    ))}
+                  </div>
 
-                <Button type="submit" className="w-full">
-                  <Save className="h-4 w-4 mr-2" />
-                  {editingQuiz ? 'Save Changes' : 'Create Quiz'}
-                </Button>
-              </form>
-            </Form>
-          </DialogContent>
-        </Dialog>
+                  <FormField
+                    control={form.control}
+                    name="correctAnswer"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Correct Answer</FormLabel>
+                        <Select onValueChange={field.onChange} value={field.value}>
+                          <FormControl>
+                            <SelectTrigger>
+                              <SelectValue placeholder="Select correct answer" />
+                            </SelectTrigger>
+                          </FormControl>
+                          <SelectContent>
+                            {options.map(
+                              (option, index) =>
+                                option.trim() && (
+                                  <SelectItem key={index} value={option}>
+                                    Option {index + 1}: {option}
+                                  </SelectItem>
+                                )
+                            )}
+                          </SelectContent>
+                        </Select>
+                        <FormDescription>
+                          Select the correct answer from the options above
+                        </FormDescription>
+                      </FormItem>
+                    )}
+                  />
+
+                  <FormField
+                    control={form.control}
+                    name="feedback"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Feedback for Correct Answer</FormLabel>
+                        <FormControl>
+                          <Textarea
+                            placeholder="Provide encouraging feedback for correct answers"
+                            {...field}
+                          />
+                        </FormControl>
+                      </FormItem>
+                    )}
+                  />
+
+                  <Button type="submit" className="w-full">
+                    <Save className="h-4 w-4 mr-2" />
+                    {editingQuiz ? 'Save Changes' : 'Create Quiz'}
+                  </Button>
+                </form>
+              </Form>
+            </DialogContent>
+          </Dialog>
         </div>
       </div>
 
@@ -427,7 +464,7 @@ export default function QuizzesPage() {
           </SelectTrigger>
           <SelectContent>
             <SelectItem value="all">All Topics</SelectItem>
-            {existingTopics.map(topic => (
+            {existingTopics.map((topic) => (
               <SelectItem key={topic} value={topic}>
                 {topic}
               </SelectItem>
@@ -445,9 +482,9 @@ export default function QuizzesPage() {
               <HelpCircle className="h-6 w-6" />
             </span>
             <p className="text-sm text-muted-foreground">
-          {selectedTopic === 'all' 
-            ? 'No quizzes found. Create your first quiz!'
-            : `No quizzes found for topic "${selectedTopic}"`}
+              {selectedTopic === 'all'
+                ? 'No quizzes found. Create your first quiz!'
+                : `No quizzes found for topic "${selectedTopic}"`}
             </p>
           </CardContent>
         </Card>
@@ -466,9 +503,7 @@ export default function QuizzesPage() {
                     <div
                       key={index}
                       className={`p-2 rounded-md ${
-                        option === quiz.correctAnswer
-                          ? 'bg-success-soft'
-                          : 'bg-secondary'
+                        option === quiz.correctAnswer ? 'bg-success-soft' : 'bg-secondary'
                       }`}
                     >
                       Option {index + 1}: {option}
@@ -487,16 +522,12 @@ export default function QuizzesPage() {
                 </div>
               </CardContent>
               <CardFooter className="flex gap-2">
-                <Button 
-                  variant="outline" 
-                  className="flex-1"
-                  onClick={() => handleEdit(quiz)}
-                >
+                <Button variant="outline" className="flex-1" onClick={() => handleEdit(quiz)}>
                   <Edit className="h-4 w-4 mr-2" />
                   Edit
                 </Button>
-                <Button 
-                  variant="outline" 
+                <Button
+                  variant="outline"
                   className="flex-1"
                   onClick={() => handleDeleteClick(quiz)}
                 >
@@ -515,15 +546,12 @@ export default function QuizzesPage() {
           <DialogHeader>
             <DialogTitle>Confirm Deletion</DialogTitle>
             <DialogDescription>
-              Are you sure you want to delete the quiz &quot;{quizToDelete?.title}&quot;? This action cannot be undone.
+              Are you sure you want to delete the quiz &quot;{quizToDelete?.title}&quot;? This
+              action cannot be undone.
             </DialogDescription>
           </DialogHeader>
           <DialogFooter className="flex space-x-2 sm:justify-start">
-            <Button
-              type="button"
-              variant="destructive"
-              onClick={deleteQuiz}
-            >
+            <Button type="button" variant="destructive" onClick={deleteQuiz}>
               <Trash2 className="h-4 w-4 mr-2" />
               Delete
             </Button>
@@ -547,15 +575,12 @@ export default function QuizzesPage() {
           <DialogHeader>
             <DialogTitle>Confirm Save</DialogTitle>
             <DialogDescription>
-              Are you sure you want to {editingQuiz ? 'save changes to' : 'create'} the quiz &quot;{quizToSave?.title}&quot;?
+              Are you sure you want to {editingQuiz ? 'save changes to' : 'create'} the quiz &quot;
+              {quizToSave?.title}&quot;?
             </DialogDescription>
           </DialogHeader>
           <DialogFooter className="flex space-x-2 sm:justify-start">
-            <Button
-              type="button"
-              variant="default"
-              onClick={saveQuiz}
-            >
+            <Button type="button" variant="default" onClick={saveQuiz}>
               <Save className="h-4 w-4 mr-2" />
               Save
             </Button>

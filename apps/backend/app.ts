@@ -7,14 +7,14 @@ export function createApp() {
 
   // Enable CORS
   app.use(cors());
-  
+
   // JSON parsing
   app.use(express.json());
   app.use((req, _, next) => {
     console.log(`Aarti-backend incoming: ${req.method} ${req.url}`);
     next();
   });
-  
+
   // Register routes for user
   app.use('/', routes);
 

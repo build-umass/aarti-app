@@ -5,27 +5,27 @@
 
 export const BrandColors = {
   // Primary brand colors
-  primary: '#5f2446',        // Deep purple - used for headers, primary actions
-  primaryLight: '#f0e6ed',   // Light purple background
+  primary: '#5f2446', // Deep purple - used for headers, primary actions
+  primaryLight: '#f0e6ed', // Light purple background
 
   // Secondary colors
-  pink: '#EE628C',           // Pink from logo
+  pink: '#EE628C', // Pink from logo
 
   // UI colors
-  blue: '#2270CA',           // Info/resources color
-  blueLight: '#e8f4f8',      // Light blue background
+  blue: '#2270CA', // Info/resources color
+  blueLight: '#e8f4f8', // Light blue background
 
-  green: '#22c55e',          // Success/chat color
-  greenLight: '#e8f5e9',     // Light green background
+  green: '#22c55e', // Success/chat color
+  greenLight: '#e8f5e9', // Light green background
 
-  orange: '#f59e0b',         // Warning/profile color
-  orangeLight: '#fff4e6',    // Light orange background
+  orange: '#f59e0b', // Warning/profile color
+  orangeLight: '#fff4e6', // Light orange background
 
   // Neutral colors
-  gray: '#687076',           // Secondary text
-  grayLight: '#f8f8f8',      // Card backgrounds
-  grayMedium: '#e5e5ea',     // Borders, dividers
-  grayDark: '#11181C',       // Primary text
+  gray: '#687076', // Secondary text
+  grayLight: '#f8f8f8', // Card backgrounds
+  grayMedium: '#e5e5ea', // Borders, dividers
+  grayDark: '#11181C', // Primary text
 
   // Status colors
   success: '#22c55e',

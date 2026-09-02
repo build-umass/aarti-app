@@ -1,11 +1,11 @@
 import { Router } from 'express';
 import {
-    createQuizItem,
-    updateQuizItem,
-    deleteQuizItem,
-    getAllQuizItems,
-    getQuizItemsByTopic,
-    getQuizItemById,
+  createQuizItem,
+  updateQuizItem,
+  deleteQuizItem,
+  getAllQuizItems,
+  getQuizItemsByTopic,
+  getQuizItemById,
 } from './controllers';
 
 const router = Router();

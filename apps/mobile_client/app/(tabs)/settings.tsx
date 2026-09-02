@@ -154,18 +154,12 @@ export default function SettingsScreen() {
       <View style={styles.section}>
         <Text style={styles.sectionTitle}>{t('data_management.title')}</Text>
 
-        <Pressable
-          style={styles.dangerButton}
-          onPress={handleResetQuizProgress}
-        >
+        <Pressable style={styles.dangerButton} onPress={handleResetQuizProgress}>
           <FontAwesome name="refresh" size={20} color="#fff" style={styles.buttonIcon} />
           <Text style={styles.dangerButtonText}>{t('reset_quiz.button')}</Text>
         </Pressable>
 
-        <Pressable
-          style={styles.dangerButton}
-          onPress={handleResetBookmarks}
-        >
+        <Pressable style={styles.dangerButton} onPress={handleResetBookmarks}>
           <FontAwesome name="trash" size={20} color="#fff" style={styles.buttonIcon} />
           <Text style={styles.dangerButtonText}>{t('delete_bookmarks.button')}</Text>
         </Pressable>

@@ -31,7 +31,9 @@ export default function ResourceDetailsScreen() {
           <View>
             {resource.sections.map((s, index) => (
               <View style={styles.sectionContainer} key={`${s.header}-${index}`}>
-                <Text style={styles.sectionHeader}>{index + 1}.{s.header}</Text>
+                <Text style={styles.sectionHeader}>
+                  {index + 1}.{s.header}
+                </Text>
                 <Text style={styles.sectionContent}>{s.content}</Text>
               </View>
             ))}

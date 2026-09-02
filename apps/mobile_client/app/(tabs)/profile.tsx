@@ -33,7 +33,9 @@ export default function ProfileScreen() {
     percentage: number;
   }>({ total: 0, completed: 0, percentage: 0 });
 
-  const [topicStats, setTopicStats] = useState<{ name: string; completed: number; total: number }[]>([]);
+  const [topicStats, setTopicStats] = useState<
+    { name: string; completed: number; total: number }[]
+  >([]);
 
   // Function to load all data
   const loadData = useCallback(async () => {
@@ -116,12 +118,9 @@ export default function ProfileScreen() {
         {/* Language Selector */}
         <View style={styles.languageSection}>
           <Text style={styles.languageTitle}>{t('language.title')}</Text>
-          <Pressable
-            style={styles.languageButton}
-            onPress={() => setShowLanguageModal(true)}
-          >
+          <Pressable style={styles.languageButton} onPress={() => setShowLanguageModal(true)}>
             <Text style={styles.languageButtonText}>
-              {availableLanguages.find(lang => lang.code === currentLanguage)?.name || 'English'}
+              {availableLanguages.find((lang) => lang.code === currentLanguage)?.name || 'English'}
             </Text>
           </Pressable>
         </View>
@@ -133,10 +132,7 @@ export default function ProfileScreen() {
           animationType="fade"
           onRequestClose={() => setShowLanguageModal(false)}
         >
-          <Pressable
-            style={styles.modalOverlay}
-            onPress={() => setShowLanguageModal(false)}
-          >
+          <Pressable style={styles.modalOverlay} onPress={() => setShowLanguageModal(false)}>
             <View style={styles.modalContent}>
               <Text style={styles.modalTitle}>{t('language.title')}</Text>
               {availableLanguages.map((lang) => (
@@ -144,17 +140,19 @@ export default function ProfileScreen() {
                   key={lang.code}
                   style={[
                     styles.languageOption,
-                    currentLanguage === lang.code && styles.languageOptionSelected
+                    currentLanguage === lang.code && styles.languageOptionSelected,
                   ]}
                   onPress={() => {
                     changeLanguage(lang.code);
                     setShowLanguageModal(false);
                   }}
                 >
-                  <Text style={[
-                    styles.languageOptionText,
-                    currentLanguage === lang.code && styles.languageOptionTextSelected
-                  ]}>
+                  <Text
+                    style={[
+                      styles.languageOptionText,
+                      currentLanguage === lang.code && styles.languageOptionTextSelected,
+                    ]}
+                  >
                     {lang.name}
                   </Text>
                 </Pressable>
@@ -164,18 +162,28 @@ export default function ProfileScreen() {
         </Modal>
 
         <View style={styles.statsSelection}>
-          <Pressable
-            style={styles.button}
-            onPressIn={() => setActiveTab("quiz")}>
-            <Text style={[{color: activeTab === 'quiz' ? Colors.light.tint : "black"}, styles.buttonText]}>{t('tabs.quizzes')}</Text>
+          <Pressable style={styles.button} onPressIn={() => setActiveTab('quiz')}>
+            <Text
+              style={[
+                { color: activeTab === 'quiz' ? Colors.light.tint : 'black' },
+                styles.buttonText,
+              ]}
+            >
+              {t('tabs.quizzes')}
+            </Text>
           </Pressable>
 
           <View style={styles.divider}></View>
 
-          <Pressable
-            style={styles.button}
-            onPress={() => setActiveTab("resource")}>
-            <Text style={[{color: activeTab === 'resource' ? Colors.light.tint : "black"}, styles.buttonText]}>{t('tabs.resources')}</Text>
+          <Pressable style={styles.button} onPress={() => setActiveTab('resource')}>
+            <Text
+              style={[
+                { color: activeTab === 'resource' ? Colors.light.tint : 'black' },
+                styles.buttonText,
+              ]}
+            >
+              {t('tabs.resources')}
+            </Text>
           </Pressable>
         </View>
 
@@ -205,17 +213,22 @@ const renderQuizStats = (
 ) => {
   return (
     <View style={styles.statsContent}>
-      <ProgressBar progressFunc={() => stats.percentage} backgroundColor={"#ffffff"} />
-      <Text style={[styles.statsText, {fontWeight:'bold'}]}>
+      <ProgressBar progressFunc={() => stats.percentage} backgroundColor={'#ffffff'} />
+      <Text style={[styles.statsText, { fontWeight: 'bold' }]}>
         {t('stats.quizzes_completed', { completed: stats.completed, total: stats.total })}
       </Text>
 
       <ScrollView style={styles.statsScrollBox} persistentScrollbar={true}>
-        {topicStats.map((topic, i) =>
+        {topicStats.map((topic, i) => (
           <Text style={styles.statsText} key={i}>
-            • {t('stats.by_topic', { topic: topic.name, completed: topic.completed, total: topic.total })}
+            •{' '}
+            {t('stats.by_topic', {
+              topic: topic.name,
+              completed: topic.completed,
+              total: topic.total,
+            })}
           </Text>
-        )}
+        ))}
       </ScrollView>
     </View>
   );
@@ -224,7 +237,7 @@ const renderQuizStats = (
 const renderResourceStats = () => {
   return (
     <View style={styles.statsContent}>
-      <ProgressBar progressFunc={tempResourceProgress} backgroundColor={"ffffff"} />
+      <ProgressBar progressFunc={tempResourceProgress} backgroundColor={'ffffff'} />
       <Text>TODO</Text>
     </View>
   );
@@ -234,7 +247,7 @@ const calcButtonWidth = () => {
   const screenWidth = Dimensions.get('window').width;
   const buttonWidth = (screenWidth - 50) / 2;
   return buttonWidth;
-}
+};
 
 // may need to update these if quiz code changes after connecting to backend
 const tempResourceProgress = () => 36;
@@ -258,7 +271,7 @@ const styles = StyleSheet.create({
   },
   user: {
     marginTop: 10,
-    alignItems: 'center'
+    alignItems: 'center',
   },
   text: {
     fontWeight: 'bold',
@@ -384,7 +397,7 @@ const styles = StyleSheet.create({
     fontSize: 20,
   },
   statsScrollBox: {
-    height: "85%",
+    height: '85%',
     maxHeight: 150,
     marginTop: 3,
   },

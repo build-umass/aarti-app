@@ -22,9 +22,9 @@ export const searchSimilarEmbeddings = async (
   }>('SELECT content_id, embedding FROM vector_embeddings');
 
   return embeddings
-    .map(row => ({
+    .map((row) => ({
       content_id: row.content_id,
-      similarity: cosineSimilarity(queryEmbedding, JSON.parse(row.embedding) as number[])
+      similarity: cosineSimilarity(queryEmbedding, JSON.parse(row.embedding) as number[]),
     }))
     .sort((a, b) => b.similarity - a.similarity)
     .slice(0, topK);

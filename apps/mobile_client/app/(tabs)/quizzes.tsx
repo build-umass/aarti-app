@@ -62,23 +62,23 @@ export default function QuizPage() {
 
       // Load quiz data from database
       const questions = await QuizService.getQuizQuestions();
-      const formattedQuestions: QuizItem[] = questions.map(q => ({
+      const formattedQuestions: QuizItem[] = questions.map((q) => ({
         id: q.id,
         topic: '', // We'll get this from topics table
         title: q.title,
         question: q.question,
         options: JSON.parse(q.options),
         correctAnswer: q.correct_answer,
-        feedback: q.feedback
+        feedback: q.feedback,
       }));
 
       // Load topics and map them to questions
       const topicData = await QuizService.getTopics();
-      const topicMap = new Map(topicData.map(t => [t.id, t.name]));
+      const topicMap = new Map(topicData.map((t) => [t.id, t.name]));
 
       // Update questions with topic names
-      formattedQuestions.forEach(q => {
-        const question = questions.find(qu => qu.id === q.id);
+      formattedQuestions.forEach((q) => {
+        const question = questions.find((qu) => qu.id === q.id);
         if (question) {
           q.topic = topicMap.get(question.topic_id) || '';
         }
@@ -87,7 +87,7 @@ export default function QuizPage() {
       setQuizData(formattedQuestions);
 
       // Load topics
-      setTopics(['All', 'Bookmarked', ...topicData.map(t => t.name)]);
+      setTopics(['All', 'Bookmarked', ...topicData.map((t) => t.name)]);
 
       // Load selected answers
       const answers = await QuizService.getSelectedAnswers();
@@ -100,7 +100,7 @@ export default function QuizPage() {
       // Load bookmarks
       const bookmarkIds = await BookmarkService.getBookmarkedQuestionIds();
       const bookmarks: BookmarkedQuestions = {};
-      bookmarkIds.forEach(id => {
+      bookmarkIds.forEach((id) => {
         bookmarks[id] = true;
       });
       setBookmarkedQuestions(bookmarks);
@@ -111,7 +111,6 @@ export default function QuizPage() {
       } else {
         setHasStarted(false);
       }
-
     } catch (error) {
       console.error('Failed to load quiz data:', error);
     } finally {
@@ -146,15 +145,17 @@ export default function QuizPage() {
     const handleBookmarksUpdate = () => {
       console.log('Bookmarks update event received, reloading bookmarks...');
       // Reload just the bookmarks
-      BookmarkService.getBookmarkedQuestionIds().then(bookmarkIds => {
-        const bookmarks: BookmarkedQuestions = {};
-        bookmarkIds.forEach(id => {
-          bookmarks[id] = true;
+      BookmarkService.getBookmarkedQuestionIds()
+        .then((bookmarkIds) => {
+          const bookmarks: BookmarkedQuestions = {};
+          bookmarkIds.forEach((id) => {
+            bookmarks[id] = true;
+          });
+          setBookmarkedQuestions(bookmarks);
+        })
+        .catch((error) => {
+          console.error('Failed to reload bookmarks:', error);
         });
-        setBookmarkedQuestions(bookmarks);
-      }).catch(error => {
-        console.error('Failed to reload bookmarks:', error);
-      });
     };
 
     // Register event listeners
@@ -175,33 +176,32 @@ export default function QuizPage() {
     const loadTopicData = async () => {
       try {
         let completed: number[] = [];
-        
+
         if (selectedTopic === 'All') {
           completed = await QuizService.getCompletedQuestions();
         } else if (selectedTopic === 'Bookmarked') {
           // For bookmarked, we need to get completed questions that are also bookmarked
           const allCompleted = await QuizService.getCompletedQuestions();
           const bookmarkedIds = await BookmarkService.getBookmarkedQuestionIds();
-          completed = allCompleted.filter(id => bookmarkedIds.includes(id));
+          completed = allCompleted.filter((id) => bookmarkedIds.includes(id));
         } else {
           // Get topic ID and filter completed questions for this topic
           const topicData = await QuizService.getTopics();
-          const topic = topicData.find(t => t.name === selectedTopic);
+          const topic = topicData.find((t) => t.name === selectedTopic);
           if (topic) {
             completed = await QuizService.getCompletedQuestions(topic.id);
           }
         }
-        
+
         setCompletedQuestions(new Set(completed));
-        
+
         // Check if user has started for this topic
         setHasStarted(completed.length > 0);
-        
       } catch (error) {
         console.error('Failed to load topic data:', error);
       }
     };
-    
+
     if (!loading) {
       loadTopicData();
     }
@@ -212,9 +212,9 @@ export default function QuizPage() {
       return quizData;
     }
     if (selectedTopic === 'Bookmarked') {
-      return quizData.filter(quiz => bookmarkedQuestions[quiz.id]);
+      return quizData.filter((quiz) => bookmarkedQuestions[quiz.id]);
     }
-    return quizData.filter(quiz => quiz.topic === selectedTopic);
+    return quizData.filter((quiz) => quiz.topic === selectedTopic);
   }, [selectedTopic, bookmarkedQuestions, quizData]);
 
   const calculateProgress = () => {
@@ -224,7 +224,7 @@ export default function QuizPage() {
     if (totalQuestions === 0) return 0;
 
     const correctAnswers = relevantQuestions.filter(
-      quiz => selectedAnswers[quiz.id] === quiz.correctAnswer
+      (quiz) => selectedAnswers[quiz.id] === quiz.correctAnswer
     ).length;
     return Math.round((correctAnswers / totalQuestions) * 100);
   };
@@ -234,13 +234,13 @@ export default function QuizPage() {
     const totalQuestions = relevantQuestions.length;
     if (totalQuestions === 0) return 0;
 
-    const completed = relevantQuestions.filter(quiz => completedQuestions.has(quiz.id)).length;
+    const completed = relevantQuestions.filter((quiz) => completedQuestions.has(quiz.id)).length;
     return Math.round((completed / totalQuestions) * 100);
   };
 
   const getCompletedCount = () => {
     const relevantQuestions = filteredQuizData;
-    return relevantQuestions.filter(quiz => completedQuestions.has(quiz.id)).length;
+    return relevantQuestions.filter((quiz) => completedQuestions.has(quiz.id)).length;
   };
 
   const handleAnswer = async (questionId: number, selectedOption: string): Promise<void> => {
@@ -254,7 +254,7 @@ export default function QuizPage() {
         // Update local state
         const newSelectedAnswers = {
           ...selectedAnswers,
-          [questionId]: selectedOption
+          [questionId]: selectedOption,
         };
         setSelectedAnswers(newSelectedAnswers);
 
@@ -269,7 +269,7 @@ export default function QuizPage() {
 
         const newSelectedAnswers = {
           ...selectedAnswers,
-          [questionId]: selectedOption
+          [questionId]: selectedOption,
         };
         setSelectedAnswers(newSelectedAnswers);
 
@@ -293,7 +293,7 @@ export default function QuizPage() {
       // Update local state
       const updatedBookmarks = {
         ...bookmarkedQuestions,
-        [questionId]: isNowBookmarked
+        [questionId]: isNowBookmarked,
       };
       setBookmarkedQuestions(updatedBookmarks);
 
@@ -318,24 +318,19 @@ export default function QuizPage() {
       <View style={styles.content}>
         <View style={styles.topicSelectorContainer}>
           <Text style={styles.topicLabel}>{t('select_topic_label')}</Text>
-          <ScrollView
-            horizontal
-            showsHorizontalScrollIndicator={false}
-            style={styles.topicScroll}
-          >
+          <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.topicScroll}>
             {topics.map((topic) => (
               <Pressable
                 key={topic}
-                style={[
-                  styles.topicButton,
-                  selectedTopic === topic && styles.selectedTopicButton
-                ]}
+                style={[styles.topicButton, selectedTopic === topic && styles.selectedTopicButton]}
                 onPress={() => setSelectedTopic(topic)}
               >
-                <Text style={[
-                  styles.topicButtonText,
-                  selectedTopic === topic && styles.selectedTopicButtonText
-                ]}>
+                <Text
+                  style={[
+                    styles.topicButtonText,
+                    selectedTopic === topic && styles.selectedTopicButtonText,
+                  ]}
+                >
                   {topic}
                 </Text>
               </Pressable>
@@ -344,26 +339,24 @@ export default function QuizPage() {
         </View>
 
         <View style={styles.progressMargin}>
-          <ProgressBar progressFunc={calculateProgress} backgroundColor={"#e5e7eb"} />
+          <ProgressBar progressFunc={calculateProgress} backgroundColor={'#e5e7eb'} />
         </View>
 
         <View style={styles.completionContainer}>
           <Text style={styles.completionText}>
-            {t('questions_completed', { completed: getCompletedCount(), total: filteredQuizData.length })}
+            {t('questions_completed', {
+              completed: getCompletedCount(),
+              total: filteredQuizData.length,
+            })}
           </Text>
           {calculateCompletion() === 100 && (
-            <Text style={styles.completionNote}>
-              {t('review_note')}
-            </Text>
+            <Text style={styles.completionNote}>{t('review_note')}</Text>
           )}
         </View>
 
         {filteredQuizData.map((quiz) => (
           <View key={quiz.id} style={styles.questionContainer}>
-            <Pressable
-              onPress={() => toggleQuestion(quiz.id)}
-              style={styles.questionHeader}
-            >
+            <Pressable onPress={() => toggleQuestion(quiz.id)} style={styles.questionHeader}>
               <Text style={styles.questionTitle}>{quiz.title}</Text>
               <View style={styles.iconContainer}>
                 <Pressable
@@ -373,11 +366,13 @@ export default function QuizPage() {
                   }}
                   hitSlop={8}
                 >
-                  {<Ionicons  // Use the imported Icon
-                    name={bookmarkedQuestions[quiz.id] ? 'bookmark' : 'bookmark-outline'} // Example: MaterialIcons bookmark and bookmark-border
-                    size={20} // Adjust the size as needed
-                    color={bookmarkedQuestions[quiz.id] ? '#fbbf24' : '#9ca3af'} // Set the color
-                  />}
+                  {
+                    <Ionicons // Use the imported Icon
+                      name={bookmarkedQuestions[quiz.id] ? 'bookmark' : 'bookmark-outline'} // Example: MaterialIcons bookmark and bookmark-border
+                      size={20} // Adjust the size as needed
+                      color={bookmarkedQuestions[quiz.id] ? '#fbbf24' : '#9ca3af'} // Set the color
+                    />
+                  }
                 </Pressable>
               </View>
             </Pressable>
@@ -389,15 +384,20 @@ export default function QuizPage() {
                   {quiz.options.map((option, index) => (
                     <Pressable
                       key={index}
-                      style={(): ViewStyle[] => [
-                        styles.optionButton,
-                        selectedAnswers[quiz.id] && option === quiz.correctAnswer ? styles.correctOption : undefined,
-                        selectedAnswers[quiz.id] === option &&
-                          option !== quiz.correctAnswer ? styles.incorrectOption : undefined,
-                        (!completedQuestions.has(quiz.id) || calculateCompletion() === 100)
-                          ? undefined
-                          : styles.disabledOption
-                      ].filter((style): style is ViewStyle => style !== undefined)}
+                      style={(): ViewStyle[] =>
+                        [
+                          styles.optionButton,
+                          selectedAnswers[quiz.id] && option === quiz.correctAnswer
+                            ? styles.correctOption
+                            : undefined,
+                          selectedAnswers[quiz.id] === option && option !== quiz.correctAnswer
+                            ? styles.incorrectOption
+                            : undefined,
+                          !completedQuestions.has(quiz.id) || calculateCompletion() === 100
+                            ? undefined
+                            : styles.disabledOption,
+                        ].filter((style): style is ViewStyle => style !== undefined)
+                      }
                       onPress={() => handleAnswer(quiz.id, option)}
                       disabled={completedQuestions.has(quiz.id) && calculateCompletion() !== 100}
                     >
@@ -407,10 +407,9 @@ export default function QuizPage() {
                           {option === quiz.correctAnswer && (
                             <Text style={[styles.icon, styles.correctIcon]}>✓</Text>
                           )}
-                          {selectedAnswers[quiz.id] === option &&
-                            option !== quiz.correctAnswer && (
-                              <Text style={[styles.icon, styles.incorrectIcon]}>✗</Text>
-                            )}
+                          {selectedAnswers[quiz.id] === option && option !== quiz.correctAnswer && (
+                            <Text style={[styles.icon, styles.incorrectIcon]}>✗</Text>
+                          )}
                         </>
                       )}
                     </Pressable>
@@ -426,8 +425,6 @@ export default function QuizPage() {
             )}
           </View>
         ))}
-
-
       </View>
     </ScrollView>
   );

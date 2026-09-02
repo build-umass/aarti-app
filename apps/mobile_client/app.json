@@ -34,7 +34,8 @@
           "imageWidth": 320
         }
       ],
-      "expo-sqlite",      "expo-localization"
+      "expo-sqlite",
+      "expo-localization"
     ],
     "experiments": {
       "typedRoutes": true

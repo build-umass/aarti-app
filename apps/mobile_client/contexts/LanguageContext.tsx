@@ -39,7 +39,7 @@ export const LanguageProvider: React.FC<LanguageProviderProps> = ({ children }) 
     const loadLanguage = async () => {
       try {
         const savedLang = await AsyncStorage.getItem(LANGUAGE_STORAGE_KEY);
-        if (savedLang && availableLanguages.some(lang => lang.code === savedLang)) {
+        if (savedLang && availableLanguages.some((lang) => lang.code === savedLang)) {
           setCurrentLanguage(savedLang);
           await i18n.changeLanguage(savedLang);
         } else {
@@ -65,9 +65,7 @@ export const LanguageProvider: React.FC<LanguageProviderProps> = ({ children }) 
   };
 
   return (
-    <LanguageContext.Provider
-      value={{ currentLanguage, changeLanguage, availableLanguages }}
-    >
+    <LanguageContext.Provider value={{ currentLanguage, changeLanguage, availableLanguages }}>
       {children}
     </LanguageContext.Provider>
   );

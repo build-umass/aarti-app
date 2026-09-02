@@ -1,5 +1,10 @@
 import { getDatabase, getRagMeta, setRagMeta } from '../lib/database';
-import { generateEmbedding, generateRAGResponse, generateSimpleResponse, EMBEDDING_MODEL_ID } from '../lib/gemini';
+import {
+  generateEmbedding,
+  generateRAGResponse,
+  generateSimpleResponse,
+  EMBEDDING_MODEL_ID,
+} from '../lib/gemini';
 import { storeEmbedding, searchSimilarEmbeddings } from '../lib/vector-db';
 import { PDFService } from './PDFService';
 
@@ -14,7 +19,11 @@ export interface KnowledgeBaseDocument {
 
 export class RAGService {
   // Add a document to the knowledge base; embeddings are best-effort
-  static async addDocument(content: string, contentType: 'quiz' | 'resource' | 'general' = 'general', metadata?: Record<string, unknown>): Promise<void> {
+  static async addDocument(
+    content: string,
+    contentType: 'quiz' | 'resource' | 'general' = 'general',
+    metadata?: Record<string, unknown>
+  ): Promise<void> {
     const db = getDatabase();
     const metadataJson = metadata ? JSON.stringify(metadata) : null;
 
@@ -28,12 +37,19 @@ export class RAGService {
       const embedding = await generateEmbedding(content);
       await storeEmbedding(docId, embedding);
     } catch (embeddingError) {
-      console.warn(`Embedding generation failed for document ${docId}, stored without embeddings:`, embeddingError);
+      console.warn(
+        `Embedding generation failed for document ${docId}, stored without embeddings:`,
+        embeddingError
+      );
     }
   }
 
   // Search for similar documents
-  static async searchSimilarDocuments(query: string, topK: number = 5, contentType?: 'quiz' | 'resource' | 'general'): Promise<KnowledgeBaseDocument[]> {
+  static async searchSimilarDocuments(
+    query: string,
+    topK: number = 5,
+    contentType?: 'quiz' | 'resource' | 'general'
+  ): Promise<KnowledgeBaseDocument[]> {
     const queryEmbedding = await generateEmbedding(query);
     const similarEmbeddings = await searchSimilarEmbeddings(queryEmbedding, topK * 2);
 
@@ -41,7 +57,7 @@ export class RAGService {
       return [];
     }
 
-    const contentIds = similarEmbeddings.map(e => e.content_id);
+    const contentIds = similarEmbeddings.map((e) => e.content_id);
     const placeholders = contentIds.map(() => '?').join(',');
     let queryString = `SELECT * FROM knowledge_base WHERE id IN (${placeholders})`;
 
@@ -60,13 +76,14 @@ export class RAGService {
     }>(queryString, params);
 
     return documents
-      .map(doc => ({
+      .map((doc) => ({
         id: doc.id,
         content: doc.content,
         metadata: doc.metadata ? JSON.parse(doc.metadata) : undefined,
         content_type: doc.content_type as 'quiz' | 'resource' | 'general',
         created_at: doc.created_at,
-        similarity: similarEmbeddings.find(e => e.content_id === doc.id.toString())?.similarity ?? 0
+        similarity:
+          similarEmbeddings.find((e) => e.content_id === doc.id.toString())?.similarity ?? 0,
       }))
       .sort((a, b) => (b.similarity ?? 0) - (a.similarity ?? 0))
       .slice(0, topK);
@@ -76,7 +93,9 @@ export class RAGService {
   static async generateResponse(userQuery: string): Promise<string> {
     try {
       const db = getDatabase();
-      const docCount = await db.getFirstAsync<{ count: number }>('SELECT COUNT(*) as count FROM knowledge_base');
+      const docCount = await db.getFirstAsync<{ count: number }>(
+        'SELECT COUNT(*) as count FROM knowledge_base'
+      );
 
       if ((docCount?.count ?? 0) === 0) {
         return await generateSimpleResponse(userQuery);
@@ -88,7 +107,10 @@ export class RAGService {
         return await generateSimpleResponse(userQuery);
       }
 
-      return await generateRAGResponse(userQuery, relevantDocs.map(doc => doc.content));
+      return await generateRAGResponse(
+        userQuery,
+        relevantDocs.map((doc) => doc.content)
+      );
     } catch (error) {
       console.error('Error generating RAG response:', error);
       return await generateSimpleResponse(userQuery);
@@ -128,7 +150,12 @@ export class RAGService {
     await setRagMeta('embedding_model', EMBEDDING_MODEL_ID);
   }
 
-  private static async addChunkedDocument(pdfDoc: { content: string; metadata?: Record<string, unknown>; filename: string; title: string }): Promise<void> {
+  private static async addChunkedDocument(pdfDoc: {
+    content: string;
+    metadata?: Record<string, unknown>;
+    filename: string;
+    title: string;
+  }): Promise<void> {
     const chunks = PDFService.chunkDocument(pdfDoc.content, 500, 50);
     const maxChunks = Math.min(chunks.length, 20);
 
@@ -139,7 +166,7 @@ export class RAGService {
         title: pdfDoc.title,
         chunk_index: i,
         total_chunks: chunks.length,
-        document_type: 'pdf'
+        document_type: 'pdf',
       });
     }
   }

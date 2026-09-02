@@ -24,7 +24,7 @@ export class BookmarkService {
     const results = await db.getAllAsync<{ question_id: number }>(
       'SELECT question_id FROM bookmarks'
     );
-    return results.map(r => r.question_id);
+    return results.map((r) => r.question_id);
   }
 
   /**
@@ -32,10 +32,9 @@ export class BookmarkService {
    */
   static async isBookmarked(questionId: number): Promise<boolean> {
     const db = getDatabase();
-    const result = await db.getFirstAsync(
-      'SELECT id FROM bookmarks WHERE question_id = ?',
-      [questionId]
-    );
+    const result = await db.getFirstAsync('SELECT id FROM bookmarks WHERE question_id = ?', [
+      questionId,
+    ]);
     return result !== null;
   }
 
@@ -44,10 +43,7 @@ export class BookmarkService {
    */
   static async addBookmark(questionId: number): Promise<void> {
     const db = getDatabase();
-    await db.runAsync(
-      'INSERT OR IGNORE INTO bookmarks (question_id) VALUES (?)',
-      [questionId]
-    );
+    await db.runAsync('INSERT OR IGNORE INTO bookmarks (question_id) VALUES (?)', [questionId]);
     // Emit event to notify other components
     appEvents.emit(EVENT_TYPES.BOOKMARKS_UPDATED);
   }
@@ -57,10 +53,7 @@ export class BookmarkService {
    */
   static async removeBookmark(questionId: number): Promise<void> {
     const db = getDatabase();
-    await db.runAsync(
-      'DELETE FROM bookmarks WHERE question_id = ?',
-      [questionId]
-    );
+    await db.runAsync('DELETE FROM bookmarks WHERE question_id = ?', [questionId]);
     // Emit event to notify other components
     appEvents.emit(EVENT_TYPES.BOOKMARKS_UPDATED);
   }

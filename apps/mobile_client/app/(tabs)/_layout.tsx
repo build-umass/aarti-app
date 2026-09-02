@@ -28,41 +28,32 @@ export default function TabLayout() {
           paddingTop: 10,
         },
         headerShown: true,
-      }}>
+      }}
+    >
       <Tabs.Screen
         name="index"
         options={{
           tabBarLabel: t('tabs.home'),
-          tabBarIcon: ({ color }) => (
-            <Feather name="home" size={ICON_SIZE} color = {color} />
-          ),
+          tabBarIcon: ({ color }) => <Feather name="home" size={ICON_SIZE} color={color} />,
           header: () => (
             <View style={styles.customHeader}>
               <Text style={styles.headerText}>{t('headers.home')}</Text>
-              <Image
-                source={require('../../assets/images/aarti-logo.png')}
-                style={styles.logo}
-              />
+              <Image source={require('../../assets/images/aarti-logo.png')} style={styles.logo} />
             </View>
-          )
+          ),
         }}
       />
       <Tabs.Screen
         name="resources"
         options={{
           tabBarLabel: t('tabs.resources'),
-          tabBarIcon: ({ color }) => (
-            <Feather name="book-open" size={ICON_SIZE} color = {color} />
-          ),
+          tabBarIcon: ({ color }) => <Feather name="book-open" size={ICON_SIZE} color={color} />,
           header: () => (
             <View style={styles.customHeader}>
               <Text style={styles.headerText}>{t('headers.resources')}</Text>
-              <Image
-                source={require('../../assets/images/aarti-logo.png')}
-                style={styles.logo}
-              />
+              <Image source={require('../../assets/images/aarti-logo.png')} style={styles.logo} />
             </View>
-          )
+          ),
         }}
       />
       <Tabs.Screen
@@ -70,71 +61,53 @@ export default function TabLayout() {
         options={{
           tabBarLabel: t('tabs.quizzes'),
           tabBarIcon: ({ color }) => (
-            <Entypo name="graduation-cap" size={ICON_SIZE} color= {color} />
+            <Entypo name="graduation-cap" size={ICON_SIZE} color={color} />
           ),
           header: () => (
             <View style={styles.customHeader}>
               <Text style={styles.headerText}>{t('headers.quizzes')}</Text>
-              <Image
-                source={require('../../assets/images/aarti-logo.png')}
-                style={styles.logo}
-              />
+              <Image source={require('../../assets/images/aarti-logo.png')} style={styles.logo} />
             </View>
-          )
+          ),
         }}
       />
       <Tabs.Screen
         name="chatbot"
         options={{
           tabBarLabel: t('tabs.chat'),
-          tabBarIcon: ({ color }) => (
-            <Entypo name="chat" size={ICON_SIZE} color = {color} />
-          ),
+          tabBarIcon: ({ color }) => <Entypo name="chat" size={ICON_SIZE} color={color} />,
           header: () => (
             <View style={styles.customHeader}>
               <Text style={styles.headerText}>{t('headers.chat')}</Text>
-              <Image
-                source={require('../../assets/images/aarti-logo.png')}
-                style={styles.logo}
-              />
+              <Image source={require('../../assets/images/aarti-logo.png')} style={styles.logo} />
             </View>
-          )
+          ),
         }}
       />
       <Tabs.Screen
-      name="profile"
-      options={{
-        tabBarLabel: t('tabs.profile'),
-        tabBarIcon: ({ color }) => (
-            <Feather name="user" size={ICON_SIZE} color = {color} />
-        ),
-        header: () => (
-          <View style={styles.customHeader}>
-            <Text style={styles.headerText}>{t('headers.profile')}</Text>
-            <Image
-              source={require('../../assets/images/aarti-logo.png')}
-              style={styles.logo}
-            />
-          </View>
-        )
-      }}
-    />
+        name="profile"
+        options={{
+          tabBarLabel: t('tabs.profile'),
+          tabBarIcon: ({ color }) => <Feather name="user" size={ICON_SIZE} color={color} />,
+          header: () => (
+            <View style={styles.customHeader}>
+              <Text style={styles.headerText}>{t('headers.profile')}</Text>
+              <Image source={require('../../assets/images/aarti-logo.png')} style={styles.logo} />
+            </View>
+          ),
+        }}
+      />
       <Tabs.Screen
         name="settings"
         options={{
           tabBarLabel: t('tabs.settings'),
-          tabBarIcon: ({ color }) => (
-            <FontAwesome name="gear" size={ICON_SIZE} color={color} />
-          ),
+          tabBarIcon: ({ color }) => <FontAwesome name="gear" size={ICON_SIZE} color={color} />,
           header: () => (
             <View style={styles.customHeader}>
               <Text style={styles.headerText}>{t('headers.settings')}</Text>
-              <Image
-                source={require('../../assets/images/aarti-logo.png')}
-                style={styles.logo}
-              />
+              <Image source={require('../../assets/images/aarti-logo.png')} style={styles.logo} />
             </View>
-          )
+          ),
         }}
       />
     </Tabs>

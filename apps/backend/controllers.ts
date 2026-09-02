@@ -6,7 +6,15 @@ export async function createQuizItem(req: Request, res: Response) {
   try {
     const { id, topic, title, question, options, correctAnswer, feedback } = req.body as IQuizItem;
 
-    const newQuizItem = await services.createQuizItem({ id, topic, title, question, options, correctAnswer, feedback });
+    const newQuizItem = await services.createQuizItem({
+      id,
+      topic,
+      title,
+      question,
+      options,
+      correctAnswer,
+      feedback,
+    });
 
     res.status(201).json(newQuizItem);
   } catch (error) {
@@ -17,9 +25,16 @@ export async function createQuizItem(req: Request, res: Response) {
 
 export async function updateQuizItem(req: Request, res: Response) {
   try {
-    const {topic, title, question, options, correctAnswer, feedback } = req.body as IQuizItem;
+    const { topic, title, question, options, correctAnswer, feedback } = req.body as IQuizItem;
     const quizItemId = parseInt(req.params.id);
-    const updatedQuizItem = await services.updateQuizItem(quizItemId, { topic, title, question, options, correctAnswer, feedback });
+    const updatedQuizItem = await services.updateQuizItem(quizItemId, {
+      topic,
+      title,
+      question,
+      options,
+      correctAnswer,
+      feedback,
+    });
 
     if (!updatedQuizItem) {
       res.status(404).json({ error: 'No quiz item with that id found' });

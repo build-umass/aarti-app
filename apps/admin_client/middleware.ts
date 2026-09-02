@@ -6,9 +6,9 @@ import { decodeToken } from '@/lib/auth'; // Uses jose now
 // Specify paths to protect
 export const config = {
   matcher: [
-      '/quizzes/:path*', // Protect quizzes and any sub-paths
-      '/resources/:path*', // Protect resources and any sub-paths
-      // Add other admin paths here if needed
+    '/quizzes/:path*', // Protect quizzes and any sub-paths
+    '/resources/:path*', // Protect resources and any sub-paths
+    // Add other admin paths here if needed
   ],
 };
 
@@ -33,7 +33,9 @@ export async function middleware(request: NextRequest) {
     const decodedPayload = await decodeToken(token);
 
     if (!decodedPayload) {
-      console.log('[Middleware] Invalid/expired token (decodeToken returned null), redirecting to signin.');
+      console.log(
+        '[Middleware] Invalid/expired token (decodeToken returned null), redirecting to signin.'
+      );
       const url = request.nextUrl.clone();
       url.pathname = '/signin';
       // Clear the invalid cookie by setting expiry in the past during redirect
@@ -47,9 +49,8 @@ export async function middleware(request: NextRequest) {
 
     console.log(`[Middleware] Auth successful for ${pathname}. Allowing request.`);
     return NextResponse.next(); // Allow request
-
   } catch (error) {
-     // Should ideally be caught by decodeToken, but safety net
+    // Should ideally be caught by decodeToken, but safety net
     console.error('[Middleware] Unexpected error during token validation:', error);
     const url = request.nextUrl.clone();
     url.pathname = '/signin';

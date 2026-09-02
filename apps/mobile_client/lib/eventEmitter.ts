@@ -12,7 +12,7 @@ class SimpleEventEmitter {
 
   off(event: string, callback: (...args: any[]) => void) {
     if (!this.listeners[event]) return;
-    this.listeners[event] = this.listeners[event].filter(cb => cb !== callback);
+    this.listeners[event] = this.listeners[event].filter((cb) => cb !== callback);
     console.log(`Event listener removed for: ${event}`);
   }
 
@@ -22,7 +22,7 @@ class SimpleEventEmitter {
       console.log(`No listeners for event: ${event}`);
       return;
     }
-    this.listeners[event].forEach(callback => {
+    this.listeners[event].forEach((callback) => {
       try {
         callback(...args);
       } catch (error) {

@@ -54,9 +54,7 @@ export default function OnboardingScreen() {
         {/* Welcome Text */}
         <View style={styles.welcomeSection}>
           <Text style={styles.welcomeTitle}>{t('welcome_title')}</Text>
-          <Text style={styles.welcomeSubtitle}>
-            {t('welcome_subtitle')}
-          </Text>
+          <Text style={styles.welcomeSubtitle}>{t('welcome_subtitle')}</Text>
         </View>
 
         {/* Name Input Section */}
@@ -94,9 +92,7 @@ export default function OnboardingScreen() {
             </View>
             <View style={styles.featureContent}>
               <Text style={styles.featureTitle}>{t('features.resources.title')}</Text>
-              <Text style={styles.featureDescription}>
-                {t('features.resources.description')}
-              </Text>
+              <Text style={styles.featureDescription}>{t('features.resources.description')}</Text>
             </View>
           </View>
 
@@ -106,9 +102,7 @@ export default function OnboardingScreen() {
             </View>
             <View style={styles.featureContent}>
               <Text style={styles.featureTitle}>{t('features.quizzes.title')}</Text>
-              <Text style={styles.featureDescription}>
-                {t('features.quizzes.description')}
-              </Text>
+              <Text style={styles.featureDescription}>{t('features.quizzes.description')}</Text>
             </View>
           </View>
 
@@ -118,9 +112,7 @@ export default function OnboardingScreen() {
             </View>
             <View style={styles.featureContent}>
               <Text style={styles.featureTitle}>{t('features.chat.title')}</Text>
-              <Text style={styles.featureDescription}>
-                {t('features.chat.description')}
-              </Text>
+              <Text style={styles.featureDescription}>{t('features.chat.description')}</Text>
             </View>
           </View>
 
@@ -130,14 +122,10 @@ export default function OnboardingScreen() {
             </View>
             <View style={styles.featureContent}>
               <Text style={styles.featureTitle}>{t('features.profile.title')}</Text>
-              <Text style={styles.featureDescription}>
-                {t('features.profile.description')}
-              </Text>
+              <Text style={styles.featureDescription}>{t('features.profile.description')}</Text>
             </View>
           </View>
         </View>
-
-        
       </ScrollView>
     </SafeAreaView>
   );

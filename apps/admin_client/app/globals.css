@@ -1,4 +1,4 @@
-@import "tailwindcss";
+@import 'tailwindcss';
 @config "../tailwind.config.ts";
 
 /* Aarti admin: plum ink, pink accent. */
@@ -56,10 +56,18 @@
   animation: rise 0.45s cubic-bezier(0.22, 1, 0.36, 1) both;
 }
 
-.rise-1 { animation-delay: 0.05s; }
-.rise-2 { animation-delay: 0.12s; }
-.rise-3 { animation-delay: 0.19s; }
-.rise-4 { animation-delay: 0.26s; }
+.rise-1 {
+  animation-delay: 0.05s;
+}
+.rise-2 {
+  animation-delay: 0.12s;
+}
+.rise-3 {
+  animation-delay: 0.19s;
+}
+.rise-4 {
+  animation-delay: 0.26s;
+}
 
 /* Atmosphere for the sign-in screen: plum mesh under film grain. */
 .atmosphere {
@@ -71,7 +79,7 @@
 }
 
 .grain::after {
-  content: "";
+  content: '';
   position: absolute;
   inset: 0;
   pointer-events: none;

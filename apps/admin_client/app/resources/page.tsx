@@ -2,12 +2,44 @@
 
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle, CardFooter } from '@/components/ui/card';
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger, DialogDescription, DialogFooter } from '@/components/ui/dialog';
-import { Form, FormControl, FormField, FormItem, FormLabel, FormDescription } from '@/components/ui/form';
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+  DialogDescription,
+  DialogFooter,
+} from '@/components/ui/dialog';
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormDescription,
+} from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
 import { Textarea } from '@/components/ui/textarea';
-import { Plus, Save, Edit, X, Filter, Trash2, Upload, FileText, CheckCircle2, BookOpen } from 'lucide-react';
+import {
+  Plus,
+  Save,
+  Edit,
+  X,
+  Filter,
+  Trash2,
+  Upload,
+  FileText,
+  CheckCircle2,
+  BookOpen,
+} from 'lucide-react';
 import { useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { Resource } from '../../../../types';
@@ -38,7 +70,7 @@ export default function ResourcesPage() {
       topic: '',
       title: '',
       content: '',
-    }
+    },
   });
 
   // Fetch resources from backend when component mounts
@@ -68,12 +100,13 @@ export default function ResourcesPage() {
   }, []);
 
   // Get unique topics from existing resources
-  const existingTopics = Array.from(new Set(resources.map(resource => resource.topic)));
+  const existingTopics = Array.from(new Set(resources.map((resource) => resource.topic)));
 
   // Filter resources by selected topic
-  const filteredResources = selectedTopic === 'all' 
-    ? resources 
-    : resources.filter(resource => resource.topic === selectedTopic);
+  const filteredResources =
+    selectedTopic === 'all'
+      ? resources
+      : resources.filter((resource) => resource.topic === selectedTopic);
 
   const handleFileSelect = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
@@ -127,10 +160,10 @@ export default function ResourcesPage() {
       }
 
       const newResource = await response.json();
-      
+
       // Update form with extracted content
       form.setValue('content', newResource.content);
-      
+
       // Refresh resources list
       const resourcesResponse = await fetch(`${API_BASE_URL}/resource`);
       if (resourcesResponse.ok) {
@@ -142,7 +175,7 @@ export default function ResourcesPage() {
         title: 'Success',
         description: 'PDF uploaded and text extracted successfully',
       });
-      
+
       setSelectedFile(null);
       setEditingResource(newResource);
     } catch (error) {
@@ -189,13 +222,17 @@ export default function ResourcesPage() {
 
   const handleSaveClick = (data: any) => {
     const resourceData = {
-      id: editingResource ? editingResource.id : resources.length > 0 ? Math.max(...resources.map(r => r.id)) + 1 : 1,
+      id: editingResource
+        ? editingResource.id
+        : resources.length > 0
+          ? Math.max(...resources.map((r) => r.id)) + 1
+          : 1,
       topic: data.topic,
       title: data.title,
       content: data.content,
       isPublished: editingResource ? editingResource.isPublished : false,
     };
-    
+
     setResourceToSave(resourceData);
     setIsSaveDialogOpen(true);
   };
@@ -223,7 +260,7 @@ export default function ResourcesPage() {
         }
 
         const updatedResource = await response.json();
-        setResources(resources.map(r => r.id === editingResource.id ? updatedResource : r));
+        setResources(resources.map((r) => (r.id === editingResource.id ? updatedResource : r)));
         toast({
           title: 'Success',
           description: 'Resource updated successfully',
@@ -275,7 +312,7 @@ export default function ResourcesPage() {
         throw new Error('Failed to delete resource');
       }
 
-      setResources(resources.filter(r => r.id !== resourceToDelete.id));
+      setResources(resources.filter((r) => r.id !== resourceToDelete.id));
       toast({
         title: 'Success',
         description: 'Resource deleted successfully',
@@ -305,11 +342,9 @@ export default function ResourcesPage() {
       }
 
       // Update resource to mark as published
-      setResources(resources.map(r => 
-        r.id === resourceToPublish.id 
-          ? { ...r, isPublished: true } 
-          : r
-      ));
+      setResources(
+        resources.map((r) => (r.id === resourceToPublish.id ? { ...r, isPublished: true } : r))
+      );
 
       toast({
         title: 'Success',
@@ -339,148 +374,165 @@ export default function ResourcesPage() {
     <div>
       <div className="rise mb-8 flex flex-wrap items-end justify-between gap-4">
         <div>
-          <h1 className="font-display text-3xl font-semibold tracking-tight text-primary sm:text-4xl">Resources</h1>
+          <h1 className="font-display text-3xl font-semibold tracking-tight text-primary sm:text-4xl">
+            Resources
+          </h1>
           <p className="mt-1 text-sm text-muted-foreground">
             Supporting material learners read alongside their quizzes.
           </p>
         </div>
         <div className="flex gap-3">
-        <Dialog 
-          open={isDialogOpen} 
-          onOpenChange={(open) => {
-            setIsDialogOpen(open);
-            if (!open) resetForm();
-          }}
-        >
-          <DialogTrigger asChild>
-            <Button className="flex items-center gap-2">
-              <Plus className="h-4 w-4" />
-              Add Resource
-            </Button>
-          </DialogTrigger>
-          <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
-            <DialogHeader>
-              <DialogTitle>{editingResource ? 'Edit Resource' : 'Add New Resource'}</DialogTitle>
-              <DialogDescription>
-                Upload a PDF file or manually enter resource content
-              </DialogDescription>
-            </DialogHeader>
-            <Form {...form}>
-              <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-                <FormField
-                  control={form.control}
-                  name="topic"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Topic</FormLabel>
-                      {isAddingTopic ? (
-                        <div className="flex gap-2">
-                          <Input
-                            value={newTopic}
-                            onChange={(e) => setNewTopic(e.target.value)}
-                            placeholder="Enter new topic"
+          <Dialog
+            open={isDialogOpen}
+            onOpenChange={(open) => {
+              setIsDialogOpen(open);
+              if (!open) resetForm();
+            }}
+          >
+            <DialogTrigger asChild>
+              <Button className="flex items-center gap-2">
+                <Plus className="h-4 w-4" />
+                Add Resource
+              </Button>
+            </DialogTrigger>
+            <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
+              <DialogHeader>
+                <DialogTitle>{editingResource ? 'Edit Resource' : 'Add New Resource'}</DialogTitle>
+                <DialogDescription>
+                  Upload a PDF file or manually enter resource content
+                </DialogDescription>
+              </DialogHeader>
+              <Form {...form}>
+                <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+                  <FormField
+                    control={form.control}
+                    name="topic"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Topic</FormLabel>
+                        {isAddingTopic ? (
+                          <div className="flex gap-2">
+                            <Input
+                              value={newTopic}
+                              onChange={(e) => setNewTopic(e.target.value)}
+                              placeholder="Enter new topic"
+                            />
+                            <Button type="button" onClick={handleAddTopic}>
+                              Add
+                            </Button>
+                            <Button
+                              type="button"
+                              variant="outline"
+                              onClick={() => setIsAddingTopic(false)}
+                            >
+                              <X className="h-4 w-4" />
+                            </Button>
+                          </div>
+                        ) : (
+                          <div className="flex gap-2">
+                            <Select onValueChange={field.onChange} value={field.value}>
+                              <FormControl>
+                                <SelectTrigger>
+                                  <SelectValue placeholder="Select a topic" />
+                                </SelectTrigger>
+                              </FormControl>
+                              <SelectContent>
+                                {existingTopics.map((topic) => (
+                                  <SelectItem key={topic} value={topic}>
+                                    {topic}
+                                  </SelectItem>
+                                ))}
+                              </SelectContent>
+                            </Select>
+                            <Button
+                              type="button"
+                              variant="outline"
+                              onClick={() => setIsAddingTopic(true)}
+                            >
+                              <Plus className="h-4 w-4" />
+                            </Button>
+                          </div>
+                        )}
+                      </FormItem>
+                    )}
+                  />
+                  <FormField
+                    control={form.control}
+                    name="title"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Title</FormLabel>
+                        <FormControl>
+                          <Input placeholder="Resource title" {...field} />
+                        </FormControl>
+                      </FormItem>
+                    )}
+                  />
+
+                  <div className="space-y-4">
+                    <div className="flex items-center justify-between">
+                      <FormLabel>Upload PDF</FormLabel>
+                    </div>
+                    <div className="flex gap-2">
+                      <Input
+                        type="file"
+                        accept=".pdf"
+                        onChange={handleFileSelect}
+                        className="flex-1"
+                      />
+                      <Button
+                        type="button"
+                        onClick={handleUpload}
+                        disabled={
+                          !selectedFile ||
+                          uploading ||
+                          !form.getValues().topic ||
+                          !form.getValues().title
+                        }
+                      >
+                        {uploading ? (
+                          'Uploading...'
+                        ) : (
+                          <>
+                            <Upload className="h-4 w-4 mr-2" />
+                            Upload
+                          </>
+                        )}
+                      </Button>
+                    </div>
+                    {selectedFile && (
+                      <p className="text-sm text-muted-foreground">Selected: {selectedFile.name}</p>
+                    )}
+                  </div>
+
+                  <FormField
+                    control={form.control}
+                    name="content"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Content</FormLabel>
+                        <FormControl>
+                          <Textarea
+                            placeholder="Enter resource content or upload a PDF to extract text"
+                            className="min-h-[300px] font-mono text-sm"
+                            {...field}
                           />
-                          <Button type="button" onClick={handleAddTopic}>Add</Button>
-                          <Button type="button" variant="outline" onClick={() => setIsAddingTopic(false)}>
-                            <X className="h-4 w-4" />
-                          </Button>
-                        </div>
-                      ) : (
-                        <div className="flex gap-2">
-                          <Select onValueChange={field.onChange} value={field.value}>
-                            <FormControl>
-                              <SelectTrigger>
-                                <SelectValue placeholder="Select a topic" />
-                              </SelectTrigger>
-                            </FormControl>
-                            <SelectContent>
-                              {existingTopics.map(topic => (
-                                <SelectItem key={topic} value={topic}>
-                                  {topic}
-                                </SelectItem>
-                              ))}
-                            </SelectContent>
-                          </Select>
-                          <Button type="button" variant="outline" onClick={() => setIsAddingTopic(true)}>
-                            <Plus className="h-4 w-4" />
-                          </Button>
-                        </div>
-                      )}
-                    </FormItem>
-                  )}
-                />
-                <FormField
-                  control={form.control}
-                  name="title"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Title</FormLabel>
-                      <FormControl>
-                        <Input placeholder="Resource title" {...field} />
-                      </FormControl>
-                    </FormItem>
-                  )}
-                />
-                
-                <div className="space-y-4">
-                  <div className="flex items-center justify-between">
-                    <FormLabel>Upload PDF</FormLabel>
-                  </div>
-                  <div className="flex gap-2">
-                    <Input
-                      type="file"
-                      accept=".pdf"
-                      onChange={handleFileSelect}
-                      className="flex-1"
-                    />
-                    <Button 
-                      type="button" 
-                      onClick={handleUpload} 
-                      disabled={!selectedFile || uploading || !form.getValues().topic || !form.getValues().title}
-                    >
-                      {uploading ? 'Uploading...' : (
-                        <>
-                          <Upload className="h-4 w-4 mr-2" />
-                          Upload
-                        </>
-                      )}
-                    </Button>
-                  </div>
-                  {selectedFile && (
-                    <p className="text-sm text-muted-foreground">
-                      Selected: {selectedFile.name}
-                    </p>
-                  )}
-                </div>
+                        </FormControl>
+                        <FormDescription>
+                          You can edit the extracted text from PDF or enter content manually
+                        </FormDescription>
+                      </FormItem>
+                    )}
+                  />
 
-                <FormField
-                  control={form.control}
-                  name="content"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Content</FormLabel>
-                      <FormControl>
-                        <Textarea 
-                          placeholder="Enter resource content or upload a PDF to extract text"
-                          className="min-h-[300px] font-mono text-sm"
-                          {...field}
-                        />
-                      </FormControl>
-                      <FormDescription>
-                        You can edit the extracted text from PDF or enter content manually
-                      </FormDescription>
-                    </FormItem>
-                  )}
-                />
-
-                <Button type="submit" className="w-full">
-                  <Save className="h-4 w-4 mr-2" />
-                  {editingResource ? 'Save Changes' : 'Create Resource'}
-                </Button>
-              </form>
-            </Form>
-          </DialogContent>
-        </Dialog>
+                  <Button type="submit" className="w-full">
+                    <Save className="h-4 w-4 mr-2" />
+                    {editingResource ? 'Save Changes' : 'Create Resource'}
+                  </Button>
+                </form>
+              </Form>
+            </DialogContent>
+          </Dialog>
         </div>
       </div>
 
@@ -495,7 +547,7 @@ export default function ResourcesPage() {
           </SelectTrigger>
           <SelectContent>
             <SelectItem value="all">All Topics</SelectItem>
-            {existingTopics.map(topic => (
+            {existingTopics.map((topic) => (
               <SelectItem key={topic} value={topic}>
                 {topic}
               </SelectItem>
@@ -513,9 +565,9 @@ export default function ResourcesPage() {
               <BookOpen className="h-6 w-6" />
             </span>
             <p className="text-sm text-muted-foreground">
-          {selectedTopic === 'all' 
-            ? 'No resources found. Create your first resource!'
-            : `No resources found for topic "${selectedTopic}"`}
+              {selectedTopic === 'all'
+                ? 'No resources found. Create your first resource!'
+                : `No resources found for topic "${selectedTopic}"`}
             </p>
           </CardContent>
         </Card>
@@ -526,9 +578,7 @@ export default function ResourcesPage() {
               <CardHeader>
                 <div className="flex items-center justify-between">
                   <CardTitle>{resource.title}</CardTitle>
-                  {resource.isPublished && (
-                    <CheckCircle2 className="h-5 w-5 text-success" />
-                  )}
+                  {resource.isPublished && <CheckCircle2 className="h-5 w-5 text-success" />}
                 </div>
               </CardHeader>
               <CardContent>
@@ -538,29 +588,26 @@ export default function ResourcesPage() {
                     <summary className="font-medium cursor-pointer">View Content</summary>
                     <div className="mt-2">
                       <div className="p-2 bg-secondary rounded-md max-h-[200px] overflow-y-auto">
-                        <p className="whitespace-pre-wrap text-xs">{resource.content.substring(0, 500)}{resource.content.length > 500 ? '...' : ''}</p>
+                        <p className="whitespace-pre-wrap text-xs">
+                          {resource.content.substring(0, 500)}
+                          {resource.content.length > 500 ? '...' : ''}
+                        </p>
                       </div>
                     </div>
                   </details>
                 </div>
                 {resource.isPublished && (
-                  <p className="text-xs text-success mt-2">
-                    Published to quizzes
-                  </p>
+                  <p className="text-xs text-success mt-2">Published to quizzes</p>
                 )}
               </CardContent>
               <CardFooter className="flex gap-2">
-                <Button 
-                  variant="outline" 
-                  className="flex-1"
-                  onClick={() => handleEdit(resource)}
-                >
+                <Button variant="outline" className="flex-1" onClick={() => handleEdit(resource)}>
                   <Edit className="h-4 w-4 mr-2" />
                   Edit
                 </Button>
                 {!resource.isPublished && (
-                  <Button 
-                    variant="default" 
+                  <Button
+                    variant="default"
                     className="flex-1"
                     onClick={() => handlePublishClick(resource)}
                   >
@@ -568,8 +615,8 @@ export default function ResourcesPage() {
                     Publish
                   </Button>
                 )}
-                <Button 
-                  variant="outline" 
+                <Button
+                  variant="outline"
                   className="flex-1"
                   onClick={() => handleDeleteClick(resource)}
                 >
@@ -588,15 +635,12 @@ export default function ResourcesPage() {
           <DialogHeader>
             <DialogTitle>Confirm Deletion</DialogTitle>
             <DialogDescription>
-              Are you sure you want to delete the resource &quot;{resourceToDelete?.title}&quot;? This action cannot be undone.
+              Are you sure you want to delete the resource &quot;{resourceToDelete?.title}&quot;?
+              This action cannot be undone.
             </DialogDescription>
           </DialogHeader>
           <DialogFooter className="flex space-x-2 sm:justify-start">
-            <Button
-              type="button"
-              variant="destructive"
-              onClick={deleteResource}
-            >
+            <Button type="button" variant="destructive" onClick={deleteResource}>
               <Trash2 className="h-4 w-4 mr-2" />
               Delete
             </Button>
@@ -620,15 +664,12 @@ export default function ResourcesPage() {
           <DialogHeader>
             <DialogTitle>Confirm Save</DialogTitle>
             <DialogDescription>
-              Are you sure you want to {editingResource ? 'save changes to' : 'create'} the resource &quot;{resourceToSave?.title}&quot;?
+              Are you sure you want to {editingResource ? 'save changes to' : 'create'} the resource
+              &quot;{resourceToSave?.title}&quot;?
             </DialogDescription>
           </DialogHeader>
           <DialogFooter className="flex space-x-2 sm:justify-start">
-            <Button
-              type="button"
-              variant="default"
-              onClick={saveResource}
-            >
+            <Button type="button" variant="default" onClick={saveResource}>
               <Save className="h-4 w-4 mr-2" />
               Save
             </Button>
@@ -652,15 +693,12 @@ export default function ResourcesPage() {
           <DialogHeader>
             <DialogTitle>Publish to Quizzes</DialogTitle>
             <DialogDescription>
-              Are you sure you want to publish the resource &quot;{resourceToPublish?.title}&quot; to the quizzes section? This will create a quiz item from this resource.
+              Are you sure you want to publish the resource &quot;{resourceToPublish?.title}&quot;
+              to the quizzes section? This will create a quiz item from this resource.
             </DialogDescription>
           </DialogHeader>
           <DialogFooter className="flex space-x-2 sm:justify-start">
-            <Button
-              type="button"
-              variant="default"
-              onClick={publishResource}
-            >
+            <Button type="button" variant="default" onClick={publishResource}>
               <FileText className="h-4 w-4 mr-2" />
               Publish
             </Button>

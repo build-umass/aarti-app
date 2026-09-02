@@ -12,12 +12,7 @@ interface MessageBubbleProps {
 const MessageBubble: React.FC<MessageBubbleProps> = ({ message }) => {
   const isUser = message.isUser;
   return (
-    <View
-      style={[
-        styles.messageBubble,
-        isUser ? styles.userBubble : styles.botBubble,
-      ]}
-    >
+    <View style={[styles.messageBubble, isUser ? styles.userBubble : styles.botBubble]}>
       <Text style={[styles.messageText, isUser ? styles.userText : styles.botText]}>
         {message.text}
       </Text>

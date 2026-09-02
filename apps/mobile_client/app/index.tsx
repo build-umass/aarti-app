@@ -33,7 +33,14 @@ export default function Index() {
   // Show loading while checking
   if (isChecking) {
     return (
-      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: BrandColors.primary }}>
+      <View
+        style={{
+          flex: 1,
+          justifyContent: 'center',
+          alignItems: 'center',
+          backgroundColor: BrandColors.primary,
+        }}
+      >
         <ActivityIndicator size="large" color="#ffffff" />
       </View>
     );

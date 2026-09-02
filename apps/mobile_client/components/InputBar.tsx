@@ -36,11 +36,7 @@ const InputBar: React.FC<InputBarProps> = ({ onSend, disabled = false }) => {
         style={[styles.sendButton, disabled && styles.sendButtonDisabled]}
         disabled={disabled}
       >
-        <Ionicons
-          name="send"
-          size={24}
-          color={disabled ? '#ccc' : '#EE628C'}
-        />
+        <Ionicons name="send" size={24} color={disabled ? '#ccc' : '#EE628C'} />
       </TouchableOpacity>
     </View>
   );

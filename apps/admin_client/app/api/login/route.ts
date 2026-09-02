@@ -14,20 +14,23 @@ export async function POST(request: Request) {
     storedPasswordHash = storedPasswordHash.trim();
     console.log(`Trimmed storedPasswordHash from env: "${storedPasswordHash}"`); // Keep this log for sanity check
   } else {
-    console.log("storedPasswordHash from env is not a string or is undefined");
+    console.log('storedPasswordHash from env is not a string or is undefined');
   }
 
   // Check if the hash variable is actually set after potential trim
   if (!storedPasswordHash) {
-    console.error("ADMIN_PASSWORD_HASH environment variable is not set or is empty!");
-    return NextResponse.json({ message: 'Server configuration error: Password hash missing or empty.' }, { status: 500 });
+    console.error('ADMIN_PASSWORD_HASH environment variable is not set or is empty!');
+    return NextResponse.json(
+      { message: 'Server configuration error: Password hash missing or empty.' },
+      { status: 500 }
+    );
   }
 
   try {
     const { password } = await request.json();
 
     if (!password) {
-      console.log("Login attempt failed: No password provided.");
+      console.log('Login attempt failed: No password provided.');
       return NextResponse.json({ message: 'Password is required.' }, { status: 400 });
     }
 
@@ -37,7 +40,7 @@ export async function POST(request: Request) {
     console.log(`Password comparison result (from env): ${passwordMatches}`);
 
     if (passwordMatches) {
-      console.log("Password matches (from env)! Generating token...");
+      console.log('Password matches (from env)! Generating token...');
       const payload = { sub: 'admin_user', role: 'admin' as const };
       const token = await encodeToken(payload);
 
@@ -50,10 +53,9 @@ export async function POST(request: Request) {
         sameSite: 'strict',
         maxAge: 60 * 60,
       });
-      console.log("Login successful, returning response with cookie.");
+      console.log('Login successful, returning response with cookie.');
       return response;
       // --- End NextResponse pattern ---
-
     } else {
       // Password does not match
       console.log('Login attempt failed: Invalid password (compared against env hash).');

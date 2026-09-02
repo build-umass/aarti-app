@@ -116,7 +116,9 @@ export default function AppShell({
                     aria-label={label}
                     aria-current={active ? 'page' : undefined}
                     className={`rounded-lg p-2 transition-colors ${
-                      active ? 'bg-pink text-primary-foreground' : 'text-primary-foreground/70 hover:bg-primary-foreground/10'
+                      active
+                        ? 'bg-pink text-primary-foreground'
+                        : 'text-primary-foreground/70 hover:bg-primary-foreground/10'
                     }`}
                   >
                     <Icon className="h-4 w-4" />

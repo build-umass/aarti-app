@@ -7,10 +7,10 @@ const PORT = process.env.PORT || 3002;
 async function startServer() {
   try {
     await connectToDatabase();
-    
+
     const app = createApp();
     const server = http.createServer(app);
-    
+
     server.listen(PORT, () => {
       console.log('Aarti app backend listening on port', PORT);
     });

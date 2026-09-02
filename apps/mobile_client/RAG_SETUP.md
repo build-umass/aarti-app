@@ -20,17 +20,18 @@ This mobile client includes a RAG (Retrieval-Augmented Generation) chatbot power
 
 ### Key Components
 
-| Component | File | Description |
-|-----------|------|-------------|
-| **RAG Service** | `services/RAGService.ts` | Main orchestration service for document embedding and response generation |
-| **PDF Service** | `services/PDFService.ts` | Loads and chunks PDF document content from JSON |
-| **Gemini Integration** | `lib/gemini.ts` | Google Gemini API integration for embeddings and LLM responses |
-| **Vector DB** | `lib/vector-db.ts` | SQLite-based vector storage and similarity search |
-| **Chat UI** | `components/ChatScreen.tsx` | Chat interface with typing indicator |
+| Component              | File                        | Description                                                               |
+| ---------------------- | --------------------------- | ------------------------------------------------------------------------- |
+| **RAG Service**        | `services/RAGService.ts`    | Main orchestration service for document embedding and response generation |
+| **PDF Service**        | `services/PDFService.ts`    | Loads and chunks PDF document content from JSON                           |
+| **Gemini Integration** | `lib/gemini.ts`             | Google Gemini API integration for embeddings and LLM responses            |
+| **Vector DB**          | `lib/vector-db.ts`          | SQLite-based vector storage and similarity search                         |
+| **Chat UI**            | `components/ChatScreen.tsx` | Chat interface with typing indicator                                      |
 
 ## Security & Configuration
 
 Following Expo's best practices, sensitive configuration like API keys is handled through:
+
 - **Environment Variables**: Stored in `.env` file (not committed to git)
 - **Dynamic Config**: `app.config.js` loads environment variables at build time
 - **Runtime Access**: Available via `Constants.expoConfig.extra` in the app
@@ -96,16 +97,16 @@ assets/Resources/
 
 ### Supported Document Categories
 
-| Category | Topics Covered |
-|----------|---------------|
-| **Human Rights** | Trafficking of Women and Children |
-| **Violence** | Stalking, Domestic Violence, Cyber Abuse |
+| Category             | Topics Covered                            |
+| -------------------- | ----------------------------------------- |
+| **Human Rights**     | Trafficking of Women and Children         |
+| **Violence**         | Stalking, Domestic Violence, Cyber Abuse  |
 | **Child Protection** | Child Sexual Abuse, Child Marriage, POCSO |
-| **Workplace Rights** | Harassment at Workplace |
-| **Marriage Rights** | Dowry, Abandonment by Husband |
-| **Legal Procedures** | Filing an FIR |
-| **Property Rights** | Women's Property Rights in AP |
-| **Health Rights** | PCPNDT (Sex Selection) |
+| **Workplace Rights** | Harassment at Workplace                   |
+| **Marriage Rights**  | Dowry, Abandonment by Husband             |
+| **Legal Procedures** | Filing an FIR                             |
+| **Property Rights**  | Women's Property Rights in AP             |
+| **Health Rights**    | PCPNDT (Sex Selection)                    |
 
 ## Technical Implementation
 
@@ -120,6 +121,7 @@ const embedding = await generateEmbedding(documentContent);
 ### Document Chunking
 
 Large documents are chunked for better retrieval:
+
 - **Chunk size**: 500 words
 - **Overlap**: 50 words
 - **Max chunks per document**: 20
@@ -156,10 +158,12 @@ The chat shows a smooth animated typing indicator while Aarti is generating a re
 ### Internationalization
 
 Chat messages are fully internationalized:
+
 - **English** (`locales/en/chat.json`)
 - **Telugu** (`locales/te/chat.json`)
 
 Translation keys:
+
 - `initial_message`: Welcome message from Aarti
 - `input_placeholder`: Input field placeholder
 - `thinking_placeholder`: Shown while generating response
@@ -169,10 +173,10 @@ Translation keys:
 
 The implementation is optimized for Google's free tier:
 
-| Feature | Model | Free Tier Limit |
-|---------|-------|-----------------|
+| Feature    | Model                | Free Tier Limit    |
+| ---------- | -------------------- | ------------------ |
 | Embeddings | `text-embedding-004` | 1,500 requests/min |
-| Chat | `gemini-1.5-flash` | 15 requests/min |
+| Chat       | `gemini-1.5-flash`   | 15 requests/min    |
 
 ## Troubleshooting
 
@@ -186,6 +190,7 @@ If you see `"Gemini API not configured"` errors:
 4. **Check console logs**: Look for debug messages
 
 **Expected successful output:**
+
 ```
 🔍 DEBUG: EXPO_PUBLIC_GOOGLE_GEMINI_API_KEY loaded: ***SET***
 ✅ Gemini AI initialized successfully
@@ -230,6 +235,7 @@ await RAGService.clearKnowledgeBase();
 ## Database Schema
 
 ### knowledge_base table
+
 ```sql
 CREATE TABLE knowledge_base (
   id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -242,6 +248,7 @@ CREATE TABLE knowledge_base (
 ```
 
 ### vector_embeddings table
+
 ```sql
 CREATE TABLE vector_embeddings (
   id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -260,17 +267,17 @@ CREATE TABLE vector_embeddings (
 
 ## Related Files
 
-| File | Purpose |
-|------|---------|
-| `services/RAGService.ts` | Main RAG orchestration |
-| `services/PDFService.ts` | Document loading and chunking |
-| `lib/gemini.ts` | Gemini API integration |
-| `lib/vector-db.ts` | Vector storage and search |
-| `lib/database.ts` | SQLite database initialization |
-| `components/ChatScreen.tsx` | Chat UI with typing indicator |
-| `components/TypingIndicator.tsx` | Animated loading dots |
-| `components/MessageBubble.tsx` | Chat message display |
-| `components/InputBar.tsx` | Chat input with disabled state |
-| `assets/Resources/documents.json` | Pre-extracted PDF content |
-| `locales/en/chat.json` | English translations |
-| `locales/te/chat.json` | Telugu translations |
+| File                              | Purpose                        |
+| --------------------------------- | ------------------------------ |
+| `services/RAGService.ts`          | Main RAG orchestration         |
+| `services/PDFService.ts`          | Document loading and chunking  |
+| `lib/gemini.ts`                   | Gemini API integration         |
+| `lib/vector-db.ts`                | Vector storage and search      |
+| `lib/database.ts`                 | SQLite database initialization |
+| `components/ChatScreen.tsx`       | Chat UI with typing indicator  |
+| `components/TypingIndicator.tsx`  | Animated loading dots          |
+| `components/MessageBubble.tsx`    | Chat message display           |
+| `components/InputBar.tsx`         | Chat input with disabled state |
+| `assets/Resources/documents.json` | Pre-extracted PDF content      |
+| `locales/en/chat.json`            | English translations           |
+| `locales/te/chat.json`            | Telugu translations            |

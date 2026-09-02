@@ -1,11 +1,5 @@
 import { useState, useEffect, useCallback } from 'react';
-import {
-  StyleSheet,
-  View,
-  Text,
-  ScrollView,
-  TouchableOpacity,
-} from 'react-native';
+import { StyleSheet, View, Text, ScrollView, TouchableOpacity } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { router } from 'expo-router';
 import { Feather, Entypo } from '@expo/vector-icons';
@@ -122,12 +116,7 @@ export default function HomeScreen() {
               <Text style={styles.progressPercentage}>{stats.completionPercentage}%</Text>
             </View>
             <View style={styles.progressBarContainer}>
-              <View
-                style={[
-                  styles.progressBarFill,
-                  { width: `${stats.completionPercentage}%` },
-                ]}
-              />
+              <View style={[styles.progressBarFill, { width: `${stats.completionPercentage}%` }]} />
             </View>
           </View>
         </View>
@@ -147,9 +136,7 @@ export default function HomeScreen() {
             </View>
             <View style={styles.featureContent}>
               <Text style={styles.featureTitle}>{t('features.resources.title')}</Text>
-              <Text style={styles.featureDescription}>
-                {t('features.resources.description')}
-              </Text>
+              <Text style={styles.featureDescription}>{t('features.resources.description')}</Text>
             </View>
             <Feather name="chevron-right" size={24} color="#687076" />
           </TouchableOpacity>
@@ -160,14 +147,14 @@ export default function HomeScreen() {
             onPress={() => navigateToTab('quizzes')}
             activeOpacity={0.7}
           >
-            <View style={[styles.featureIconContainer, { backgroundColor: BrandColors.primaryLight }]}>
+            <View
+              style={[styles.featureIconContainer, { backgroundColor: BrandColors.primaryLight }]}
+            >
               <Entypo name="graduation-cap" size={28} color={BrandColors.primary} />
             </View>
             <View style={styles.featureContent}>
               <Text style={styles.featureTitle}>{t('features.quizzes.title')}</Text>
-              <Text style={styles.featureDescription}>
-                {t('features.quizzes.description')}
-              </Text>
+              <Text style={styles.featureDescription}>{t('features.quizzes.description')}</Text>
             </View>
             <Feather name="chevron-right" size={24} color="#687076" />
           </TouchableOpacity>
@@ -183,9 +170,7 @@ export default function HomeScreen() {
             </View>
             <View style={styles.featureContent}>
               <Text style={styles.featureTitle}>{t('features.chat.title')}</Text>
-              <Text style={styles.featureDescription}>
-                {t('features.chat.description')}
-              </Text>
+              <Text style={styles.featureDescription}>{t('features.chat.description')}</Text>
             </View>
             <Feather name="chevron-right" size={24} color="#687076" />
           </TouchableOpacity>
@@ -201,9 +186,7 @@ export default function HomeScreen() {
             </View>
             <View style={styles.featureContent}>
               <Text style={styles.featureTitle}>{t('features.profile.title')}</Text>
-              <Text style={styles.featureDescription}>
-                {t('features.profile.description')}
-              </Text>
+              <Text style={styles.featureDescription}>{t('features.profile.description')}</Text>
             </View>
             <Feather name="chevron-right" size={24} color="#687076" />
           </TouchableOpacity>

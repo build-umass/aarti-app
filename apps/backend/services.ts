@@ -12,7 +12,7 @@ export async function createQuizItem(quizItemData: QuizItemInput) {
     });
     return await quizItem.save();
   } catch (error) {
-    console.error("Error creating quiz item:", error);
+    console.error('Error creating quiz item:', error);
     throw error;
   }
 }
@@ -21,7 +21,7 @@ export async function getAllQuizItems() {
   try {
     return await QuizItem.find().sort({ id: 1 });
   } catch (error) {
-    console.error("Error finding quiz items:", error);
+    console.error('Error finding quiz items:', error);
     throw error;
   }
 }

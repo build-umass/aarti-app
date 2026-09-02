@@ -19,7 +19,6 @@ import chatTE from '../locales/te/chat.json';
 import onboardingTE from '../locales/te/onboarding.json';
 import settingsTE from '../locales/te/settings.json';
 
-
 const resources = {
   en: {
     navigation: navigationEN,
@@ -41,20 +40,18 @@ const resources = {
   },
 };
 
-i18next
-  .use(initReactI18next)
-  .init({
-    resources,
-    lng: 'en', // Default to English for now
-    fallbackLng: 'en',
-    ns: ['navigation', 'home', 'quiz', 'profile', 'chat', 'onboarding', 'settings'],
-    defaultNS: 'home',
-    interpolation: {
-      escapeValue: false, // React already escapes
-    },
-    react: {
-      useSuspense: false,
-    },
-  });
+i18next.use(initReactI18next).init({
+  resources,
+  lng: 'en', // Default to English for now
+  fallbackLng: 'en',
+  ns: ['navigation', 'home', 'quiz', 'profile', 'chat', 'onboarding', 'settings'],
+  defaultNS: 'home',
+  interpolation: {
+    escapeValue: false, // React already escapes
+  },
+  react: {
+    useSuspense: false,
+  },
+});
 
 export default i18next;

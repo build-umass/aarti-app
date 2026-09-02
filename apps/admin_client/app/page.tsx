@@ -61,7 +61,10 @@ function StatCard({
             {state === 'loading' ? (
               <Loader2 className="h-5 w-5 animate-spin text-muted-foreground" />
             ) : state === 'error' ? (
-              <span className="text-lg text-muted-foreground" title="Backend endpoint not available">
+              <span
+                className="text-lg text-muted-foreground"
+                title="Backend endpoint not available"
+              >
                 —
               </span>
             ) : (
@@ -98,8 +101,8 @@ export default function Home() {
           Content studio
         </h1>
         <p className="mt-2 max-w-lg text-sm leading-relaxed text-muted-foreground">
-          Everything learners see in the Aarti app starts here. Keep quizzes and
-          resources current, and the app picks them up on its next run.
+          Everything learners see in the Aarti app starts here. Keep quizzes and resources current,
+          and the app picks them up on its next run.
         </p>
       </div>
 
@@ -125,9 +128,7 @@ export default function Home() {
       </div>
 
       <div className={`rise rise-3 mt-10 rounded-xl border border-pink-soft bg-pink-soft/50 p-5`}>
-        <h2 className="font-display text-base font-semibold tracking-tight">
-          Getting started
-        </h2>
+        <h2 className="font-display text-base font-semibold tracking-tight">Getting started</h2>
         <ol className="mt-3 list-decimal space-y-1.5 pl-5 text-sm text-muted-foreground">
           <li>Pick a topic and add quiz questions with clear feedback.</li>
           <li>Publish resources learners can read from the Resources tab.</li>

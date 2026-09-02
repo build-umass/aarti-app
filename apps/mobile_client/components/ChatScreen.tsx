@@ -1,10 +1,5 @@
 import React, { useState, useEffect, useMemo, useRef } from 'react';
-import {
-  FlatList,
-  StyleSheet,
-  KeyboardAvoidingView,
-  Platform,
-} from 'react-native';
+import { FlatList, StyleSheet, KeyboardAvoidingView, Platform } from 'react-native';
 import MessageBubble from './MessageBubble';
 import InputBar from './InputBar';
 import TypingIndicator from './TypingIndicator';
@@ -75,9 +70,7 @@ const ChatScreen: React.FC = () => {
     }
   };
 
-  const renderItem = ({ item }: { item: Message }) => (
-    <MessageBubble message={item} />
-  );
+  const renderItem = ({ item }: { item: Message }) => <MessageBubble message={item} />;
 
   const renderFooter = () => {
     if (isLoading) {

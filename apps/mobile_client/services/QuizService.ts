@@ -42,14 +42,14 @@ export class QuizService {
    */
   static async getQuizQuestions(topicId?: number): Promise<QuizQuestion[]> {
     const db = getDatabase();
-    
+
     if (topicId) {
       return await db.getAllAsync<QuizQuestion>(
         'SELECT * FROM quiz_questions WHERE topic_id = ? ORDER BY id',
         [topicId]
       );
     }
-    
+
     return await db.getAllAsync<QuizQuestion>('SELECT * FROM quiz_questions ORDER BY id');
   }
 
@@ -58,10 +58,9 @@ export class QuizService {
    */
   static async getQuizQuestion(questionId: number): Promise<QuizQuestion | null> {
     const db = getDatabase();
-    return await db.getFirstAsync<QuizQuestion>(
-      'SELECT * FROM quiz_questions WHERE id = ?',
-      [questionId]
-    );
+    return await db.getFirstAsync<QuizQuestion>('SELECT * FROM quiz_questions WHERE id = ?', [
+      questionId,
+    ]);
   }
 
   /**
@@ -110,7 +109,7 @@ export class QuizService {
    */
   static async getCompletedQuestions(topicId?: number): Promise<number[]> {
     const db = getDatabase();
-    
+
     if (topicId) {
       const results = await db.getAllAsync<{ question_id: number }>(
         `SELECT qp.question_id 
@@ -119,13 +118,13 @@ export class QuizService {
          WHERE qp.is_completed = 1 AND qq.topic_id = ?`,
         [topicId]
       );
-      return results.map(r => r.question_id);
+      return results.map((r) => r.question_id);
     }
-    
+
     const results = await db.getAllAsync<{ question_id: number }>(
       'SELECT question_id FROM quiz_progress WHERE is_completed = 1'
     );
-    return results.map(r => r.question_id);
+    return results.map((r) => r.question_id);
   }
 
   /**
@@ -136,9 +135,9 @@ export class QuizService {
     const results = await db.getAllAsync<{ question_id: number; selected_answer: string }>(
       'SELECT question_id, selected_answer FROM quiz_progress WHERE selected_answer IS NOT NULL'
     );
-    
+
     const answers: Record<number, string> = {};
-    results.forEach(row => {
+    results.forEach((row) => {
       answers[row.question_id] = row.selected_answer;
     });
     return answers;
@@ -147,20 +146,24 @@ export class QuizService {
   /**
    * Get completion stats
    */
-  static async getCompletionStats(): Promise<{ total: number; completed: number; percentage: number }> {
+  static async getCompletionStats(): Promise<{
+    total: number;
+    completed: number;
+    percentage: number;
+  }> {
     const db = getDatabase();
-    
+
     const totalResult = await db.getFirstAsync<{ count: number }>(
       'SELECT COUNT(*) as count FROM quiz_questions'
     );
     const completedResult = await db.getFirstAsync<{ count: number }>(
       'SELECT COUNT(*) as count FROM quiz_progress WHERE is_completed = 1'
     );
-    
+
     const total = totalResult?.count || 0;
     const completed = completedResult?.count || 0;
     const percentage = total > 0 ? Math.round((completed / total) * 100) : 0;
-    
+
     return { total, completed, percentage };
   }
 
@@ -185,12 +188,12 @@ export class QuizService {
    */
   static async getProgressByTopic(topicId: number): Promise<{ total: number; completed: number }> {
     const db = getDatabase();
-    
+
     const totalResult = await db.getFirstAsync<{ count: number }>(
       'SELECT COUNT(*) as count FROM quiz_questions WHERE topic_id = ?',
       [topicId]
     );
-    
+
     const completedResult = await db.getFirstAsync<{ count: number }>(
       `SELECT COUNT(*) as count 
        FROM quiz_progress qp
@@ -198,7 +201,7 @@ export class QuizService {
        WHERE qp.is_completed = 1 AND qq.topic_id = ?`,
       [topicId]
     );
-    
+
     return {
       total: totalResult?.count || 0,
       completed: completedResult?.count || 0,

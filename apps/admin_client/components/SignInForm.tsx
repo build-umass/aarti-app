@@ -31,12 +31,12 @@ export default function SignInForm() {
       });
 
       if (response.ok) {
-        console.log("[SignInForm] Login successful, navigating and refreshing...");
+        console.log('[SignInForm] Login successful, navigating and refreshing...');
         router.push('/quizzes');
         router.refresh();
       } else {
         const data = await response.json();
-        console.error("[SignInForm] Login failed:", data.message);
+        console.error('[SignInForm] Login failed:', data.message);
         setError(data.message || 'Invalid password or login error.');
       }
     } catch (err) {
@@ -55,11 +55,11 @@ export default function SignInForm() {
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
       {error && (
-         <Alert variant="destructive">
-           <AlertCircle className="h-4 w-4" />
-           <AlertTitle>Error</AlertTitle>
-           <AlertDescription>{error}</AlertDescription>
-         </Alert>
+        <Alert variant="destructive">
+          <AlertCircle className="h-4 w-4" />
+          <AlertTitle>Error</AlertTitle>
+          <AlertDescription>{error}</AlertDescription>
+        </Alert>
       )}
       <div className="space-y-2">
         <Label htmlFor="password">Password</Label>
@@ -85,13 +85,9 @@ export default function SignInForm() {
             onClick={togglePasswordVisibility}
             disabled={isLoading}
             className="absolute inset-y-0 right-0 flex items-center justify-center h-full w-10 text-muted-foreground" // Position button absolutely
-            aria-label={showPassword ? "Hide password" : "Show password"} // Accessibility label
+            aria-label={showPassword ? 'Hide password' : 'Show password'} // Accessibility label
           >
-            {showPassword ? (
-              <EyeOff className="h-4 w-4" />
-            ) : (
-              <Eye className="h-4 w-4" />
-            )}
+            {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
           </Button>
         </div>
       </div>

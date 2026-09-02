@@ -32,20 +32,19 @@ export async function decodeToken(token: string): Promise<UserPayload | null> {
   try {
     console.log('Attempting to decode/verify token...');
     const { payload } = await jose.jwtVerify<UserPayload>(
-        token,
-        secretKey,
-        { algorithms: [algorithm] } // Specify expected algorithms
+      token,
+      secretKey,
+      { algorithms: [algorithm] } // Specify expected algorithms
     );
     console.log('Token verified successfully. Payload:', payload);
 
     // Basic check for expected structure after verification
     if (!payload || typeof payload.sub !== 'string' || payload.role !== 'admin') {
-        console.error('Decoded token payload is missing expected fields or has incorrect role.');
-        return null;
+      console.error('Decoded token payload is missing expected fields or has incorrect role.');
+      return null;
     }
 
     return payload; // Payload structure should match UserPayload
-
   } catch (error: any) {
     console.error('Error decoding/verifying token:', error.code || error.message);
     // Example error codes: JOSE_ERR_JWT_EXPIRED, JOSE_ERR_SIGNATURE_VERIFICATION_FAILED, JOSE_ERR_JWT_MALFORMED

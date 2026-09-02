@@ -108,10 +108,8 @@ async function runMigrations() {
   if (!db) throw new Error('Database not initialized');
 
   try {
-    const tableInfo = await db.getAllAsync<{ name: string }>(
-      "PRAGMA table_info(user_settings)"
-    );
-    const columnNames = tableInfo.map(col => col.name);
+    const tableInfo = await db.getAllAsync<{ name: string }>('PRAGMA table_info(user_settings)');
+    const columnNames = tableInfo.map((col) => col.name);
 
     if (!columnNames.includes('onboarding_completed')) {
       console.log('Adding onboarding_completed column to user_settings table');
@@ -122,9 +120,7 @@ async function runMigrations() {
 
     if (!columnNames.includes('first_launch_date')) {
       console.log('Adding first_launch_date column to user_settings table');
-      await db.execAsync(
-        'ALTER TABLE user_settings ADD COLUMN first_launch_date TEXT'
-      );
+      await db.execAsync('ALTER TABLE user_settings ADD COLUMN first_launch_date TEXT');
     }
 
     console.log('Migrations completed successfully');
@@ -151,10 +147,10 @@ export const getRagMeta = async (key: string): Promise<string | null> => {
 };
 
 export const setRagMeta = async (key: string, value: string): Promise<void> => {
-  await getDatabase().runAsync(
-    'INSERT OR REPLACE INTO rag_meta (key, value) VALUES (?, ?)',
-    [key, value]
-  );
+  await getDatabase().runAsync('INSERT OR REPLACE INTO rag_meta (key, value) VALUES (?, ?)', [
+    key,
+    value,
+  ]);
 };
 
 // Seed initial data
@@ -178,17 +174,16 @@ export const seedInitialData = async () => {
     if (!existingTopics) {
       const topics = [...new Set(quizDataFile.quizzes.map((quiz: any) => quiz.topic))];
       for (const topic of topics) {
-        await database.runAsync(
-          'INSERT OR IGNORE INTO topics (name) VALUES (?)',
-          [topic]
-        );
+        await database.runAsync('INSERT OR IGNORE INTO topics (name) VALUES (?)', [topic]);
       }
     }
 
     // Seed quiz questions if missing
     if (!existingQuestions) {
-      const topicRecords = await database.getAllAsync<{ id: number; name: string }>('SELECT id, name FROM topics');
-      const topicMap = new Map(topicRecords.map(t => [t.name, t.id]));
+      const topicRecords = await database.getAllAsync<{ id: number; name: string }>(
+        'SELECT id, name FROM topics'
+      );
+      const topicMap = new Map(topicRecords.map((t) => [t.name, t.id]));
 
       for (const quiz of quizDataFile.quizzes) {
         const topicId = topicMap.get(quiz.topic);
@@ -202,7 +197,7 @@ export const seedInitialData = async () => {
               quiz.question,
               JSON.stringify(quiz.options),
               quiz.correctAnswer,
-              quiz.feedback
+              quiz.feedback,
             ]
           );
         }

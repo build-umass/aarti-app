@@ -16,7 +16,7 @@ export class UserService {
   static async getUserSettings(): Promise<UserSettings> {
     const db = getDatabase();
     const user = await db.getFirstAsync<UserSettings>('SELECT * FROM user_settings WHERE id = 1');
-    
+
     if (!user) {
       // Create default user if none exists
       await db.runAsync(
@@ -24,11 +24,13 @@ export class UserService {
         [1, 'Example User', 0]
       );
 
-      const newUser = await db.getFirstAsync<UserSettings>('SELECT * FROM user_settings WHERE id = 1');
+      const newUser = await db.getFirstAsync<UserSettings>(
+        'SELECT * FROM user_settings WHERE id = 1'
+      );
       if (!newUser) throw new Error('Failed to create default user');
       return newUser;
     }
-    
+
     return user;
   }
 
@@ -37,10 +39,10 @@ export class UserService {
    */
   static async updateUsername(username: string): Promise<void> {
     const db = getDatabase();
-    await db.runAsync(
-      'UPDATE user_settings SET username = ?, updated_at = ? WHERE id = 1',
-      [username, new Date().toISOString()]
-    );
+    await db.runAsync('UPDATE user_settings SET username = ?, updated_at = ? WHERE id = 1', [
+      username,
+      new Date().toISOString(),
+    ]);
   }
 
   /**
@@ -77,7 +79,7 @@ export class UserService {
     console.log('Onboarding status check:', {
       username: user.username,
       onboarding_completed: user.onboarding_completed,
-      isCompleted
+      isCompleted,
     });
 
     return isCompleted;

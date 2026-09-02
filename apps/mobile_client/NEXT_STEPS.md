@@ -5,6 +5,7 @@ This document outlines the planned enhancements for the Aarti RAG chatbot system
 ## Current State (v1.0)
 
 ✅ **Completed Features:**
+
 - Basic RAG implementation with Gemini API
 - SQLite-based vector storage
 - Document chunking and embedding
@@ -33,21 +34,23 @@ npm install pdf-parse
 ```
 
 **New Endpoint:**
+
 ```typescript
 // POST /api/resources/upload
 // Accepts PDF file, extracts text, stores in MongoDB
 ```
 
 **Schema Update:**
+
 ```typescript
 interface Resource {
   _id: ObjectId;
   filename: string;
   title: string;
-  content: string;           // Extracted text
+  content: string; // Extracted text
   category: string;
   uploadedAt: Date;
-  contentHash: string;       // For change detection
+  contentHash: string; // For change detection
   chunkCount: number;
 }
 ```
@@ -86,14 +89,14 @@ class SyncService {
 
 ### Files to Create/Modify
 
-| Location | File | Changes |
-|----------|------|---------|
-| Backend | `controllers/resourceController.ts` | PDF upload endpoint |
-| Backend | `services/pdfService.ts` | PDF text extraction |
-| Backend | `models/Resource.ts` | Resource schema |
-| Admin | `app/resources/page.tsx` | Upload UI |
-| Mobile | `services/SyncService.ts` | Resource sync |
-| Mobile | `services/PDFService.ts` | Dynamic loading |
+| Location | File                                | Changes             |
+| -------- | ----------------------------------- | ------------------- |
+| Backend  | `controllers/resourceController.ts` | PDF upload endpoint |
+| Backend  | `services/pdfService.ts`            | PDF text extraction |
+| Backend  | `models/Resource.ts`                | Resource schema     |
+| Admin    | `app/resources/page.tsx`            | Upload UI           |
+| Mobile   | `services/SyncService.ts`           | Resource sync       |
+| Mobile   | `services/PDFService.ts`            | Dynamic loading     |
 
 ---
 
@@ -176,9 +179,7 @@ CREATE TABLE conversations (
 // lib/gemini.ts
 async function generateEmbedding(text: string, language: 'en' | 'te') {
   // Use multilingual model for non-English
-  const model = language === 'en' 
-    ? 'text-embedding-004'
-    : 'multilingual-embedding-002';
+  const model = language === 'en' ? 'text-embedding-004' : 'multilingual-embedding-002';
   // ...
 }
 ```
@@ -194,7 +195,7 @@ Load embeddings on-demand instead of at startup:
 ```typescript
 class RAGService {
   private static initialized = false;
-  
+
   static async ensureInitialized() {
     if (!this.initialized) {
       await this.initializeKnowledgeBase();
@@ -289,9 +290,7 @@ Break complex queries into sub-queries:
 ```typescript
 async function decomposeQuery(query: string) {
   const subQueries = await llm.decompose(query);
-  const results = await Promise.all(
-    subQueries.map(sq => searchDocuments(sq))
-  );
+  const results = await Promise.all(subQueries.map((sq) => searchDocuments(sq)));
   return mergeResults(results);
 }
 ```
@@ -326,6 +325,7 @@ async function decomposeQuery(query: string) {
 ## Dependencies to Add
 
 ### Backend
+
 ```json
 {
   "pdf-parse": "^1.1.1",
@@ -334,9 +334,10 @@ async function decomposeQuery(query: string) {
 ```
 
 ### Mobile Client
+
 ```json
 {
-  "@tanstack/react-query": "^5.0.0"  // For data sync
+  "@tanstack/react-query": "^5.0.0" // For data sync
 }
 ```
 
@@ -377,4 +378,4 @@ describe('RAG Flow', () => {
 
 ---
 
-*Last Updated: December 29, 2024*
+_Last Updated: December 29, 2024_

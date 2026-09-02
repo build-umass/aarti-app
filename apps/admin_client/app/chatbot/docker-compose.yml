@@ -4,12 +4,12 @@ services:
   chromadb:
     image: chromadb/chroma
     ports:
-      - "8000:8000"
+      - '8000:8000'
 
   flask_app:
     image: python:3.11
     ports:
-      - "5000:5000"
+      - '5000:5000'
     volumes:
       - .:/app
     working_dir: /app
