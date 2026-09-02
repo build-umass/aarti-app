@@ -1,0 +1,74 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  mobile:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: apps/mobile_client
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: apps/mobile_client/package-lock.json
+      - run: npm ci
+      - run: npx oxlint --deny-warnings
+      - run: npx tsc --noEmit
+      - run: npx jest --ci --forceExit # forceExit: react-test-renderer teardown errors after the env shuts down (AGENTS.md)
+      - run: npm run format:check
+
+  admin:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: apps/admin_client
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: apps/admin_client/package-lock.json
+      - run: npm ci
+      - run: npx oxlint --deny-warnings
+      - run: npx tsc --noEmit
+      - run: npm run build
+      - run: npm run format:check
+
+  backend:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: apps/backend
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: apps/backend/package-lock.json
+      - run: npm ci
+      - run: npx oxlint --deny-warnings
+      - run: npm run build
+      - run: node -e "require('./dist/app.js')"
+      - run: npm run format:check
+
+  deps:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - run: node scripts/check-unused-deps.mjs
