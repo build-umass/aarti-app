@@ -22,3 +22,8 @@ apps/mobile_client/.expo
 
 # verification skill scratch + evidence
 .verify/
+
+# opencode local deps (skill sources are tracked)
+.opencode/node_modules/
+
+decisions.tsv
