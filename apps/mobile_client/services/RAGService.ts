@@ -1,5 +1,5 @@
-import { getDatabase } from '../lib/database';
-import { generateEmbedding, generateRAGResponse, generateSimpleResponse } from '../lib/gemini';
+import { getDatabase, getRagMeta, setRagMeta } from '../lib/database';
+import { generateEmbedding, generateRAGResponse, generateSimpleResponse, EMBEDDING_MODEL_ID } from '../lib/gemini';
 import { storeEmbedding, searchSimilarEmbeddings } from '../lib/vector-db';
 import { PDFService } from './PDFService';
 
@@ -95,9 +95,16 @@ export class RAGService {
     }
   }
 
-  // Initialize knowledge base with PDF documents (no-op if already populated)
+  // Initialize knowledge base with PDF documents (no-op if already populated).
+  // Stored embeddings only match queries embedded with the same model, so a
+  // model change wipes the derived knowledge base and lets it re-seed.
   static async initializeKnowledgeBase(): Promise<void> {
     const db = getDatabase();
+
+    const recordedModel = await getRagMeta('embedding_model');
+    if (recordedModel !== EMBEDDING_MODEL_ID) {
+      await db.execAsync('DELETE FROM vector_embeddings; DELETE FROM knowledge_base;');
+    }
 
     const existingDocs = await db.getFirstAsync<{ count: number }>(
       'SELECT COUNT(*) as count FROM knowledge_base'
@@ -117,6 +124,8 @@ export class RAGService {
         console.error(`Error storing document ${pdfDoc.filename}:`, docError);
       }
     }
+
+    await setRagMeta('embedding_model', EMBEDDING_MODEL_ID);
   }
 
   private static async addChunkedDocument(pdfDoc: { content: string; metadata?: Record<string, unknown>; filename: string; title: string }): Promise<void> {
