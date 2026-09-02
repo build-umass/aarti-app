@@ -27,9 +27,14 @@ jobs:
       - run: npx tsc --noEmit
       - run: npx jest --ci --forceExit # forceExit: react-test-renderer teardown errors after the env shuts down (AGENTS.md)
       - run: npm run format:check
+      - run: npx expo-doctor
+      - run: npx expo export --platform web
 
   admin:
     runs-on: ubuntu-latest
+    env:
+      JWT_SECRET: ci-secret
+      ADMIN_PASSWORD_HASH: ci-placeholder
     defaults:
       run:
         working-directory: apps/admin_client
