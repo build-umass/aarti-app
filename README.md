@@ -103,6 +103,20 @@ Run these from each app folder unless noted.
 
 The dependency gate fails when a package in any `package.json` has no import evidence in its app's source and no entry in the script's keep-list. `npx expo install --fix` keeps Expo packages aligned with the installed SDK.
 
+## Verify in a browser
+
+After changing the mobile app, exercise it the way a user would before calling the work done. Serve the production export rather than the dev server; the dev server can fail with a Metro `Worker chunk not found` error in expo-sqlite on SDK 57, and the export contains that worker chunk.
+
+```bash
+cd apps/mobile_client
+npx expo export --platform web
+npx expo serve --port 8081     # keep this process running
+```
+
+Then open http://localhost:8081 in a browser. A complete pass covers onboarding (enter a name, Get Started), one quiz answer (Capital Cities accepts `Paris`; completion moves to 25%), the resources list and a detail page with back navigation, and the chat tab (it renders and, without an API key, replies with a not-configured message).
+
+Agents can drive the same flow headlessly. The project skill at `.opencode/skills/verify-aarti-web/` contains the full procedure, the launch scripts, and a feature map under `features/` that defines what a complete proof covers. Screenshots and transcripts belong in `.verify/evidence/`.
+
 ## More documentation
 
 Deeper guides live in `docs/`: database and service design (`database-services.md`, `service-architecture.md`), naming conventions (`field-naming-conventions.md`), internationalization (`i18n-guide.md`), local setup and troubleshooting (`run-locally.md`, `troubleshooting.md`), and Expo SQLite web notes (`web-support_expo_sqlite.md`). The chatbot's setup and roadmap live in `apps/mobile_client/RAG_SETUP.md` and `apps/mobile_client/NEXT_STEPS.md`. `CLAUDE.md` and `AGENTS.md` at the repo root carry the conventions agents and contributors are expected to follow.

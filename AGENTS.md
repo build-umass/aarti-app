@@ -23,6 +23,27 @@ Run the gate for every app you touch. A task is done when its gates exit 0, not 
 
 From the repo root, `node scripts/check-unused-deps.mjs` must also exit 0. The script fails when any dependency lacks import evidence or a keep-list entry. Adding a dependency means either using it in source or justifying it in the script's `TOOLING` map. Removing code can expose a dependency as unused; rerun the gate after deletions.
 
+### End-to-end UI verification
+
+Compile-time gates do not prove the app behaves. For mobile changes, drive the real UI before declaring done, using the project skill `.opencode/skills/verify-aarti-web/` (its `features/` map defines what a complete proof covers).
+
+```powershell
+cd apps/mobile_client
+npx expo export --platform web          # dev server can fail on expo-sqlite web worker; the export is the reliable surface
+npx expo serve --port 8081              # keep alive for the whole run
+agent-browser open http://localhost:8081
+agent-browser wait 15000                # first load initializes the database
+agent-browser snapshot -i               # expect onboarding textbox or the tab bar
+```
+
+Rules the skill enforces:
+
+- Drive only a server this run started. If the port is already owned by another process, stop; never kill or drive it.
+- Exercise the real user path (tabs, clicks, typing). Do not seed or mutate state through services, SQL, or devtools.
+- Proof needs the action, the resulting state, and one independent persistence view (reload and confirm the stat survived). Screenshots go to `.verify/evidence/` with absolute paths.
+- Chat needs `EXPO_PUBLIC_GOOGLE_GEMINI_API_KEY`. Without it, verify the tab renders and the not-configured fallback appears; do not claim the AI path works.
+- Cleanup: `agent-browser close --all`, then `& .opencode\skills\verify-aarti-web\scripts\stop-metro.ps1 -Port 8081`. Cleanup preserves `.verify/evidence/`.
+
 ## Gotchas
 
 **Mobile.**

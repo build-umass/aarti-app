@@ -95,6 +95,18 @@ A change is done when its gates exit 0, not when it compiles. Run the gate set f
 
 `scripts/check-unused-deps.mjs` fails when a dependency has no import evidence and no entry in its `TOOLING` keep-list. Use a dependency in source or justify it there. Rerun the gate after deletions; removing code can expose dependencies as unused.
 
+### End-to-End Verification (Web)
+
+For mobile changes, verify behavior in a real browser. Serve the production export; the dev server can fail with a Metro `Worker chunk not found` error in expo-sqlite on SDK 57, and the export contains the worker chunk.
+
+```bash
+cd apps/mobile_client
+npx expo export --platform web
+npx expo serve --port 8081
+```
+
+Open http://localhost:8081 and walk the real user path: onboarding (enter a name, Get Started), one quiz answer (Capital Cities accepts `Paris`, completion shows 25%), resources list to detail and back, and the chat tab (renders; without an API key it replies with the not-configured message). For headless agent-driven runs, use the project skill at `.opencode/skills/verify-aarti-web/` with agent-browser. Its `features/` map defines what a complete proof covers (onboarding, quiz answering, resources browsing, profile stats, settings data management), and its rules require driving only a server your run started, exercising the real UI instead of seeding state, and keeping evidence in `.verify/evidence/`.
+
 ### Troubleshooting Mobile App
 
 **Diagnose potential issues:**
