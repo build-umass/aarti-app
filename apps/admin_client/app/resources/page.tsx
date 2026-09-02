@@ -304,8 +304,6 @@ export default function ResourcesPage() {
         throw new Error('Failed to publish resource');
       }
 
-      const result = await response.json();
-      
       // Update resource to mark as published
       setResources(resources.map(r => 
         r.id === resourceToPublish.id 

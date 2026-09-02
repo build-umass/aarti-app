@@ -2,7 +2,7 @@
 import { NextResponse } from 'next/server';
 import { cookies } from 'next/headers';
 
-export async function POST(request: Request) {
+export async function POST(_request: Request) {
   console.log('\n--- Logout API POST Request Received ---');
   try {
     console.log("Attempting to delete auth_token cookie...");

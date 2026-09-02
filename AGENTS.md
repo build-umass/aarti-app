@@ -23,6 +23,8 @@ Run the gate for every app you touch. A task is done when its gates exit 0, not 
 
 From the repo root, `node scripts/check-unused-deps.mjs` must also exit 0. The script fails when any dependency lacks import evidence or a keep-list entry. Adding a dependency means either using it in source or justifying it in the script's `TOOLING` map. Removing code can expose a dependency as unused; rerun the gate after deletions.
 
+Linting is oxlint and formatting is oxfmt, configured per app (`.oxlintrc.json`, `.oxfmtrc.json`). Each app has `lint`, `lint:fix`, `format`, and `format:check` scripts. oxfmt is configured but not yet applied repo-wide, so `format:check` fails until the one-time reformat lands; that work is a follow-up.
+
 ### End-to-end UI verification
 
 Compile-time gates do not prove the app behaves. For mobile changes, drive the real UI before declaring done, using the project skill `.opencode/skills/verify-aarti-web/` (its `features/` map defines what a complete proof covers).
@@ -53,13 +55,13 @@ Rules the skill enforces:
 - jest exits 1 with `Tests: 1 passed` when the suite is green. The react-test-renderer teardown logs an import error after the environment is torn down; treat the test counts as the result.
 - Keep all colors in `constants/Theme.ts` (`BrandColors`). Do not hardcode hex values.
 - User-facing strings go through `useAppTranslation` with snake_case keys in `locales/<lang>/`. Quiz content stays in English.
-- ESLint (eslint-config-expo 57) errors on setState called synchronously in an effect body. Do async work inside the effect with a `void (async () => { ... })()` IIFE and declare the loader before the effect.
+- oxlint's `react/set-state-in-effect` rule errors on setState called synchronously in an effect body. Do async work inside the effect with a `void (async () => { ... })()` IIFE and declare the loader before the effect.
 
 **Naming.** SQLite returns `snake_case` (`topic_id`, `correct_answer`); TypeScript uses `camelCase` (`topicId`, `correctAnswer`). Services return snake_case. Components transform to camelCase on the way in. Reading `question.topicId` from service data returns `undefined`.
 
 **Admin.**
 - `cookies()` and `headers()` are async in Next 16. Await them.
-- ESLint is flat config (`eslint.config.mjs`); `next lint` no longer exists.
+- Linting runs through oxlint (`.oxlintrc.json`); there is no ESLint config to edit.
 - Login compares against `ADMIN_PASSWORD_HASH`, a bcrypt hash from `.env.local`. Next expands `$` references in env files; store the hash with every `$` escaped as `\$` or login fails with 401 even when the hash matches.
 
 **Backend.**

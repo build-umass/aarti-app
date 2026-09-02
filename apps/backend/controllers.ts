@@ -28,6 +28,7 @@ export async function updateQuizItem(req: Request, res: Response) {
 
     res.status(200).json(updatedQuizItem);
   } catch (error) {
+    console.error('Error updating quiz item:', error);
     res.status(500).json({ error: 'Internal server error' });
   }
 }

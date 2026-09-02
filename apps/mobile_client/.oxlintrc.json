@@ -1,0 +1,24 @@
+{
+  "$schema": "./node_modules/oxlint/configuration_schema.json",
+  "plugins": ["react", "typescript", "unicorn", "import", "jsx_a11y", "node"],
+  "categories": {
+    "correctness": "error"
+  },
+  "env": {
+    "browser": true,
+    "node": true,
+    "es2021": true
+  },
+  "rules": {
+    "react/react-in-jsx-scope": "off",
+    "react/immutability": "off",
+    "react/rules-of-hooks": "error",
+    "react/exhaustive-deps": "warn",
+    "react/set-state-in-effect": "error",
+    "react/set-state-in-render": "error",
+    "react/jsx-key": "error",
+    "react/jsx-no-undef": "error",
+    "eslint/no-shadow": "off"
+  },
+  "ignorePatterns": ["dist/**", ".expo/**", "node_modules/**", "**/*.d.ts"]
+}
