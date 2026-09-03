@@ -67,6 +67,8 @@ const TOOLING = {
     dotenv: 'env loading (db.ts)',
     express: 'HTTP framework',
     mongoose: 'MongoDB ODM',
+    multer: 'multipart upload (resource upload)',
+    '@types/multer': 'types',
     '@types/cors': 'types',
     '@types/express': 'types',
     '@types/node': 'node globals for TS compilation',

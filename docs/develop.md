@@ -50,7 +50,7 @@ Here's how we do that:
 
 - index.ts: main entrypoint, listens on port
 - app.ts: instructions for setting up the server
-- routes.ts: where you can see all your endpoints ('/resources/update', etc.) with their methods
+- routes.ts: where you can see all your endpoints ('/quiz', '/resource', etc.) with their methods
 - controllers.ts: handles requests and responses, calls the right services
 - services.ts: the core logic, handles stuff like databases
 
