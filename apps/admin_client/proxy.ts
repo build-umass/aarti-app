@@ -12,7 +12,7 @@ export const config = {
   ],
 };
 
-export async function middleware(request: NextRequest) {
+export async function proxy(request: NextRequest) {
   const tokenCookie = request.cookies.get('auth_token');
   const token = tokenCookie?.value;
   const { pathname } = request.nextUrl;

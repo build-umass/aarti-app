@@ -1,5 +1,5 @@
 // scripts/hash-password.js
-const bcrypt = require('bcrypt');
+import bcrypt from 'bcrypt';
 
 // ---- SET YOUR DESIRED PASSWORD HERE ----
 const password = '123'; // Replace '123' with your actual desired admin password
