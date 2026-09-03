@@ -155,7 +155,7 @@ aarti-app/
 - `lib/database.ts` - SQLite database setup and initialization (single source of table definitions)
 - `lib/gemini.ts` - Gemini API client (`@google/genai`): embeddings and text generation
 - `lib/vector-db.ts` - Embedding storage and cosine-similarity search
-- `services/` - Business logic layer (QuizService, BookmarkService, UserService, RAGService, PDFService)
+- `services/` - Business logic layer (QuizService, BookmarkService, UserService, ResourceService, RAGService, PDFService)
 - `components/` - Reusable UI components
 - `constants/` - Theme, colors, and app-wide constants
   - `Theme.ts` - Centralized brand colors and theme values
@@ -165,7 +165,7 @@ aarti-app/
 - **Type:** SQLite (local, offline-first)
 - **Location:** `lib/database.ts`
 - **Initialization:** During splash screen in `app/_layout.tsx`
-- **Tables:** user_settings, topics, quiz_questions, quiz_progress, bookmarks, knowledge_base, vector_embeddings
+- **Tables:** user_settings, topics, quiz_questions, quiz_progress, bookmarks, resources, knowledge_base, vector_embeddings
 
 **RAG Chatbot:**
 - `services/RAGService.ts` - Knowledge base lifecycle and query pipeline: loads documents, chunks them, stores embeddings, and answers queries (embed question, cosine search, pass top 3 chunks to `gemini-2.5-flash`, fall back to a plain response)
@@ -299,6 +299,14 @@ HTTP Request → Route → Controller → Service → Model → MongoDB
 - `GET /quiz` - Get all quiz items
 - `GET /quiz/topic/:topic` - Get items by topic
 - `GET /quiz/:id` - Get single item
+- `POST /resource` - Create resource
+- `PUT /resource/:id` - Update resource
+- `DELETE /resource/:id` - Delete resource
+- `POST /resource/:id/publish` - Publish a resource
+- `POST /resource/upload` - Upload a PDF (multipart) and create a resource
+- `GET /resource` - Get all resources
+- `GET /resource/title/:title` - Get a resource by title
+- `GET /resource/:id` - Get a resource by id
 
 ### Admin Client (Next.js)
 
@@ -313,14 +321,14 @@ HTTP Request → Route → Controller → Service → Model → MongoDB
   - `quizzes/page.tsx` - Quiz management (protected)
   - `resources/page.tsx` - Resources management (protected)
   - `api/` - API routes for login/logout
-- `middleware.ts` - Route protection using JWT
+- `proxy.ts` - Route protection using JWT (Next 16 proxy, formerly `middleware.ts`)
 - `lib/auth.ts` - JWT encoding/decoding with jose
 - `components/` - UI components (shadcn/ui)
 
 **Authentication:**
 - JWT tokens stored in `auth_token` cookie
 - Tokens expire in 1 hour
-- Middleware protects all routes except `/signin`
+- Proxy protects all routes except `/signin`
 - Algorithm: HS256
 - Login compares the password against `ADMIN_PASSWORD_HASH` (bcrypt) from `.env.local`; `JWT_SECRET` signs the token
 
@@ -432,6 +440,9 @@ quiz_progress (id, question_id, selected_answer, is_completed, completed_at, cre
 
 -- User's bookmarks
 bookmarks (id, question_id, created_at)
+
+-- Support resources, sections stored as JSON text
+resources (id, title, sections, created_at)
 
 -- RAG chatbot documents
 knowledge_base (id, content, metadata, content_type, created_at)
@@ -617,6 +628,7 @@ Comprehensive documentation available in `docs/`:
 - `services/RAGService.ts` - RAG knowledge base and query pipeline
 - `services/PDFService.ts` - Document loading and chunking
 - `services/QuizService.ts` - Quiz operations
+- `services/ResourceService.ts` - Resources read from the local `resources` table
 - `app/(tabs)/quizzes.tsx` - Main quiz screen
 - `app/(tabs)/resources/` - Resources list and detail (expo-router nested stack)
 - `constants/Theme.ts` - Centralized brand colors and theme
@@ -633,5 +645,5 @@ Comprehensive documentation available in `docs/`:
 
 ### Admin Client
 - `app/layout.tsx` - Root layout with auth
-- `middleware.ts` - Route protection
+- `proxy.ts` - Route protection
 - `lib/auth.ts` - JWT utilities

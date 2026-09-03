@@ -9,10 +9,10 @@ This document outlines the authentication system implemented in this Next.js (Ap
 *   **Next.js:** React framework with App Router conventions.
 *   **React:** Frontend library for building the UI.
 *   **TypeScript:** For static typing and improved developer experience.
-*   **jose:** A robust library for generating and verifying JWTs, compatible with Node.js and Edge Runtimes (used in Middleware).
+*   **jose:** A robust library for generating and verifying JWTs, compatible with Node.js and Edge Runtimes (used in Proxy).
 *   **bcrypt:** Library for securely hashing and comparing passwords.
 *   **next/headers:** Next.js utility for accessing cookies in Server Components and Route Handlers.
-*   **Next.js Middleware:** Used to intercept requests and protect routes based on authentication status.
+*   **Next.js Proxy:** Used to intercept requests and protect routes based on authentication status.
 *   **Tailwind CSS / Shadcn UI:** (Implied) For styling and UI components.
 
 ## Setup & Configuration
@@ -89,16 +89,16 @@ The process involves several steps from login to accessing protected content and
     *   The `Header` component re-renders, now displaying the "Sign Out" button.
 
 6.  **Accessing Protected Routes:**
-    *   When the user navigates to `/quizzes` or `/resources` (or any path matched by the middleware config):
-        *   The Next.js Middleware (`middleware.ts`) intercepts the request *before* it reaches the page component.
+    *   When the user navigates to `/quizzes` or `/resources` (or any path matched by the proxy config):
+        *   The Next.js Proxy (`proxy.ts`) intercepts the request *before* it reaches the page component.
         *   It attempts to read the `auth_token` cookie from the incoming request (`request.cookies.get('auth_token')`).
-        *   If the cookie is missing, the middleware immediately redirects the user to `/signin`.
+        *   If the cookie is missing, the proxy immediately redirects the user to `/signin`.
         *   If the cookie exists, the `decodeToken` function (`lib/auth.ts`) uses `jose` and the `JWT_SECRET` to:
             *   Verify the JWT's signature.
             *   Check if the JWT has expired (`exp` claim).
             *   Decode the payload.
-        *   If the JWT is valid (signature okay, not expired), `decodeToken` returns the payload. The middleware then calls `NextResponse.next()`, allowing the request to proceed to the requested page (`/quizzes` or `/resources`).
-        *   If the JWT is invalid (bad signature, expired, malformed), `decodeToken` returns `null`. The middleware redirects the user to `/signin` and attempts to clear the invalid cookie.
+        *   If the JWT is valid (signature okay, not expired), `decodeToken` returns the payload. The proxy then calls `NextResponse.next()`, allowing the request to proceed to the requested page (`/quizzes` or `/resources`).
+        *   If the JWT is invalid (bad signature, expired, malformed), `decodeToken` returns `null`. The proxy redirects the user to `/signin` and attempts to clear the invalid cookie.
 
 7.  **Logout Process:**
     *   The user clicks the "Sign Out" button in the `Header` component.
@@ -116,8 +116,8 @@ The process involves several steps from login to accessing protected content and
 *   **Secure Cookies:** Ensures the JWT cookie is only transmitted over HTTPS, preventing eavesdropping on insecure connections.
 *   **SameSite=Strict Cookies:** Provides strong protection against CSRF attacks.
 *   **JWT Expiration:** Setting an expiration time (`exp` claim) limits the window during which a potentially compromised JWT can be used.
-*   **Server-Side Validation:** All critical authentication logic (password comparison, JWT verification) happens on the server (API Routes, Middleware), not trusting the client.
-*   **Middleware Protection:** Acts as a gatekeeper for protected routes, ensuring only authenticated users can access them.
+*   **Server-Side Validation:** All critical authentication logic (password comparison, JWT verification) happens on the server (API Routes, Proxy), not trusting the client.
+*   **Proxy Protection:** Acts as a gatekeeper for protected routes, ensuring only authenticated users can access them.
 
 ## Key File Locations
 
@@ -125,7 +125,7 @@ The process involves several steps from login to accessing protected content and
 *   `scripts/hash-password.js`: Script to generate password hash (`scripts/`)
 *   `lib/auth.ts`: JWT encoding/decoding functions (`lib/`)
 *   `lib/types.ts`: Shared TypeScript types (`lib/`)
-*   `middleware.ts`: Route protection logic (root or `src/`)
+*   `proxy.ts`: Route protection logic (root or `src/`)
 *   `app/layout.tsx`: Root layout, reads cookie for header state (`app/`)
 *   `components/Header.tsx`: Displays login/logout button (`components/`)
 *   `app/signin/page.tsx`: Login page route (`app/signin/`)

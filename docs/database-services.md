@@ -24,7 +24,7 @@ The Aarti database schema supports a quiz-based learning application with the fo
 - **Progress Tracking**: Detailed completion and performance metrics
 
 ### Schema Statistics
-- **Tables**: 5 core tables
+- **Tables**: 6 core tables
 - **Relationships**: 4 foreign key relationships
 - **Indexes**: 3 performance indexes
 - **Constraints**: Multiple unique and check constraints
@@ -94,6 +94,16 @@ CREATE TABLE bookmarks (
 );
 
 CREATE INDEX idx_bookmarks_question_id ON bookmarks(question_id);
+```
+
+#### 6. resources
+```sql
+CREATE TABLE resources (
+  id TEXT PRIMARY KEY,
+  title TEXT NOT NULL,
+  sections TEXT NOT NULL,  -- JSON array stored as text
+  created_at TEXT DEFAULT CURRENT_TIMESTAMP
+);
 ```
 
 ### Relationships
@@ -384,6 +394,36 @@ export class BookmarkService {
 - **Status Checking**: Quick bookmark status verification
 - **Bulk Operations**: Retrieve all bookmarked question IDs
 - **Atomic Operations**: Ensures data consistency
+
+#### 4. ResourceService
+
+**Location**: `services/ResourceService.ts`
+
+**Purpose**: Reads support resources for the Resources tab. The resources table is seeded on first launch from `assets/resourcesData.json`; each resource stores its `sections` as a JSON text column, so the service returns those rows as-is and the component parses the JSON.
+
+```typescript
+export interface ResourceRow {
+  id: string;
+  title: string;
+  sections: string; // JSON string of Section[]
+  created_at: string | null;
+}
+
+export class ResourceService {
+  static async getAllResources(): Promise<ResourceRow[]> {
+    const db = getDatabase();
+    return await db.getAllAsync<ResourceRow>('SELECT * FROM resources ORDER BY id');
+  }
+
+  static async getResourceById(id: string): Promise<ResourceRow | null> {
+    const db = getDatabase();
+    return await db.getFirstAsync<ResourceRow>(
+      'SELECT * FROM resources WHERE id = ?',
+      [id]
+    );
+  }
+}
+```
 
 ## Service Implementation
 

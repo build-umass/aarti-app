@@ -4,7 +4,7 @@
 Monorepo with three applications:
 - **Mobile Client**: React Native Expo + SQLite (offline-first)
 - **Backend**: Node.js Express + MongoDB (port 3002)
-- **Admin Client**: Next.js 15 + shadcn/ui + JWT auth
+- **Admin Client**: Next.js 16 + shadcn/ui + JWT auth
 
 ## CRITICAL: Naming Conventions
 
@@ -103,7 +103,7 @@ const styles = StyleSheet.create({
 - **Key Files**:
   - `app/_layout.tsx` - Database initialization during splash
   - `lib/database.ts` - SQLite setup
-  - `services/QuizService.ts`, `BookmarkService.ts`, `UserService.ts`
+  - `services/QuizService.ts`, `BookmarkService.ts`, `UserService.ts`, `ResourceService.ts`
   - `constants/Theme.ts` - Centralized brand colors (ALWAYS use this!)
   - `constants/Colors.ts` - Light/dark mode color definitions
 
@@ -120,10 +120,10 @@ const styles = StyleSheet.create({
 ### Admin Client (apps/admin_client)
 - **Pattern**: Next.js App Router + JWT Authentication
 - **Auth**: JWT tokens in `auth_token` cookie (1hr expiry, HS256)
-- **Middleware**: `middleware.ts` protects all routes except `/signin`
+- **Proxy**: `proxy.ts` protects all routes except `/signin`
 - **Key Files**:
   - `app/layout.tsx` - Root layout
-  - `middleware.ts` - Route protection
+  - `proxy.ts` - Route protection
   - `lib/auth.ts` - JWT utilities (jose library)
 
 ## React Hooks Rules
@@ -193,7 +193,7 @@ export class QuizService {
 
 3. **Expo Router**: File-based routing in `app/` directory. `_layout.tsx` defines layouts. `(folder)/` creates route groups.
 
-4. **JWT Authentication**: HTTP-only cookies, validated by middleware on protected routes.
+4. **JWT Authentication**: HTTP-only cookies, validated by the proxy on protected routes.
 
 ## Shared Types
 
