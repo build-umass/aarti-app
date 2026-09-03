@@ -1,6 +1,6 @@
 # Database & Service Architecture
 
-This document covers the database schema, service layer architecture, and best practices for the Aarti mobile application using Drizzle ORM and SQLite.
+This document describes the database schema, service layer architecture, and best practices for the Aarti mobile application. The app uses the `expo-sqlite` async API (`getAllAsync`, `getFirstAsync`, `runAsync`) with raw SQL. The `sqliteTable` schema declarations and the Drizzle query-builder examples below are illustrative and do not match the running app. The live schema is the `CREATE TABLE` statements in `lib/database.ts`, documented in [database-services.md](./database-services.md).
 
 ## Table of Contents
 
@@ -366,6 +366,35 @@ export const BookmarkService = {
 - **Status Checking**: Quick bookmark status verification
 - **Bulk Operations**: Retrieve all bookmarked question IDs
 - **Atomic Operations**: Ensures data consistency
+
+#### 4. ResourceService
+
+**Location**: `services/ResourceService.ts`
+
+**Purpose**: Reads support resources for the Resources tab. The `resources` table is seeded on first launch from `assets/resourcesData.json`, and the service returns rows through the raw SQL async API.
+
+```typescript
+import { getDatabase } from '@/lib/database';
+
+export interface ResourceRow {
+  id: string;
+  title: string;
+  sections: string; // JSON string of Section[]
+  created_at: string | null;
+}
+
+export const ResourceService = {
+  async getAllResources(): Promise<ResourceRow[]> {
+    const db = getDatabase();
+    return await db.getAllAsync<ResourceRow>('SELECT * FROM resources ORDER BY id');
+  },
+
+  async getResourceById(id: string): Promise<ResourceRow | null> {
+    const db = getDatabase();
+    return await db.getFirstAsync<ResourceRow>('SELECT * FROM resources WHERE id = ?', [id]);
+  },
+};
+```
 
 ## Service Implementation
 
@@ -750,4 +779,4 @@ export const AnalyticsService = {
 
 ---
 
-*This documentation covers the database schema, service architecture, and React Hooks best practices for the Aarti mobile application using Drizzle ORM and SQLite*
+*Explains the database schema, service architecture, and React Hooks best practices for the Aarti mobile application. The schema and query examples below use Drizzle ORM notation; the running app uses the `expo-sqlite` async API with raw SQL, so see `database-services.md` for the accurate, current tables and services.*
