@@ -1,11 +1,45 @@
+import { useEffect, useState } from 'react';
 import { Stack, useLocalSearchParams } from 'expo-router';
-import { View, Text, ScrollView, StyleSheet } from 'react-native';
-import { mainResource } from '@/mockData/resourcesMockData';
+import { ActivityIndicator, View, Text, ScrollView, StyleSheet } from 'react-native';
+import { ResourceService } from '@/services/ResourceService';
 import { BrandColors } from '@/constants/Theme';
+import { MockResource, Section } from '../../../../../types';
 
 export default function ResourceDetailsScreen() {
   const { resource: id } = useLocalSearchParams<{ resource: string }>();
-  const resource = mainResource.find((r) => r.id === id);
+  const [resource, setResource] = useState<MockResource | null>(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    void (async () => {
+      if (!id) {
+        setLoading(false);
+        return;
+      }
+      try {
+        const row = await ResourceService.getResourceById(id);
+        if (row) {
+          setResource({
+            id: row.id,
+            title: row.title,
+            sections: JSON.parse(row.sections) as Section[],
+          });
+        }
+      } catch (error) {
+        console.error('Failed to load resource:', error);
+      } finally {
+        setLoading(false);
+      }
+    })();
+  }, [id]);
+
+  if (loading) {
+    return (
+      <View style={styles.container}>
+        <ActivityIndicator />
+      </View>
+    );
+  }
 
   if (!resource) {
     return (
