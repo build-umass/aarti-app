@@ -1,4 +1,4 @@
-// middleware.ts
+// proxy.ts
 import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
 import { decodeToken } from '@/lib/auth'; // Uses jose now
@@ -12,16 +12,16 @@ export const config = {
   ],
 };
 
-export async function middleware(request: NextRequest) {
+export async function proxy(request: NextRequest) {
   const tokenCookie = request.cookies.get('auth_token');
   const token = tokenCookie?.value;
   const { pathname } = request.nextUrl;
 
-  console.log(`[Middleware] Checking path: ${pathname}`);
-  console.log(`[Middleware] Token found in cookie: ${!!token}`);
+  console.log(`[Proxy] Checking path: ${pathname}`);
+  console.log(`[Proxy] Token found in cookie: ${!!token}`);
 
   if (!token) {
-    console.log('[Middleware] No token, redirecting to signin.');
+    console.log('[Proxy] No token, redirecting to signin.');
     const url = request.nextUrl.clone();
     url.pathname = '/signin';
     // Optional: Pass intended destination for redirect after login
@@ -33,7 +33,7 @@ export async function middleware(request: NextRequest) {
     const decodedPayload = await decodeToken(token);
 
     if (!decodedPayload) {
-      console.log('[Middleware] Invalid/expired token (decodeToken returned null), redirecting to signin.');
+      console.log('[Proxy] Invalid/expired token (decodeToken returned null), redirecting to signin.');
       const url = request.nextUrl.clone();
       url.pathname = '/signin';
       // Clear the invalid cookie by setting expiry in the past during redirect
@@ -45,12 +45,12 @@ export async function middleware(request: NextRequest) {
     // Optional: Add role check if needed later
     // if (decodedPayload.role !== 'admin') { ... }
 
-    console.log(`[Middleware] Auth successful for ${pathname}. Allowing request.`);
+    console.log(`[Proxy] Auth successful for ${pathname}. Allowing request.`);
     return NextResponse.next(); // Allow request
 
   } catch (error) {
      // Should ideally be caught by decodeToken, but safety net
-    console.error('[Middleware] Unexpected error during token validation:', error);
+    console.error('[Proxy] Unexpected error during token validation:', error);
     const url = request.nextUrl.clone();
     url.pathname = '/signin';
     return NextResponse.redirect(url);
