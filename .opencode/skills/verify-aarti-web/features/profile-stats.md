@@ -28,5 +28,5 @@ Preconditions:
 ## Gotchas
 
 - Stats load asynchronously after the tab renders; a snapshot taken immediately can show zeros for an answered session. Wait and re-read.
-- The completed count on Profile counts answered questions; the percentage on Home counts correct answers. With a wrong answer selected, Profile can say `1/4` while Home shows `0%` — that is consistent, not a bug.
+- The completed count on Profile and the percentage on Home both count answered questions, so they agree for the same session. A wrong answer still increments the answered count, so Home's percentage and Profile's count move together.
 - Only `en` translations exist under `locales/`; switching the selector to a language that is not shipped may fall back to English or show raw keys — record what you observe rather than assuming either.

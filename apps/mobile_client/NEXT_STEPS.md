@@ -18,6 +18,8 @@ This document outlines the planned enhancements for the Aarti RAG chatbot system
 
 ### Overview
 
+**Status.** The resource model, the backend CRUD/publish/upload routes, the admin resources page, and the mobile local SQLite resources are implemented. The upload endpoint accepts a file but does not extract text yet. What remains from this plan is real-time PDF text extraction in `POST /resource/upload` and the mobile backend sync.
+
 Currently, PDF content is pre-extracted and stored in `documents.json`. The next major enhancement is to enable **real-time PDF parsing** when documents are uploaded from the admin portal.
 
 ### Implementation Plan
@@ -88,7 +90,7 @@ class SyncService {
 
 | Location | File | Changes |
 |----------|------|---------|
-| Backend | `controllers/resourceController.ts` | PDF upload endpoint |
+| Backend | `controllers.ts` | PDF upload endpoint |
 | Backend | `services/pdfService.ts` | PDF text extraction |
 | Backend | `models/Resource.ts` | Resource schema |
 | Admin | `app/resources/page.tsx` | Upload UI |
@@ -328,10 +330,11 @@ async function decomposeQuery(query: string) {
 ### Backend
 ```json
 {
-  "pdf-parse": "^1.1.1",
-  "multer": "^1.4.5-lts.1"
+  "multer": "^2.0.1"
 }
 ```
+
+`multer` is added (multipart parsing for `POST /resource/upload`). `pdf-parse` remains to be added once PDF text extraction is implemented.
 
 ### Mobile Client
 ```json
