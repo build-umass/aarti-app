@@ -299,6 +299,14 @@ HTTP Request → Route → Controller → Service → Model → MongoDB
 - `GET /quiz` - Get all quiz items
 - `GET /quiz/topic/:topic` - Get items by topic
 - `GET /quiz/:id` - Get single item
+- `POST /resource` - Create resource
+- `PUT /resource/:id` - Update resource
+- `DELETE /resource/:id` - Delete resource
+- `POST /resource/:id/publish` - Publish a resource
+- `POST /resource/upload` - Upload a PDF (multipart) and create a resource
+- `GET /resource` - Get all resources
+- `GET /resource/title/:title` - Get a resource by title
+- `GET /resource/:id` - Get a resource by id
 
 ### Admin Client (Next.js)
 
