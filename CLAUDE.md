@@ -155,7 +155,7 @@ aarti-app/
 - `lib/database.ts` - SQLite database setup and initialization (single source of table definitions)
 - `lib/gemini.ts` - Gemini API client (`@google/genai`): embeddings and text generation
 - `lib/vector-db.ts` - Embedding storage and cosine-similarity search
-- `services/` - Business logic layer (QuizService, BookmarkService, UserService, RAGService, PDFService)
+- `services/` - Business logic layer (QuizService, BookmarkService, UserService, ResourceService, RAGService, PDFService)
 - `components/` - Reusable UI components
 - `constants/` - Theme, colors, and app-wide constants
   - `Theme.ts` - Centralized brand colors and theme values
@@ -165,7 +165,7 @@ aarti-app/
 - **Type:** SQLite (local, offline-first)
 - **Location:** `lib/database.ts`
 - **Initialization:** During splash screen in `app/_layout.tsx`
-- **Tables:** user_settings, topics, quiz_questions, quiz_progress, bookmarks, knowledge_base, vector_embeddings
+- **Tables:** user_settings, topics, quiz_questions, quiz_progress, bookmarks, resources, knowledge_base, vector_embeddings
 
 **RAG Chatbot:**
 - `services/RAGService.ts` - Knowledge base lifecycle and query pipeline: loads documents, chunks them, stores embeddings, and answers queries (embed question, cosine search, pass top 3 chunks to `gemini-2.5-flash`, fall back to a plain response)
@@ -441,6 +441,9 @@ quiz_progress (id, question_id, selected_answer, is_completed, completed_at, cre
 -- User's bookmarks
 bookmarks (id, question_id, created_at)
 
+-- Support resources, sections stored as JSON text
+resources (id, title, sections, created_at)
+
 -- RAG chatbot documents
 knowledge_base (id, content, metadata, content_type, created_at)
 
@@ -625,6 +628,7 @@ Comprehensive documentation available in `docs/`:
 - `services/RAGService.ts` - RAG knowledge base and query pipeline
 - `services/PDFService.ts` - Document loading and chunking
 - `services/QuizService.ts` - Quiz operations
+- `services/ResourceService.ts` - Resources read from the local `resources` table
 - `app/(tabs)/quizzes.tsx` - Main quiz screen
 - `app/(tabs)/resources/` - Resources list and detail (expo-router nested stack)
 - `constants/Theme.ts` - Centralized brand colors and theme
