@@ -419,6 +419,18 @@ export default function QuizPage() {
 
                 {selectedAnswers[quiz.id] && (
                   <View style={styles.feedbackContainer}>
+                    <Text
+                      style={[
+                        styles.feedbackVerdict,
+                        selectedAnswers[quiz.id] === quiz.correctAnswer
+                          ? styles.correctVerdict
+                          : styles.incorrectVerdict
+                      ]}
+                    >
+                      {selectedAnswers[quiz.id] === quiz.correctAnswer
+                        ? t('correct')
+                        : t('incorrect')}
+                    </Text>
                     <Text style={styles.feedbackText}>{quiz.feedback}</Text>
                   </View>
                 )}
@@ -455,6 +467,9 @@ interface Styles {
   correctIcon: TextStyle & { fontWeight: 'bold' };
   incorrectIcon: TextStyle & { fontWeight: 'bold' };
   feedbackContainer: ViewStyleWithBorder;
+  feedbackVerdict: TextStyle & { fontWeight: '600' };
+  correctVerdict: TextStyle;
+  incorrectVerdict: TextStyle;
   feedbackText: TextStyle;
   topicSelectorContainer: ViewStyle;
   topicLabel: TextStyle;
@@ -593,6 +608,17 @@ const styles = StyleSheet.create<Styles>({
     borderRadius: 8,
     borderLeftWidth: 4,
     borderLeftColor: '#3b82f6',
+  },
+  feedbackVerdict: {
+    fontSize: 13,
+    fontWeight: '600',
+    marginBottom: 6,
+  },
+  correctVerdict: {
+    color: '#22c55e',
+  },
+  incorrectVerdict: {
+    color: '#ef4444',
   },
   feedbackText: {
     color: '#1e293b',
