@@ -9,7 +9,7 @@ Scripted verification for the Aarti app. You launch the mobile client's web buil
 
 **Surface.** The primary user surface is the mobile client (`apps/mobile_client`), a React Native Expo app. This skill verifies its **web build** served by Metro — the only surface an agent can drive end to end here. Native iOS/Android need simulators, and the Express backend (`apps/backend`) plus admin client (`apps/admin_client`) need a MongoDB URI and JWT secret that are not in this checkout. Do not verify those unless explicitly asked, and never start the backend to "help" a mobile verification — the mobile app is offline-first and does not need it.
 
-The app seeds a local SQLite database (IndexedDB on web) from `apps/mobile_client/assets/quizData.json`: 4 topics (Geography, Science, Mathematics, Technology), 4 questions. Correct answers: Capital Cities → `Paris`, Solar System → `Mars`, Basic Math → `4`, Programming → `JavaScript`.
+The app seeds a local SQLite database (IndexedDB on web) from `apps/mobile_client/assets/quizData.json`: 4 topics (Geography, Science, Mathematics, Technology), 4 questions. Correct answers: Capital Cities → `Paris`, Solar System → `Mars`, Basic Math → `4`, Programming → `JavaScript`. It also seeds a `resources` table from `apps/mobile_client/assets/resourcesData.json`: 5 support resources (Web Development, Artificial Intelligence, Time Management, World War II).
 
 ## Launch
 

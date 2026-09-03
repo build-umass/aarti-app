@@ -1,9 +1,32 @@
-import { FlatList, View, Text, TouchableOpacity, StyleSheet } from 'react-native';
+import { useEffect, useState } from 'react';
+import { ActivityIndicator, FlatList, View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { router } from 'expo-router';
-import { mainResource } from '@/mockData/resourcesMockData';
-import { MockResource } from '../../../../../types';
+import { ResourceService } from '@/services/ResourceService';
+import { MockResource, Section } from '../../../../../types';
 
 export default function ResourcesScreen() {
+  const [resources, setResources] = useState<MockResource[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    void (async () => {
+      try {
+        const rows = await ResourceService.getAllResources();
+        setResources(
+          rows.map((r) => ({
+            id: r.id,
+            title: r.title,
+            sections: JSON.parse(r.sections) as Section[],
+          }))
+        );
+      } catch (error) {
+        console.error('Failed to load resources:', error);
+      } finally {
+        setLoading(false);
+      }
+    })();
+  }, []);
+
   const renderResource = ({ item }: { item: MockResource }) => (
     <TouchableOpacity
       style={styles.resourceItem}
@@ -14,10 +37,18 @@ export default function ResourcesScreen() {
     </TouchableOpacity>
   );
 
+  if (loading) {
+    return (
+      <View style={styles.container}>
+        <ActivityIndicator />
+      </View>
+    );
+  }
+
   return (
     <View style={styles.container}>
       <FlatList
-        data={mainResource}
+        data={resources}
         renderItem={renderResource}
         keyExtractor={(item) => item.id}
         ItemSeparatorComponent={() => <View style={styles.separator} />}

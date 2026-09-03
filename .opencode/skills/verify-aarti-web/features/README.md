@@ -7,7 +7,7 @@ This directory is the maintained source for verifying the user-facing behavior o
 - Metro started by this run via `start-metro.ps1` and healthy per the Doctor checks. Never drive an instance this run did not start.
 - A browser session with a **fresh profile state** when the recipe needs the seeded starting state (0 answers, 0 bookmarks, onboarding incomplete). Use a new `agent-browser --session <name>` per run; reuse the same session only when deliberately testing persistence.
 - Fresh state shows onboarding at `/onboarding`. Completing it creates the single user row (`onboarding_completed = 1`) — there is no UI to undo this short of a new session.
-- Seed data comes from `apps/mobile_client/assets/quizData.json`: topics Geography, Science, Mathematics, Technology; questions Capital Cities (correct: Paris), Solar System (Mars), Basic Math (4), Programming (JavaScript). The app has no user-facing content editor; if the data file changed, update the expected values here.
+- Seed data comes from `apps/mobile_client/assets/quizData.json`: topics Geography, Science, Mathematics, Technology; questions Capital Cities (correct: Paris), Solar System (Mars), Basic Math (4), Programming (JavaScript). Resources are seeded from `apps/mobile_client/assets/resourcesData.json` into a `resources` table and read through `ResourceService`. The app has no user-facing content editor; if a data file changed, update the expected values here.
 - No Gemini API key is configured (`EXPO_PUBLIC_GOOGLE_GEMINI_API_KEY` missing in `apps/mobile_client/.env`), so chat responses cannot work. Chat is deliberately not mapped as a verifiable feature; verify only that the tab renders.
 
 ## Driving conventions
@@ -32,4 +32,4 @@ This directory is the maintained source for verifying the user-facing behavior o
 - [Quiz answering and bookmarks](./quiz-answering.md) — topic filters, expanding questions, answering, completion counters, bookmarking, persistence.
 - [Settings and data management](./settings-data-management.md) — username change, reset quiz progress, delete bookmarks, native confirm/alert dialogs.
 - [Profile stats](./profile-stats.md) — aggregate completion stats reflecting quiz progress.
-- [Resources browsing](./resources-browsing.md) — resource list and detail navigation.
+- [Resources browsing](./resources-browsing.md) — resource list and detail navigation, SQLite-backed and persisted across reload.

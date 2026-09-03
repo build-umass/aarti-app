@@ -103,7 +103,7 @@ const styles = StyleSheet.create({
 - **Key Files**:
   - `app/_layout.tsx` - Database initialization during splash
   - `lib/database.ts` - SQLite setup
-  - `services/QuizService.ts`, `BookmarkService.ts`, `UserService.ts`
+  - `services/QuizService.ts`, `BookmarkService.ts`, `UserService.ts`, `ResourceService.ts`
   - `constants/Theme.ts` - Centralized brand colors (ALWAYS use this!)
   - `constants/Colors.ts` - Light/dark mode color definitions
 
