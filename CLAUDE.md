@@ -321,14 +321,14 @@ HTTP Request → Route → Controller → Service → Model → MongoDB
   - `quizzes/page.tsx` - Quiz management (protected)
   - `resources/page.tsx` - Resources management (protected)
   - `api/` - API routes for login/logout
-- `middleware.ts` - Route protection using JWT
+- `proxy.ts` - Route protection using JWT (Next 16 proxy, formerly `middleware.ts`)
 - `lib/auth.ts` - JWT encoding/decoding with jose
 - `components/` - UI components (shadcn/ui)
 
 **Authentication:**
 - JWT tokens stored in `auth_token` cookie
 - Tokens expire in 1 hour
-- Middleware protects all routes except `/signin`
+- Proxy protects all routes except `/signin`
 - Algorithm: HS256
 - Login compares the password against `ADMIN_PASSWORD_HASH` (bcrypt) from `.env.local`; `JWT_SECRET` signs the token
 
@@ -641,5 +641,5 @@ Comprehensive documentation available in `docs/`:
 
 ### Admin Client
 - `app/layout.tsx` - Root layout with auth
-- `middleware.ts` - Route protection
+- `proxy.ts` - Route protection
 - `lib/auth.ts` - JWT utilities
