@@ -1,4 +1,5 @@
 import { QuizItem, IQuizItem, QuizItemInput } from './models/QuizItem';
+import { Resource, IResource, ResourceInput } from './models/Resource';
 
 export async function createQuizItem(quizItemData: QuizItemInput) {
   try {
@@ -69,6 +70,89 @@ export async function deleteQuizItem(id: number) {
     return await QuizItem.findOneAndDelete({ id });
   } catch (error) {
     console.error(`Error deleting quiz item with ID ${id}:`, error);
+    throw error;
+  }
+}
+
+export async function createResource(resourceData: ResourceInput) {
+  try {
+    const lastResource = await Resource.findOne().sort({ id: -1 });
+    const resource = new Resource({
+      ...resourceData,
+      id: lastResource ? lastResource.id + 1 : 1,
+    });
+    return await resource.save();
+  } catch (error) {
+    console.error('Error creating resource:', error);
+    throw error;
+  }
+}
+
+export async function getAllResources() {
+  try {
+    return await Resource.find().sort({ id: 1 });
+  } catch (error) {
+    console.error('Error finding resources:', error);
+    throw error;
+  }
+}
+
+export async function getResourceById(id: number) {
+  try {
+    return await Resource.findOne({ id });
+  } catch (error) {
+    console.error(`Error finding resource with ID ${id}:`, error);
+    throw error;
+  }
+}
+
+export async function getResourceByTitle(title: string) {
+  try {
+    return await Resource.findOne({ title });
+  } catch (error) {
+    console.error(`Error finding resource with title "${title}":`, error);
+    throw error;
+  }
+}
+
+export async function updateResource(id: number, updateData: Partial<Omit<IResource, 'id'>>) {
+  try {
+    const resource = await Resource.findOne({ id });
+    if (!resource) {
+      return null;
+    }
+
+    const changes = Object.fromEntries(
+      Object.entries(updateData).filter(([, value]) => value !== undefined)
+    );
+    Object.assign(resource, changes);
+    return await resource.save();
+  } catch (error) {
+    console.error(`Error updating resource with ID ${id}:`, error);
+    throw error;
+  }
+}
+
+export async function deleteResource(id: number) {
+  try {
+    return await Resource.findOneAndDelete({ id });
+  } catch (error) {
+    console.error(`Error deleting resource with ID ${id}:`, error);
+    throw error;
+  }
+}
+
+export async function publishResource(id: number) {
+  try {
+    const resource = await Resource.findOne({ id });
+    if (!resource) {
+      return null;
+    }
+
+    resource.isPublished = true;
+    return await resource.save();
+  } catch (error) {
+    console.error(`Error publishing resource with ID ${id}:`, error);
     throw error;
   }
 }
