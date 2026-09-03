@@ -1,5 +1,6 @@
 import { openDatabaseAsync, type SQLiteDatabase } from 'expo-sqlite';
 import quizDataFile from '../assets/quizData.json';
+import resourcesData from '../assets/resourcesData.json';
 
 // Database instance
 let db: SQLiteDatabase | null = null;
@@ -67,6 +68,14 @@ async function createTables() {
       question_id INTEGER NOT NULL UNIQUE,
       created_at TEXT DEFAULT CURRENT_TIMESTAMP,
       FOREIGN KEY (question_id) REFERENCES quiz_questions(id)
+    );
+
+    -- Resources table
+    CREATE TABLE IF NOT EXISTS resources (
+      id TEXT PRIMARY KEY,
+      title TEXT NOT NULL,
+      sections TEXT NOT NULL,
+      created_at TEXT DEFAULT CURRENT_TIMESTAMP
     );
 
     -- Knowledge base table for RAG chatbot
@@ -165,6 +174,7 @@ export const seedInitialData = async () => {
     const existingUser = await database.getFirstAsync('SELECT * FROM user_settings LIMIT 1');
     const existingTopics = await database.getFirstAsync('SELECT * FROM topics LIMIT 1');
     const existingQuestions = await database.getFirstAsync('SELECT * FROM quiz_questions LIMIT 1');
+    const existingResources = await database.getFirstAsync('SELECT * FROM resources LIMIT 1');
 
     // Seed user if missing
     if (!existingUser) {
@@ -206,6 +216,16 @@ export const seedInitialData = async () => {
             ]
           );
         }
+      }
+    }
+
+    // Seed resources if missing
+    if (!existingResources) {
+      for (const resource of resourcesData) {
+        await database.runAsync(
+          'INSERT OR IGNORE INTO resources (id, title, sections) VALUES (?, ?, ?)',
+          [resource.id, resource.title, JSON.stringify(resource.sections)]
+        );
       }
     }
   } catch (error) {
